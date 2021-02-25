@@ -29,9 +29,10 @@
     },
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "types": ["node", "mocha"],
+    "types": ["node", "mocha", "meteor-mdg-validated-method"],
     "esModuleInterop": true,
-    "preserveSymlinks": true
+    "preserveSymlinks": true,
+    "typeRoots": ["./imports/types"]
   },
   "exclude": ["./.meteor/**", "./packages/**"]
 }

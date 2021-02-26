@@ -3,10 +3,10 @@ import React from "react";
 import * as Yup from "yup";
 import { CategoryId, ICategory } from "../../../../api/categories";
 import { DatePicker } from "../../../components/DatePicker/DatePicker";
-import { InputNumber } from "../../../components/InputNumber/InputNumber";
 import { Select } from "../../../components/Select/Select";
 import { TextArea } from "../../../components/TextArea/TextArea";
 import { createIncome } from "/imports/api/incomes/methods/create";
+import { Input } from "/imports/ui/components/Input/Input";
 
 type Props = {
   categories: Array<Pick<ICategory, "_id" | "name">>;
@@ -53,7 +53,7 @@ export function IncomesCreate({
       >
         {({ isSubmitting }) => (
           <Form className="max-w-xs space-y-4">
-            <InputNumber label="Amount" name="amount" />
+            <Input label="Amount" name="amount" type="number" />
 
             <DatePicker label="Date" name="date" />
 

@@ -6,7 +6,7 @@ import { Select } from "../../../components/Select/Select";
 import { ICategory } from "/imports/api/Categories";
 import { updateExpense } from "/imports/api/expenses/methods/update";
 import { DatePicker } from "/imports/ui/components/DatePicker/DatePicker";
-import { InputNumber } from "/imports/ui/components/InputNumber/InputNumber";
+import { Input } from "/imports/ui/components/Input/Input";
 import { TextArea } from "/imports/ui/components/TextArea/TextArea";
 
 type ExpensesEditProps = {
@@ -54,7 +54,7 @@ export function ExpensesEdit({
     >
       {({ isSubmitting }) => (
         <Form className="max-w-xs space-y-4">
-          <InputNumber label="Amount" name="amount" />
+          <Input label="Amount" name="amount" type="number" />
 
           <DatePicker label="Date" name="date" />
 

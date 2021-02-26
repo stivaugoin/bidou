@@ -1,17 +1,18 @@
 import { FieldHookConfig, useField } from "formik";
 import React from "react";
 
-type InputTextProps = FieldHookConfig<string> & {
+type InputProps = FieldHookConfig<string> & {
   label: string;
+  type: HTMLInputElement["type"];
 };
 
-export function InputText(props: InputTextProps): JSX.Element {
+export function Input(props: InputProps): JSX.Element {
   const [field, meta] = useField(props);
 
   return (
     <div className="flex flex-col">
       <label htmlFor={props.id || props.name}>{props.label}</label>
-      <input {...field} />
+      <input type={props.type} {...field} />
 
       {meta.touched && meta.error && (
         <p className="text-red-500 text-xs">{meta.error}</p>

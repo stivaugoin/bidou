@@ -3,8 +3,8 @@ import React from "react";
 import * as Yup from "yup";
 import { ICategory } from "../../../../api/categories";
 import { updateCategory } from "../../../../api/categories/methods/update";
-import { InputText } from "../../../components/InputText/InputText";
 import { Select } from "../../../components/Select/Select";
+import { Input } from "/imports/ui/components/Input/Input";
 
 type CategoriesEditProps = {
   category: ICategory;
@@ -44,7 +44,7 @@ export function CategoriesEdit({
     >
       {({ isSubmitting }) => (
         <Form className="max-w-xs space-y-4">
-          <InputText id="name" label="Name" name="name" />
+          <Input label="Name" name="name" type="text" />
 
           <Select
             id="type"

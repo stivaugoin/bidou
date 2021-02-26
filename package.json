@@ -4,7 +4,7 @@
   "scripts": {
     "eslint": "eslint .",
     "prettier": "prettier --write .",
-    "start": "meteor run --exclude-archs web.browser.legacy,web.cordova",
+    "start": "meteor run --exclude-archs web.browser.legacy,web.cordova --settings settings-local.json",
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "visualize": "meteor --production --extra-packages bundle-visualizer"

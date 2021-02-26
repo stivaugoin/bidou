@@ -24,3 +24,5 @@ random
 accounts-base
 accounts-password
 mdg:validated-method
+accounts-google
+service-configuration

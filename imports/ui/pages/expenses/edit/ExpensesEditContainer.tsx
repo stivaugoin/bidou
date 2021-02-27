@@ -4,20 +4,17 @@ import { useHistory, useParams } from "react-router-dom";
 import { ExpenseId, ExpensesCollection } from "../../../../api/expenses";
 import { NotFound } from "../../NotFound";
 import { ExpensesEdit } from "./ExpensesEdit";
-import { CategoriesCollection } from "/imports/api/categories";
+import { useCategories } from "/imports/ui/hooks/useCategories";
 
 export function ExpensesEditContainer(): JSX.Element {
   const history = useHistory();
   const params = useParams<{ expenseId: ExpenseId }>();
   const { expenseId } = params;
+  const categories = useCategories({ type: "expense" });
 
-  const { categories, expense } = useTracker(() => {
+  const { expense } = useTracker(() => {
     return {
       expense: ExpensesCollection.findOne(expenseId),
-      categories: CategoriesCollection.find(
-        { type: "expense" },
-        { fields: { _id: 1, name: 1 } }
-      ).fetch(),
     };
   }, [expenseId]);
 

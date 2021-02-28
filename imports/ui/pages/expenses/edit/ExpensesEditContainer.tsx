@@ -9,14 +9,15 @@ import { useCategories } from "/imports/ui/hooks/useCategories";
 export function ExpensesEditContainer(): JSX.Element {
   const history = useHistory();
   const params = useParams<{ expenseId: ExpenseId }>();
-  const { expenseId } = params;
-  const categories = useCategories({ type: "expense" });
+  const categories = useCategories(
+    { type: "expense" },
+    { fields: { _id: 1, name: 1 } }
+  );
 
-  const { expense } = useTracker(() => {
-    return {
-      expense: ExpensesCollection.findOne(expenseId),
-    };
-  }, [expenseId]);
+  const expense = useTracker(
+    () => ExpensesCollection.findOne(params.expenseId),
+    [params.expenseId]
+  );
 
   const handleReturnToList = () => {
     history.push("/expenses");

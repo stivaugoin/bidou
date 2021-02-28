@@ -4,22 +4,19 @@ import { useHistory, useParams } from "react-router-dom";
 import { IncomeId, IncomesCollection } from "../../../../api/incomes";
 import { NotFound } from "../../NotFound";
 import { IncomesEdit } from "./IncomesEdit";
-import { CategoriesCollection } from "/imports/api/categories";
+import { useCategories } from "/imports/ui/hooks/useCategories";
 
 export function IncomesEditContainer(): JSX.Element {
   const history = useHistory();
   const params = useParams<{ incomeId: IncomeId }>();
-  const { incomeId } = params;
+  const categories = useCategories(
+    { type: "income" },
+    { fields: { _id: 1, name: 1 } }
+  );
 
-  const { categories, income } = useTracker(() => {
-    return {
-      income: IncomesCollection.findOne(incomeId),
-      categories: CategoriesCollection.find(
-        { type: "income" },
-        { fields: { _id: 1, name: 1 } }
-      ).fetch(),
-    };
-  }, [incomeId]);
+  const income = useTracker(() => IncomesCollection.findOne(params.incomeId), [
+    params.incomeId,
+  ]);
 
   const handleReturnToList = () => {
     history.push("/incomes");

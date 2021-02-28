@@ -18,50 +18,71 @@ import { ExpenseListContainer } from "./pages/expenses/list/ExpensesListContaine
 import { IncomesCreateContainer } from "./pages/incomes/create/IncomesCreateContainer";
 import { IncomesEditContainer } from "./pages/incomes/edit/IncomesEditContainer";
 import { IncomeListContainer } from "./pages/incomes/list/IncomesListContainer";
+import { Login } from "./pages/Login";
 
 export const App = (): JSX.Element => {
-  const { isLoading } = useTracker(() => {
+  const { isLoading, user } = useTracker(() => {
     const isLoading = [
       Meteor.subscribe("categories.all"),
       Meteor.subscribe("expenses.all"),
       Meteor.subscribe("incomes.all"),
     ].some((sub) => !sub.ready());
 
-    return { isLoading };
+    const user = Meteor.user();
+
+    return { isLoading, user };
   }, []);
+
+  const handleClickLogout = () => {
+    Meteor.logout();
+  };
 
   if (isLoading) {
     return <p>Loading...</p>;
   }
 
+  if (!user) {
+    return <Login />;
+  }
+
   return (
     <Router>
       <div>
-        <nav className="flex space-x-4 mb-4">
-          <NavLink activeClassName="font-bold" className="text-lg" exact to="/">
-            Dashboard
-          </NavLink>
-          <NavLink
-            activeClassName="font-bold"
-            className="text-lg"
-            to="/incomes"
-          >
-            Incomes
-          </NavLink>
-          <NavLink
-            activeClassName="font-bold"
-            className="text-lg"
-            to="/expenses"
-          >
-            Expenses
-          </NavLink>
-          <NavLink
-            activeClassName="font-bold"
-            className="text-lg"
-            to="/categories"
-          >
-            Categories
-          </NavLink>
+        <nav className="flex mb-4">
+          <div className="flex space-x-4">
+            <NavLink
+              activeClassName="font-bold"
+              className="text-lg"
+              exact
+              to="/"
+            >
+              Dashboard
+            </NavLink>
+            <NavLink
+              activeClassName="font-bold"
+              className="text-lg"
+              to="/incomes"
+            >
+              Incomes
+            </NavLink>
+            <NavLink
+              activeClassName="font-bold"
+              className="text-lg"
+              to="/expenses"
+            >
+              Expenses
+            </NavLink>
+            <NavLink
+              activeClassName="font-bold"
+              className="text-lg"
+              to="/categories"
+            >
+              Categories
+            </NavLink>
+          </div>
+          <div className="ml-auto">
+            <button onClick={handleClickLogout}>Logout</button>
+          </div>
         </nav>
 
         <main>

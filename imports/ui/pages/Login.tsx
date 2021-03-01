@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 
 export function Login(): JSX.Element {
-  const [error, setError] = useState<string | undefined>();
+  const [error, setError] = useState<string | null>();
 
   const handleClickLoginWithGoogle = () => {
+    setError(null);
+
     Meteor.loginWithGoogle({}, (error) => {
       if (error) {
         setError(error.message);

@@ -2,7 +2,9 @@ import { Meteor } from "meteor/meteor";
 import { CategoriesCollection } from "..";
 
 Meteor.publish("categories.all", function () {
-  const selector = {};
+  if (!this.userId) {
+    this.ready();
+  }
 
-  return CategoriesCollection.find(selector);
+  return CategoriesCollection.find();
 });

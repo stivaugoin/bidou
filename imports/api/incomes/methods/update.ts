@@ -10,6 +10,14 @@ export const updateIncome = new ValidatedMethod({
   name: "incomes.udpdate",
   validate: null,
   run(income: CreateIncomeProps) {
+    if (!this.userId) {
+      throw new Meteor.Error(
+        403,
+        "Access denied",
+        "This application isn't public."
+      );
+    }
+
     IncomesCollection.update(income._id, {
       $set: {
         ...income,

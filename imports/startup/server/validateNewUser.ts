@@ -5,7 +5,11 @@ Accounts.validateNewUser(
     const { validEmails } = Meteor.settings;
 
     if (!validEmails.includes(user.services.google.email)) {
-      throw new Meteor.Error(403, "Access denied");
+      throw new Meteor.Error(
+        403,
+        "Access denied",
+        "This application isn't public"
+      );
     }
 
     return true;

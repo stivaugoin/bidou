@@ -11,3 +11,9 @@ export interface ICategory extends ICollectionMeta {
 export const CategoriesCollection = new Mongo.Collection<ICategory>(
   "categories"
 );
+
+CategoriesCollection.allow({
+  insert: () => false,
+  remove: () => false,
+  update: () => false,
+});

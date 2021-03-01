@@ -12,3 +12,9 @@ export interface IExpense extends ICollectionMeta {
 }
 
 export const ExpensesCollection = new Mongo.Collection<IExpense>("expenses");
+
+ExpensesCollection.allow({
+  insert: () => false,
+  remove: () => false,
+  update: () => false,
+});

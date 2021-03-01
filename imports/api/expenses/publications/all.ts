@@ -2,5 +2,9 @@ import { Meteor } from "meteor/meteor";
 import { ExpensesCollection } from "..";
 
 Meteor.publish("expenses.all", function () {
-  return ExpensesCollection.find({});
+  if (!this.userId) {
+    this.ready();
+  }
+
+  return ExpensesCollection.find();
 });

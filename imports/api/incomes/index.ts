@@ -12,3 +12,9 @@ export interface IIncome extends ICollectionMeta {
 }
 
 export const IncomesCollection = new Mongo.Collection<IIncome>("incomes");
+
+IncomesCollection.allow({
+  insert: () => false,
+  remove: () => false,
+  update: () => false,
+});

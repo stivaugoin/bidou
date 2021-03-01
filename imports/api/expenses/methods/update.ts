@@ -10,6 +10,14 @@ export const updateExpense = new ValidatedMethod({
   name: "expenses.udpdate",
   validate: null,
   run(expense: CreateExpenseProps) {
+    if (!this.userId) {
+      throw new Meteor.Error(
+        403,
+        "Access denied",
+        "This application isn't public"
+      );
+    }
+
     ExpensesCollection.update(expense._id, {
       $set: {
         ...expense,

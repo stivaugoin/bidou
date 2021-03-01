@@ -7,6 +7,14 @@ export const createExpense = new ValidatedMethod({
   name: "expenses.create",
   validate: null,
   run(transaction: Props) {
+    if (!this.userId) {
+      throw new Meteor.Error(
+        403,
+        "Access denied",
+        "This application isn't public"
+      );
+    }
+
     ExpensesCollection.insert({
       ...transaction,
       createdAt: new Date(),

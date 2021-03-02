@@ -1,10 +1,10 @@
-import { Meteor } from "meteor/meteor";
 import assert from "assert";
+import { Meteor } from "meteor/meteor";
 
-describe("boilerplate-meteor", function () {
+describe("bidou", function () {
   it("package.json has correct name", async function () {
     const { name } = await import("../package.json");
-    assert.strictEqual(name, "boilerplate-meteor");
+    assert.strictEqual(name, "bidou");
   });
 
   if (Meteor.isClient) {

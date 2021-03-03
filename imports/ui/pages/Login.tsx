@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "../components/Button/Button";
 
 export function Login(): JSX.Element {
   const [error, setError] = useState<string | null>();
@@ -15,7 +16,9 @@ export function Login(): JSX.Element {
 
   return (
     <div>
-      <button onClick={handleClickLoginWithGoogle}>Login with Google</button>
+      <Button onClick={handleClickLoginWithGoogle} variant="primary">
+        Login with Google
+      </Button>
       {error && <p className="text-red-500 text-xs">{error}</p>}
     </div>
   );

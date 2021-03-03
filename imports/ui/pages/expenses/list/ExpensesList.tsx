@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { ExpenseId, IExpense } from "/imports/api/expenses";
+import { Button } from "/imports/ui/components/Button/Button";
 import { getCategoryName } from "/imports/ui/utils/getCategoryName";
 
 type Props = {
@@ -14,9 +15,12 @@ export function ExpensesList({ onDelete, transactions }: Props): JSX.Element {
 
   const renderAddButton = () => (
     <div className="flex space-x-4">
-      <button onClick={() => history.push("/expenses/create")}>
+      <Button
+        onClick={() => history.push("/expenses/create")}
+        variant="primary"
+      >
         Create Expense
-      </button>
+      </Button>
     </div>
   );
 
@@ -50,10 +54,15 @@ export function ExpensesList({ onDelete, transactions }: Props): JSX.Element {
                   <td>{getCategoryName(categoryId)}</td>
                   <td>${(amount / 100).toFixed(2)}</td>
                   <td>
-                    <button onClick={() => history.push(`/expenses/${_id}`)}>
+                    <Button
+                      onClick={() => history.push(`/expenses/${_id}`)}
+                      variant="secondary"
+                    >
                       Edit
-                    </button>
-                    <button onClick={() => onDelete(_id)}>Delete</button>
+                    </Button>
+                    <Button onClick={() => onDelete(_id)} variant="secondary">
+                      Delete
+                    </Button>
                   </td>
                 </tr>
               ))}

@@ -1,6 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { CategoryId, ICategory } from "../../../../api/categories";
+import { Button } from "/imports/ui/components/Button/Button";
 import { capitalize } from "/imports/utils/capitalize";
 
 type CategoriesViewProps = {
@@ -15,9 +16,12 @@ export function CategoriesList({
   const history = useHistory();
 
   const renderAddButton = () => (
-    <button onClick={() => history.push("/categories/create")}>
+    <Button
+      onClick={() => history.push("/categories/create")}
+      variant="primary"
+    >
       Create category
-    </button>
+    </Button>
   );
 
   return (
@@ -48,10 +52,15 @@ export function CategoriesList({
                   <td>{name}</td>
                   <td>{capitalize(type)}</td>
                   <td>
-                    <button onClick={() => history.push(`/categories/${_id}`)}>
+                    <Button
+                      onClick={() => history.push(`/categories/${_id}`)}
+                      variant="secondary"
+                    >
                       Edit
-                    </button>
-                    <button onClick={() => onDelete(_id)}>Delete</button>
+                    </Button>
+                    <Button onClick={() => onDelete(_id)} variant="secondary">
+                      Delete
+                    </Button>
                   </td>
                 </tr>
               ))}

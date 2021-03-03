@@ -5,6 +5,7 @@ import { IExpense } from "../../../../api/expenses";
 import { Select } from "../../../components/Select/Select";
 import { ICategory } from "/imports/api/Categories";
 import { updateExpense } from "/imports/api/expenses/methods/update";
+import { Button } from "/imports/ui/components/Button/Button";
 import { DatePicker } from "/imports/ui/components/DatePicker/DatePicker";
 import { Input } from "/imports/ui/components/Input/Input";
 import { TextArea } from "/imports/ui/components/TextArea/TextArea";
@@ -73,12 +74,12 @@ export function ExpensesEdit({
           <TextArea label="Comments" name="comments" />
 
           <div className="flex justify-between">
-            <button onClick={onClickCancel} type="button">
+            <Button onClick={onClickCancel} type="button" variant="secondary">
               Cancel
-            </button>
-            <button disabled={isSubmitting} type="submit">
+            </Button>
+            <Button disabled={isSubmitting} type="submit" variant="primary">
               Save
-            </button>
+            </Button>
           </div>
         </Form>
       )}

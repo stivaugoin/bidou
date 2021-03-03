@@ -6,6 +6,7 @@ import { DatePicker } from "../../../components/DatePicker/DatePicker";
 import { Select } from "../../../components/Select/Select";
 import { TextArea } from "../../../components/TextArea/TextArea";
 import { createIncome } from "/imports/api/incomes/methods/create";
+import { Button } from "/imports/ui/components/Button/Button";
 import { Input } from "/imports/ui/components/Input/Input";
 
 type Props = {
@@ -74,12 +75,12 @@ export function IncomesCreate({
             <TextArea label="Comments" name="comments" />
 
             <div className="flex justify-between">
-              <button onClick={onClickCancel} type="button">
+              <Button onClick={onClickCancel} type="button" variant="secondary">
                 Cancel
-              </button>
-              <button disabled={isSubmitting} type="submit">
+              </Button>
+              <Button disabled={isSubmitting} type="submit" variant="primary">
                 Save
-              </button>
+              </Button>
             </div>
           </Form>
         )}

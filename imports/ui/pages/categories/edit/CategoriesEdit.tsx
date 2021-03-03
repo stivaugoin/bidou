@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { ICategory } from "../../../../api/categories";
 import { updateCategory } from "../../../../api/categories/methods/update";
 import { Select } from "../../../components/Select/Select";
+import { Button } from "/imports/ui/components/Button/Button";
 import { Input } from "/imports/ui/components/Input/Input";
 
 type CategoriesEditProps = {
@@ -58,12 +59,12 @@ export function CategoriesEdit({
           />
 
           <div className="flex justify-between">
-            <button onClick={onClickCancel} type="button">
+            <Button onClick={onClickCancel} type="button" variant="secondary">
               Cancel
-            </button>
-            <button disabled={isSubmitting} type="submit">
+            </Button>
+            <Button disabled={isSubmitting} type="submit" variant="primary">
               Save
-            </button>
+            </Button>
           </div>
         </Form>
       )}

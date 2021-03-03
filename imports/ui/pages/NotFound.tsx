@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import { Button } from "../components/Button/Button";
 
 export function NotFound(): JSX.Element {
   const history = useHistory();
@@ -11,7 +12,9 @@ export function NotFound(): JSX.Element {
   return (
     <div>
       <h1>Page not found</h1>
-      <button onClick={handleClickBack}>Go back</button>
+      <Button onClick={handleClickBack} variant="primary">
+        Go back
+      </Button>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
+import { Button } from "./components/Button/Button";
 import { CategoriesCreateContainer } from "./pages/categories/create/CategoriesCreateContainer";
 import { CategoriesEditContainer } from "./pages/categories/edit/CategoriesEditContainer";
 import { CategoriesListContainer } from "./pages/categories/list/CategoriesListContainer";
@@ -81,7 +82,9 @@ export const App = (): JSX.Element => {
             </NavLink>
           </div>
           <div className="ml-auto">
-            <button onClick={handleClickLogout}>Logout</button>
+            <Button onClick={handleClickLogout} variant="primary">
+              Logout
+            </Button>
           </div>
         </nav>
 

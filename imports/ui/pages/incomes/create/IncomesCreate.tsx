@@ -10,6 +10,7 @@ import { Input } from "/imports/ui/components/Input/Input";
 
 type Props = {
   categories: Array<Pick<ICategory, "_id" | "name">>;
+  defaultCategoryId: CategoryId | "";
   onAfterCreate: () => void;
   onClickCancel: () => void;
 };
@@ -23,6 +24,7 @@ const validationSchema = Yup.object().shape({
 
 export function IncomesCreate({
   categories,
+  defaultCategoryId,
   onAfterCreate,
   onClickCancel,
 }: Props): JSX.Element {
@@ -32,7 +34,7 @@ export function IncomesCreate({
       <Formik
         initialValues={{
           amount: "",
-          categoryId: "",
+          categoryId: defaultCategoryId,
           comments: "",
           date: new Date(),
         }}

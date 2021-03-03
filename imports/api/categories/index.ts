@@ -4,6 +4,7 @@ export type CategoryId = Id<string, "Category">;
 
 export interface ICategory extends ICollectionMeta {
   _id: CategoryId;
+  defaultUserId?: UserId;
   name: string;
   type: "expense" | "income";
 }

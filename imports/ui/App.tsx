@@ -3,12 +3,11 @@ import React from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import {
   BrowserRouter as Router,
-  NavLink,
   Redirect,
   Route,
   Switch,
 } from "react-router-dom";
-import { Button } from "./components/Button/Button";
+import { Navbar } from "./components/Navbar/Navbar";
 import { CategoriesCreateContainer } from "./pages/categories/create/CategoriesCreateContainer";
 import { CategoriesEditContainer } from "./pages/categories/edit/CategoriesEditContainer";
 import { CategoriesListContainer } from "./pages/categories/list/CategoriesListContainer";
@@ -20,6 +19,7 @@ import { IncomesCreateContainer } from "./pages/incomes/create/IncomesCreateCont
 import { IncomesEditContainer } from "./pages/incomes/edit/IncomesEditContainer";
 import { IncomeListContainer } from "./pages/incomes/list/IncomesListContainer";
 import { Login } from "./pages/Login";
+import { Logout } from "./pages/Logout";
 
 export const App = (): JSX.Element => {
   const { isLoading, user } = useTracker(() => {
@@ -34,10 +34,6 @@ export const App = (): JSX.Element => {
     return { isLoading, user };
   }, []);
 
-  const handleClickLogout = () => {
-    Meteor.logout();
-  };
-
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -49,44 +45,7 @@ export const App = (): JSX.Element => {
   return (
     <Router>
       <div>
-        <nav className="flex mb-4">
-          <div className="flex space-x-4">
-            <NavLink
-              activeClassName="font-bold"
-              className="text-lg"
-              exact
-              to="/"
-            >
-              Dashboard
-            </NavLink>
-            <NavLink
-              activeClassName="font-bold"
-              className="text-lg"
-              to="/incomes"
-            >
-              Incomes
-            </NavLink>
-            <NavLink
-              activeClassName="font-bold"
-              className="text-lg"
-              to="/expenses"
-            >
-              Expenses
-            </NavLink>
-            <NavLink
-              activeClassName="font-bold"
-              className="text-lg"
-              to="/categories"
-            >
-              Categories
-            </NavLink>
-          </div>
-          <div className="ml-auto">
-            <Button onClick={handleClickLogout} variant="primary">
-              Logout
-            </Button>
-          </div>
-        </nav>
+        <Navbar />
 
         <main>
           <Switch>
@@ -126,6 +85,10 @@ export const App = (): JSX.Element => {
             </Route>
             <Route exact path="/incomes">
               <IncomeListContainer />
+            </Route>
+
+            <Route path="/logout">
+              <Logout />
             </Route>
 
             {/* Fallback */}

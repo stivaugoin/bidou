@@ -22,8 +22,8 @@ export function Page({
       <div className="flex flex-col space-y-4 md:space-y-8">
         {/* Header */}
         <div className="bg-white shadow">
-          <div className="flex items-center justify-between px-4 py-6 max-w-5xl mx-auto">
-            <div className="text-2xl font-bold leading-7 text-gray-900">
+          <div className="flex items-center justify-between px-4 py-4 md:py-6 max-w-5xl mx-auto">
+            <div className="text-xl md:text-2xl font-bold leading-7 text-gray-900">
               {title}
             </div>
             {actions?.map((action) => action)}

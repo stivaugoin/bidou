@@ -44,10 +44,10 @@ export const App = (): JSX.Element => {
 
   return (
     <Router>
-      <div>
+      <div className="flex flex-col h-full">
         <Navbar />
 
-        <main>
+        <main className="bg-gray-100 flex-1">
           <Switch>
             {/* Dashboard */}
             <Route exact path="/">

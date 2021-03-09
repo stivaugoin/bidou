@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
+
+html,
+body,
+#react-target {
+  height: 100%;
+}
+
 @tailwind utilities;

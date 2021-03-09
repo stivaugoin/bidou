@@ -1,8 +1,7 @@
 import { useTracker } from "meteor/react-meteor-data";
 import React from "react";
 import { ExpensesList } from "./ExpensesList";
-import { ExpenseId, ExpensesCollection } from "/imports/api/expenses";
-import { deleteExpense } from "/imports/api/expenses/methods/delete";
+import { ExpensesCollection } from "/imports/api/expenses";
 
 export function ExpenseListContainer(): JSX.Element {
   const { transactions } = useTracker(() => {
@@ -11,11 +10,5 @@ export function ExpenseListContainer(): JSX.Element {
     };
   });
 
-  const handleDelete = (expenseId: ExpenseId) => {
-    deleteExpense.call(expenseId, () => {
-      console.log(`${expenseId} deleted!`);
-    });
-  };
-
-  return <ExpensesList onDelete={handleDelete} transactions={transactions} />;
+  return <ExpensesList transactions={transactions} />;
 }

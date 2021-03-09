@@ -1,42 +1,58 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
-import { CategoryId, ICategory } from "../../../../api/categories";
+import { Link, useHistory } from "react-router-dom";
+import { ICategory } from "../../../../api/categories";
 import { Button } from "/imports/ui/components/Button/Button";
+import { IconArrowRight } from "/imports/ui/components/Icons/ArrowRight";
+import { Page } from "/imports/ui/components/Page/Page";
 import { capitalize } from "/imports/utils/capitalize";
 
 type CategoriesViewProps = {
   categories: Array<Pick<ICategory, "_id" | "name" | "type">>;
-  onDelete: (categoryId: CategoryId) => void;
 };
 
 export function CategoriesList({
   categories,
-  onDelete,
 }: CategoriesViewProps): JSX.Element {
   const history = useHistory();
 
-  const renderAddButton = () => (
-    <Button
-      onClick={() => history.push("/categories/create")}
-      variant="primary"
-    >
-      Create category
-    </Button>
-  );
-
   return (
-    <div className="flex flex-col space-y-4">
-      {categories.length === 0 && (
-        <div>
-          <p>No category found</p>
-          {renderAddButton()}
-        </div>
-      )}
-
-      {categories.length > 0 && (
-        <>
-          <div>{renderAddButton()}</div>
-
+    <Page
+      header={{
+        actions: [
+          <Button
+            key="create"
+            onClick={() => history.push("/categories/create")}
+            variant="primary"
+          >
+            NEW CATEGORY
+          </Button>,
+        ],
+        title: "Categories",
+      }}
+    >
+      <ul className="divide-y divide-gray-200 overflow-hidden md:rounded-lg">
+        {categories.map((category) => (
+          <li key={category._id}>
+            <Link
+              to={`categories/${category._id}`}
+              className="block px-4 py-4 bg-white hover:bg-gray-50"
+            >
+              {/* Desktop */}
+              <span className="flex justify-center items-center space-x-4">
+                <span className="flex-1 grid grid-cols-4">
+                  <span className="truncate font-medium col-span-2">
+                    {category.name}
+                  </span>
+                  <span>{capitalize(category.type)}</span>
+                </span>
+                <IconArrowRight className="flex-shrink-0 h-5 w-5 text-gray-400" />
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+      {/* <>
+        {categories.length > 0 && (
           <table>
             <thead>
               <tr>
@@ -58,16 +74,13 @@ export function CategoriesList({
                     >
                       Edit
                     </Button>
-                    <Button onClick={() => onDelete(_id)} variant="secondary">
-                      Delete
-                    </Button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </>
-      )}
-    </div>
+        )}
+      </> */}
+    </Page>
   );
 }

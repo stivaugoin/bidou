@@ -1,6 +1,4 @@
 import React from "react";
-import { CategoryId } from "../../../../api/categories";
-import { deleteCategory } from "../../../../api/categories/methods/delete";
 import { CategoriesList } from "./CategoriesList";
 import { useCategories } from "/imports/ui/hooks/useCategories";
 
@@ -13,11 +11,5 @@ export function CategoriesListContainer(): JSX.Element {
     }
   );
 
-  const handleDelete = (categoryId: CategoryId) => {
-    deleteCategory.call(categoryId, () => {
-      console.log(`${categoryId} deleted!`);
-    });
-  };
-
-  return <CategoriesList categories={categories} onDelete={handleDelete} />;
+  return <CategoriesList categories={categories} />;
 }

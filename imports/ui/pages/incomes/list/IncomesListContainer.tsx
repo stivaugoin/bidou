@@ -1,8 +1,7 @@
 import { useTracker } from "meteor/react-meteor-data";
 import React from "react";
 import { IncomesList } from "./IncomesList";
-import { IncomeId, IncomesCollection } from "/imports/api/incomes";
-import { deleteIncome } from "/imports/api/incomes/methods/delete";
+import { IncomesCollection } from "/imports/api/incomes";
 
 export function IncomeListContainer(): JSX.Element {
   const { transactions } = useTracker(() => {
@@ -11,11 +10,5 @@ export function IncomeListContainer(): JSX.Element {
     };
   });
 
-  const handleDelete = (incomeId: IncomeId) => {
-    deleteIncome.call(incomeId, () => {
-      console.log(`${incomeId} deleted!`);
-    });
-  };
-
-  return <IncomesList onDelete={handleDelete} transactions={transactions} />;
+  return <IncomesList transactions={transactions} />;
 }

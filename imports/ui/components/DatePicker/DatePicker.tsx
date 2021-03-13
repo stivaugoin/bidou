@@ -1,22 +1,37 @@
+import cn from "classnames";
 import { FieldHookConfig, useField } from "formik";
 import React from "react";
-import DP from "react-datepicker";
+import ReactDatePicker from "react-datepicker";
+import { FormField } from "../FormField/FormField";
 
 type DatePickerProps = FieldHookConfig<Date> & {
+  id: string;
   label: string;
 };
 
 export function DatePicker(props: DatePickerProps): JSX.Element {
   const [{ value, ...field }, meta, { setValue }] = useField(props);
+  const hasError = meta.touched && meta.error;
 
   return (
-    <div className="flex flex-col">
-      <label htmlFor={props.id || props.name}>{props.label}</label>
-      <DP {...field} selected={value} onChange={(v) => setValue(v as Date)} />
-
-      {meta.touched && meta.error && (
-        <p className="text-red-500 text-xs">{meta.error}</p>
-      )}
-    </div>
+    <FormField
+      error={hasError ? meta.error : ""}
+      id={props.id}
+      label={props.label}
+    >
+      <ReactDatePicker
+        className={cn(
+          {
+            "form-field": !hasError,
+            "form-field-error": hasError,
+          },
+          props.className
+        )}
+        {...field}
+        selected={value}
+        onChange={(v) => setValue(v as Date)}
+        wrapperClassName="w-full"
+      />
+    </FormField>
   );
 }

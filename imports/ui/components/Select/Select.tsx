@@ -1,7 +1,10 @@
+import cn from "classnames";
 import { FieldHookConfig, useField } from "formik";
 import React from "react";
+import { FormField } from "../FormField/FormField";
 
 type SelectProps = FieldHookConfig<string> & {
+  id: string;
   label: string;
   options: Array<{
     label: string;
@@ -11,22 +14,30 @@ type SelectProps = FieldHookConfig<string> & {
 
 export function Select(props: SelectProps): JSX.Element {
   const [field, meta] = useField(props);
+  const hasError = meta.touched && meta.error;
 
   return (
-    <div className="flex flex-col">
-      <label htmlFor={props.id || props.name}>{props.label}</label>
-
-      <select {...field}>
+    <FormField
+      error={hasError ? meta.error : ""}
+      id={props.id}
+      label={props.label}
+    >
+      <select
+        className={cn(
+          {
+            "form-field": !hasError,
+            "form-field-error": hasError,
+          },
+          props.className
+        )}
+        {...field}
+      >
         {props.options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>
         ))}
       </select>
-
-      {meta.touched && meta.error && (
-        <p className="text-red-500 text-xs">{meta.error}</p>
-      )}
-    </div>
+    </FormField>
   );
 }

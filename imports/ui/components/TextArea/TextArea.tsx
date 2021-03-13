@@ -1,21 +1,33 @@
+import cn from "classnames";
 import { FieldHookConfig, useField } from "formik";
 import React from "react";
+import { FormField } from "../FormField/FormField";
 
 type TextAreaProps = FieldHookConfig<string> & {
+  id: string;
   label: string;
 };
 
 export function TextArea(props: TextAreaProps): JSX.Element {
   const [field, meta] = useField(props);
+  const hasError = meta.touched && meta.error;
 
   return (
-    <div className="flex flex-col">
-      <label htmlFor={props.id || props.name}>{props.label}</label>
-      <textarea {...field} />
-
-      {meta.touched && meta.error && (
-        <p className="text-red-500 text-xs">{meta.error}</p>
-      )}
-    </div>
+    <FormField
+      error={hasError ? meta.error : ""}
+      id={props.id}
+      label={props.label}
+    >
+      <textarea
+        className={cn(
+          {
+            "form-field": !hasError,
+            "form-field-error": hasError,
+          },
+          props.className
+        )}
+        {...field}
+      />
+    </FormField>
   );
 }

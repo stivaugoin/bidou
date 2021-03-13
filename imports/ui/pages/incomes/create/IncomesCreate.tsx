@@ -1,13 +1,10 @@
-import { Form, Formik } from "formik";
+import { Formik } from "formik";
 import React from "react";
 import * as Yup from "yup";
 import { CategoryId, ICategory } from "../../../../api/categories";
-import { DatePicker } from "../../../components/DatePicker/DatePicker";
-import { Select } from "../../../components/Select/Select";
-import { TextArea } from "../../../components/TextArea/TextArea";
+import { IncomesForm } from "../form";
 import { createIncome } from "/imports/api/incomes/methods/create";
-import { Button } from "/imports/ui/components/Button/Button";
-import { Input } from "/imports/ui/components/Input/Input";
+import { Page } from "/imports/ui/components/Page/Page";
 
 type Props = {
   categories: Array<Pick<ICategory, "_id" | "name">>;
@@ -30,8 +27,7 @@ export function IncomesCreate({
   onClickCancel,
 }: Props): JSX.Element {
   return (
-    <>
-      <h1>Create Income</h1>
+    <Page header={{ title: "Create income" }}>
       <Formik
         initialValues={{
           amount: "",
@@ -55,36 +51,13 @@ export function IncomesCreate({
         validationSchema={validationSchema}
       >
         {({ isSubmitting }) => (
-          <Form className="max-w-xs space-y-4">
-            <Input label="Amount" name="amount" type="number" />
-
-            <DatePicker label="Date" name="date" />
-
-            <Select
-              label="Category"
-              name="categoryId"
-              options={[
-                { label: "Select a category", value: "" },
-                ...categories.map(({ _id, name }) => ({
-                  label: name,
-                  value: _id,
-                })),
-              ]}
-            />
-
-            <TextArea label="Comments" name="comments" />
-
-            <div className="flex justify-between">
-              <Button onClick={onClickCancel} type="button" variant="secondary">
-                Cancel
-              </Button>
-              <Button disabled={isSubmitting} type="submit" variant="primary">
-                Save
-              </Button>
-            </div>
-          </Form>
+          <IncomesForm
+            categories={categories}
+            isSubmitting={isSubmitting}
+            onClickCancel={onClickCancel}
+          />
         )}
       </Formik>
-    </>
+    </Page>
   );
 }

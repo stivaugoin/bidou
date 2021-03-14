@@ -23,8 +23,11 @@ export function Transactions({ transactions }: TransactionsProps): JSX.Element {
   return (
     <>
       {Object.keys(transactionsByMonth).map((month) => (
-        <div key={month} className="shadow md:rounded-lg md:overflow-hidden">
-          <div className="flex justify-between px-4 py-2 text-md bg-gray-50 border-b border-gray-200">
+        <div
+          key={month}
+          className="shadow md:rounded-lg md:overflow-hidden relative"
+        >
+          <div className="sticky top-0 flex justify-between px-4 py-2 text-md bg-gray-50 border-b border-gray-200">
             <span className="text-gray-900">
               {dayjs(month).format("YYYY - MMMM")}
             </span>

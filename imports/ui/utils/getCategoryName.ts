@@ -4,11 +4,11 @@ import {
   ICategory,
 } from "/imports/api/categories";
 
-export function getCategoryName(categoryId: CategoryId): ICategory["name"] {
+export function getCategoryName(categoryId?: CategoryId): ICategory["name"] {
   const category = CategoriesCollection.findOne(categoryId);
 
   if (!category) {
-    return "";
+    return "Uncategorized";
   }
 
   return category.name;

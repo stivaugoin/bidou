@@ -40,7 +40,7 @@ export function CategoriesList({
               {/* Desktop */}
               <span className="flex justify-center items-center space-x-4">
                 <span className="flex-1 grid grid-cols-4">
-                  <span className="truncate font-medium col-span-2">
+                  <span className="truncate font-medium col-span-3">
                     {category.name}
                   </span>
                   <span>{capitalize(category.type)}</span>
@@ -51,36 +51,6 @@ export function CategoriesList({
           </li>
         ))}
       </ul>
-      {/* <>
-        {categories.length > 0 && (
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th />
-              </tr>
-            </thead>
-
-            <tbody>
-              {categories.map(({ _id, name, type }) => (
-                <tr key={_id}>
-                  <td>{name}</td>
-                  <td>{capitalize(type)}</td>
-                  <td>
-                    <Button
-                      onClick={() => history.push(`/categories/${_id}`)}
-                      variant="secondary"
-                    >
-                      Edit
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </> */}
     </Page>
   );
 }

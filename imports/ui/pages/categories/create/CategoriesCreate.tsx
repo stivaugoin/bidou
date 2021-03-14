@@ -1,11 +1,10 @@
-import { Form, Formik } from "formik";
+import { Formik } from "formik";
 import React from "react";
 import * as Yup from "yup";
 import { ICategory } from "../../../../api/categories";
 import { createCategory } from "../../../../api/categories/methods/create";
-import { Select } from "../../../components/Select/Select";
-import { Button } from "/imports/ui/components/Button/Button";
-import { Input } from "/imports/ui/components/Input/Input";
+import { CategoriesForm } from "../form";
+import { Page } from "/imports/ui/components/Page/Page";
 
 type Props = {
   onAfterCreate: () => void;
@@ -22,44 +21,27 @@ export function CategoriesCreate({
   onClickCancel,
 }: Props): JSX.Element {
   return (
-    <Formik
-      initialValues={{
-        name: "",
-        type: "",
-      }}
-      onSubmit={({ name, type }, { setSubmitting }) => {
-        createCategory.call({ name, type: type as ICategory["type"] }, () => {
-          setSubmitting(false);
-          onAfterCreate();
-        });
-      }}
-      validationSchema={validationSchema}
-    >
-      {({ isSubmitting }) => (
-        <Form className="max-w-xs space-y-4">
-          <Input label="Name" name="name" type="text" />
-
-          <Select
-            id="type"
-            label="Type"
-            name="type"
-            options={[
-              { label: "Select a type", value: "" },
-              { label: "Expense", value: "expense" },
-              { label: "Income", value: "income" },
-            ]}
+    <Page header={{ title: "Create category" }}>
+      <Formik
+        initialValues={{
+          name: "",
+          type: "",
+        }}
+        onSubmit={({ name, type }, { setSubmitting }) => {
+          createCategory.call({ name, type: type as ICategory["type"] }, () => {
+            setSubmitting(false);
+            onAfterCreate();
+          });
+        }}
+        validationSchema={validationSchema}
+      >
+        {({ isSubmitting }) => (
+          <CategoriesForm
+            isSubmitting={isSubmitting}
+            onClickCancel={onClickCancel}
           />
-
-          <div className="flex justify-between">
-            <Button onClick={onClickCancel} type="button" variant="secondary">
-              Cancel
-            </Button>
-            <Button disabled={isSubmitting} type="submit" variant="primary">
-              Save
-            </Button>
-          </div>
-        </Form>
-      )}
-    </Formik>
+        )}
+      </Formik>
+    </Page>
   );
 }

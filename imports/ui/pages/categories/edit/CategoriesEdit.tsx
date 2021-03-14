@@ -1,16 +1,18 @@
-import { Form, Formik } from "formik";
+import { Formik } from "formik";
 import React from "react";
 import * as Yup from "yup";
 import { ICategory } from "../../../../api/categories";
 import { updateCategory } from "../../../../api/categories/methods/update";
-import { Select } from "../../../components/Select/Select";
+import { CategoriesForm } from "../form";
 import { Button } from "/imports/ui/components/Button/Button";
-import { Input } from "/imports/ui/components/Input/Input";
+import { IconTrash } from "/imports/ui/components/Icons/Trash";
+import { Page } from "/imports/ui/components/Page/Page";
 
 type CategoriesEditProps = {
   category: ICategory;
   onAfterSave: () => void;
   onClickCancel: () => void;
+  onClickDelete: () => void;
 };
 
 const validationSchema = Yup.object().shape({
@@ -22,52 +24,45 @@ export function CategoriesEdit({
   category,
   onAfterSave,
   onClickCancel,
+  onClickDelete,
 }: CategoriesEditProps): JSX.Element {
   const { _id, name, type } = category;
 
   return (
-    <Formik
-      initialValues={{
-        name,
-        type,
+    <Page
+      header={{
+        actions: [
+          <Button key="delete" onClick={onClickDelete} variant="destructive">
+            <IconTrash />
+          </Button>,
+        ],
+        title: "Edit category",
       }}
-      onSubmit={({ name, type }, { setSubmitting }) => {
-        updateCategory.call(
-          { _id, name, type: type as ICategory["type"] },
-          () => {
-            setSubmitting(false);
-            console.log(`${_id} updated!`);
-            onAfterSave();
-          }
-        );
-      }}
-      validationSchema={validationSchema}
     >
-      {({ isSubmitting }) => (
-        <Form className="max-w-xs space-y-4">
-          <Input label="Name" name="name" type="text" />
-
-          <Select
-            id="type"
-            label="Type"
-            name="type"
-            options={[
-              { label: "Select a type", value: "" },
-              { label: "Expense", value: "expense" },
-              { label: "Income", value: "income" },
-            ]}
+      <Formik
+        initialValues={{
+          name,
+          type,
+        }}
+        onSubmit={({ name, type }, { setSubmitting }) => {
+          updateCategory.call(
+            { _id, name, type: type as ICategory["type"] },
+            () => {
+              setSubmitting(false);
+              console.log(`${_id} updated!`);
+              onAfterSave();
+            }
+          );
+        }}
+        validationSchema={validationSchema}
+      >
+        {({ isSubmitting }) => (
+          <CategoriesForm
+            isSubmitting={isSubmitting}
+            onClickCancel={onClickCancel}
           />
-
-          <div className="flex justify-between">
-            <Button onClick={onClickCancel} type="button" variant="secondary">
-              Cancel
-            </Button>
-            <Button disabled={isSubmitting} type="submit" variant="primary">
-              Save
-            </Button>
-          </div>
-        </Form>
-      )}
-    </Formik>
+        )}
+      </Formik>
+    </Page>
   );
 }

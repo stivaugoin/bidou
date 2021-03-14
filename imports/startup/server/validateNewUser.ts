@@ -4,7 +4,7 @@ Accounts.validateNewUser(
   (user: { services: { google: { email: string } } }) => {
     const { validEmails } = Meteor.settings;
 
-    if (!validEmails.includes(user.services.google.email)) {
+    if (validEmails && !validEmails.includes(user.services.google.email)) {
       throw new Meteor.Error(
         403,
         "Access denied",

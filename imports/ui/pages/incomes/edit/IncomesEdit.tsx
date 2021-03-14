@@ -5,6 +5,8 @@ import { IIncome } from "../../../../api/incomes";
 import { IncomesForm } from "../form";
 import { ICategory } from "/imports/api/Categories";
 import { updateIncome } from "/imports/api/incomes/methods/update";
+import { Button } from "/imports/ui/components/Button/Button";
+import { IconTrash } from "/imports/ui/components/Icons/Trash";
 import { Page } from "/imports/ui/components/Page/Page";
 
 type IncomesEditProps = {
@@ -12,6 +14,7 @@ type IncomesEditProps = {
   income: IIncome;
   onAfterSave: () => void;
   onClickCancel: () => void;
+  onClickDelete: () => void;
 };
 
 const validationSchema = Yup.object().shape({
@@ -26,11 +29,21 @@ export function IncomesEdit({
   income,
   onAfterSave,
   onClickCancel,
+  onClickDelete,
 }: IncomesEditProps): JSX.Element {
   const { _id, amount, categoryId, comments, date } = income;
 
   return (
-    <Page header={{ title: "Edit income" }}>
+    <Page
+      header={{
+        actions: [
+          <Button key="delete" onClick={onClickDelete} variant="destructive">
+            <IconTrash />
+          </Button>,
+        ],
+        title: "Edit income",
+      }}
+    >
       <Formik
         initialValues={{
           amount: (amount / 100).toFixed(2),

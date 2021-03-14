@@ -6,7 +6,7 @@ export type IncomeId = Id<string, "Income">;
 export interface IIncome extends ICollectionMeta {
   _id: IncomeId;
   amount: number;
-  categoryId: CategoryId;
+  categoryId?: CategoryId;
   comments?: string;
   date: Date;
 }

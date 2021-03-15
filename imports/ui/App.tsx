@@ -1,101 +1,21 @@
-import { useTracker } from "meteor/react-meteor-data";
 import React from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-} from "react-router-dom";
-import { Navbar } from "./components/Navbar/Navbar";
-import { CategoriesCreateContainer } from "./pages/categories/create/CategoriesCreateContainer";
-import { CategoriesEditContainer } from "./pages/categories/edit/CategoriesEditContainer";
-import { CategoriesListContainer } from "./pages/categories/list/CategoriesListContainer";
-import { DashboardContainer } from "./pages/dashboard/DashboardContainer";
-import { ExpensesCreateContainer } from "./pages/expenses/create/ExpensesCreateContainer";
-import { ExpensesEditContainer } from "./pages/expenses/edit/ExpensesEditContainer";
-import { ExpenseListContainer } from "./pages/expenses/list/ExpensesListContainer";
-import { IncomesCreateContainer } from "./pages/incomes/create/IncomesCreateContainer";
-import { IncomesEditContainer } from "./pages/incomes/edit/IncomesEditContainer";
-import { IncomeListContainer } from "./pages/incomes/list/IncomesListContainer";
-import { Login } from "./pages/Login";
-import { Logout } from "./pages/Logout";
+import { BrowserRouter as Router } from "react-router-dom";
+import { Loading } from "./components/Loading/Loading";
+import { useCurrentUser } from "./hooks/useCurrentUser";
+import { useMinimalTimeLoading } from "./hooks/useMinimalTimeLoading";
+import { Authenticated } from "./layouts/Authenticated";
+import { Unauthenticated } from "./layouts/Unauthenticated";
 
 export const App = (): JSX.Element => {
-  const { isLoading, user } = useTracker(() => {
-    const isLoading = [
-      Meteor.subscribe("categories.all"),
-      Meteor.subscribe("expenses.all"),
-      Meteor.subscribe("incomes.all"),
-    ].some((sub) => !sub.ready());
+  const currentUser = useCurrentUser();
+  const [isLoading] = useMinimalTimeLoading();
 
-    const user = Meteor.user();
-
-    return { isLoading, user };
-  }, []);
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (!user) {
-    return <Login />;
+  if (Meteor.loggingIn() || isLoading) {
+    return <Loading />;
   }
 
   return (
-    <Router>
-      <div className="flex flex-col h-full">
-        <Navbar />
-
-        <main className="bg-gray-100 flex-1">
-          <Switch>
-            {/* Dashboard */}
-            <Route exact path="/">
-              <DashboardContainer />
-            </Route>
-
-            {/* Categories */}
-            <Route exact path="/categories/create">
-              <CategoriesCreateContainer />
-            </Route>
-            <Route exact path="/categories/:categoryId">
-              <CategoriesEditContainer />
-            </Route>
-            <Route exact path="/categories">
-              <CategoriesListContainer />
-            </Route>
-
-            {/* Expenses */}
-            <Route exact path="/expenses/create">
-              <ExpensesCreateContainer />
-            </Route>
-            <Route exact path="/expenses/:expenseId">
-              <ExpensesEditContainer />
-            </Route>
-            <Route exact path="/expenses">
-              <ExpenseListContainer />
-            </Route>
-
-            {/* Incomes */}
-            <Route exact path="/incomes/create">
-              <IncomesCreateContainer />
-            </Route>
-            <Route exact path="/incomes/:incomeId">
-              <IncomesEditContainer />
-            </Route>
-            <Route exact path="/incomes">
-              <IncomeListContainer />
-            </Route>
-
-            <Route path="/logout">
-              <Logout />
-            </Route>
-
-            {/* Fallback */}
-            <Redirect to="/" />
-          </Switch>
-        </main>
-      </div>
-    </Router>
+    <Router>{currentUser ? <Authenticated /> : <Unauthenticated />}</Router>
   );
 };

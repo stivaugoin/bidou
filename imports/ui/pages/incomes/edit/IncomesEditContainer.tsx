@@ -1,8 +1,7 @@
 import { useTracker } from "meteor/react-meteor-data";
 import React from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { Redirect, useHistory, useParams } from "react-router-dom";
 import { IncomeId, IncomesCollection } from "../../../../api/incomes";
-import { NotFound } from "../../NotFound";
 import { IncomesEdit } from "./IncomesEdit";
 import { deleteIncome } from "/imports/api/incomes/methods/delete";
 import { useCategories } from "/imports/ui/hooks/useCategories";
@@ -37,7 +36,7 @@ export function IncomesEditContainer(): JSX.Element {
   };
 
   if (!income) {
-    return <NotFound />;
+    return <Redirect to="/incomes" />;
   }
 
   return (

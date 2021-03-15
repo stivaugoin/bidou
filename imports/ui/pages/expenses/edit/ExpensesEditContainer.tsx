@@ -1,8 +1,7 @@
 import { useTracker } from "meteor/react-meteor-data";
 import React from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { Redirect, useHistory, useParams } from "react-router-dom";
 import { ExpenseId, ExpensesCollection } from "../../../../api/expenses";
-import { NotFound } from "../../NotFound";
 import { ExpensesEdit } from "./ExpensesEdit";
 import { deleteExpense } from "/imports/api/expenses/methods/delete";
 import { useCategories } from "/imports/ui/hooks/useCategories";
@@ -36,7 +35,7 @@ export function ExpensesEditContainer(): JSX.Element {
   };
 
   if (!expense) {
-    return <NotFound />;
+    return <Redirect to="/expenses" />;
   }
 
   return (

@@ -1,7 +1,6 @@
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { CategoryId } from "../../../../api/categories";
-import { NotFound } from "../../NotFound";
 import { CategoriesEdit } from "./CategoriesEdit";
 import { deleteCategory } from "/imports/api/categories/methods/delete";
 import { useCategories } from "/imports/ui/hooks/useCategories";
@@ -29,7 +28,7 @@ export function CategoriesEditContainer(): JSX.Element {
   };
 
   if (!category) {
-    return <NotFound />;
+    history.replace("/categories");
   }
 
   return (

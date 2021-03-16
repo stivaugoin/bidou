@@ -72,12 +72,12 @@ export function Navbar(): JSX.Element {
             <div className="flex-shrink-0">
               <img
                 className="block lg:hidden h-6 w-auto"
-                src="/images/logo-navbar.png"
+                src="/images/logo-white.png"
                 alt="Workflow"
               />
               <img
                 className="hidden lg:block h-5 w-auto"
-                src="/images/logo-navbar.png"
+                src="/images/logo-white.png"
                 alt="Workflow"
               />
             </div>

@@ -1,16 +1,18 @@
 import cn from "classnames";
 import { FieldHookConfig, useField } from "formik";
 import React from "react";
-import { FormField } from "../FormField/FormField";
+import { FormField } from "../FormField";
 
-type InputProps = FieldHookConfig<string> & {
+type SelectProps = FieldHookConfig<string> & {
   id: string;
   label: string;
-  step?: HTMLInputElement["step"];
-  type: HTMLInputElement["type"];
+  options: Array<{
+    label: string;
+    value: string;
+  }>;
 };
 
-export function Input(props: InputProps): JSX.Element {
+export function Select(props: SelectProps): JSX.Element {
   const [field, meta] = useField(props);
   const hasError = meta.touched && meta.error;
 
@@ -20,7 +22,7 @@ export function Input(props: InputProps): JSX.Element {
       id={props.id}
       label={props.label}
     >
-      <input
+      <select
         className={cn(
           {
             "form-field": !hasError,
@@ -28,11 +30,14 @@ export function Input(props: InputProps): JSX.Element {
           },
           props.className
         )}
-        id={props.id}
-        step={props.step}
-        type={props.type}
         {...field}
-      />
+      >
+        {props.options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
     </FormField>
   );
 }

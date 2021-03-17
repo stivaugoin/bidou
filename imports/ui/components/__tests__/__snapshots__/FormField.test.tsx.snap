@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FormField - basic 1`] = `
+<div
+  className="flex flex-col"
+>
+  <label
+    className="block text-sm font-medium text-gray-700"
+    htmlFor="id"
+  >
+    label
+  </label>
+  <div
+    className="mt-1"
+  >
+    children
+  </div>
+  <div
+    className="h-4 mt-1 mb-2"
+  />
+</div>
+`;
+
+exports[`FormField - error 1`] = `
+<div
+  className="flex flex-col"
+>
+  <label
+    className="block text-sm font-medium text-gray-700"
+    htmlFor="id"
+  >
+    label
+  </label>
+  <div
+    className="mt-1"
+  >
+    children
+  </div>
+  <div
+    className="h-4 mt-1 mb-2"
+  >
+    <p
+      className="text-red-500 text-xs"
+    >
+      error
+    </p>
+  </div>
+</div>
+`;

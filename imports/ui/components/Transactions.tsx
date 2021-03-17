@@ -1,11 +1,11 @@
 import dayjs from "dayjs";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { getCategoryName } from "../../utils/getCategoryName";
-import { IconArrowRight } from "../Icons/ArrowRight";
+import { getCategoryName } from "../utils/getCategoryName";
+import { IconArrowRight } from "./Icons/ArrowRight";
 import { IExpense } from "/imports/api/expenses";
 import { IIncome } from "/imports/api/incomes";
-import { calcultateTotalTransactionsAmount } from "/imports/utils/calculateTotalTransactionsAmount";
+import { calculateTotalTransactionsAmount } from "/imports/utils/calculateTotalTransactionsAmount";
 import { formatAmount } from "/imports/utils/formatAmount";
 import { getTransactionsByMonth } from "/imports/utils/getTransactionsByMonth";
 
@@ -33,7 +33,7 @@ export function Transactions({ transactions }: TransactionsProps): JSX.Element {
             </span>
             <span className="font-medium text-gray-900">
               {formatAmount(
-                calcultateTotalTransactionsAmount(transactionsByMonth[month])
+                calculateTotalTransactionsAmount(transactionsByMonth[month])
               )}
             </span>
           </div>

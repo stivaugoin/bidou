@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Loading 1`] = `
+<div
+  className="flex items-center justify-center h-full w-full bg-gray-50"
+>
+  <img
+    className="w-80 h-auto animate-bounce"
+    src="/images/logo-black.png"
+  />
+</div>
+`;

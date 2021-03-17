@@ -2,12 +2,12 @@ import { Formik } from "formik";
 import React from "react";
 import * as Yup from "yup";
 import { IIncome } from "../../../../api/incomes";
+import { Button } from "../../../components/Button";
+import { Page } from "../../../components/Page";
 import { IncomesForm } from "../form";
 import { ICategory } from "/imports/api/Categories";
 import { updateIncome } from "/imports/api/incomes/methods/update";
-import { Button } from "/imports/ui/components/Button/Button";
 import { IconTrash } from "/imports/ui/components/Icons/Trash";
-import { Page } from "/imports/ui/components/Page/Page";
 
 type IncomesEditProps = {
   categories: Array<Pick<ICategory, "_id" | "name">>;

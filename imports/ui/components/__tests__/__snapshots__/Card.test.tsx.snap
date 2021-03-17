@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Card 1`] = `
+<div
+  className="bg-white md:shadow md:rounded-lg p-4 md:p-8"
+>
+  children
+</div>
+`;

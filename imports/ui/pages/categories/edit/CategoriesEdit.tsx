@@ -3,10 +3,10 @@ import React from "react";
 import * as Yup from "yup";
 import { ICategory } from "../../../../api/categories";
 import { updateCategory } from "../../../../api/categories/methods/update";
+import { Button } from "../../../components/Button";
+import { Page } from "../../../components/Page";
 import { CategoriesForm } from "../form";
-import { Button } from "/imports/ui/components/Button/Button";
 import { IconTrash } from "/imports/ui/components/Icons/Trash";
-import { Page } from "/imports/ui/components/Page/Page";
 
 type CategoriesEditProps = {
   category: ICategory;

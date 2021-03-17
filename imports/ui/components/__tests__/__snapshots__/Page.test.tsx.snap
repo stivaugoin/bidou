@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Page 1`] = `
+<div
+  className="flex flex-col space-y-4 md:space-y-8"
+>
+  <div
+    className="bg-white shadow"
+  >
+    <div
+      className="flex items-center justify-between p-4 md:p-6 max-w-5xl mx-auto"
+    >
+      <div
+        className="text-xl md:text-2xl font-bold leading-7 text-gray-900"
+      >
+        Page
+      </div>
+    </div>
+  </div>
+  <section
+    className="h-full"
+  >
+    <div
+      className="max-w-5xl mx-auto space-y-4 md:space-y-8 md:px-4 pb-8"
+    >
+      children
+    </div>
+  </section>
+</div>
+`;
+
+exports[`Page with actions 1`] = `
+<div
+  className="flex flex-col space-y-4 md:space-y-8"
+>
+  <div
+    className="bg-white shadow"
+  >
+    <div
+      className="flex items-center justify-between p-4 md:p-6 max-w-5xl mx-auto"
+    >
+      <div
+        className="text-xl md:text-2xl font-bold leading-7 text-gray-900"
+      >
+        Page
+      </div>
+      <div>
+        action
+      </div>
+    </div>
+  </div>
+  <section
+    className="h-full"
+  >
+    <div
+      className="max-w-5xl mx-auto space-y-4 md:space-y-8 md:px-4 pb-8"
+    >
+      children
+    </div>
+  </section>
+</div>
+`;

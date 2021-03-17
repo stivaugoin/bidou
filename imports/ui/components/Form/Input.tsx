@@ -1,14 +1,16 @@
 import cn from "classnames";
 import { FieldHookConfig, useField } from "formik";
 import React from "react";
-import { FormField } from "../FormField/FormField";
+import { FormField } from "../FormField";
 
-type TextAreaProps = FieldHookConfig<string> & {
+type InputProps = FieldHookConfig<string> & {
   id: string;
   label: string;
+  step?: HTMLInputElement["step"];
+  type: HTMLInputElement["type"];
 };
 
-export function TextArea(props: TextAreaProps): JSX.Element {
+export function Input(props: InputProps): JSX.Element {
   const [field, meta] = useField(props);
   const hasError = meta.touched && meta.error;
 
@@ -18,7 +20,7 @@ export function TextArea(props: TextAreaProps): JSX.Element {
       id={props.id}
       label={props.label}
     >
-      <textarea
+      <input
         className={cn(
           {
             "form-field": !hasError,
@@ -26,6 +28,9 @@ export function TextArea(props: TextAreaProps): JSX.Element {
           },
           props.className
         )}
+        id={props.id}
+        step={props.step}
+        type={props.type}
         {...field}
       />
     </FormField>

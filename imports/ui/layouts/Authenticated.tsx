@@ -1,8 +1,8 @@
 import { useTracker } from "meteor/react-meteor-data";
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { Loading } from "../components/Loading/Loading";
-import { Navbar } from "../components/Navbar/Navbar";
+import { Loading } from "../components/Loading";
+import { Navbar } from "../components/Navbar";
 import { useMinimalTimeLoading } from "../hooks/useMinimalTimeLoading";
 import { Categories } from "../pages/categories";
 import { DashboardContainer } from "../pages/dashboard/DashboardContainer";

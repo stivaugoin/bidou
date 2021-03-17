@@ -1,11 +1,11 @@
 import { Form } from "formik";
 import React from "react";
-import { Button } from "../../components/Button/Button";
-import { Card } from "../../components/Card/Card";
-import { DatePicker } from "../../components/DatePicker/DatePicker";
-import { Input } from "../../components/Input/Input";
-import { Select } from "../../components/Select/Select";
-import { TextArea } from "../../components/TextArea/TextArea";
+import { Button } from "../../components/Button";
+import { Card } from "../../components/Card";
+import { DatePicker } from "../../components/Form/DatePicker";
+import { Input } from "../../components/Form/Input";
+import { Select } from "../../components/Form/Select";
+import { TextArea } from "../../components/Form/TextArea";
 import { ICategory } from "/imports/api/categories";
 
 type Props = {

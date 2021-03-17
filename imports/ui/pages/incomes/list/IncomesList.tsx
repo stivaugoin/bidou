@@ -1,9 +1,9 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import { Button } from "../../../components/Button";
+import { Page } from "../../../components/Page";
+import { Transactions } from "../../../components/Transactions";
 import { IIncome } from "/imports/api/incomes";
-import { Button } from "/imports/ui/components/Button/Button";
-import { Page } from "/imports/ui/components/Page/Page";
-import { Transactions } from "/imports/ui/components/Transactions/Transactions";
 
 type Props = {
   transactions: Array<IIncome>;

@@ -29,7 +29,7 @@
     },
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "types": ["node", "mocha", "meteor-mdg-validated-method"],
+    "types": ["node", "mocha", "meteor-mdg-validated-method", "@types/jest"],
     "esModuleInterop": true,
     "preserveSymlinks": true,
     "typeRoots": ["./imports/types"]

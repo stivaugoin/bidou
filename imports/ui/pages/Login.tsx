@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "../components/Button/Button";
+import { Button } from "../components/Button";
 
 export function Login(): JSX.Element {
   const [error, setError] = useState<string | null>();

@@ -1,16 +1,15 @@
 import cn from "classnames";
 import { FieldHookConfig, useField } from "formik";
 import React from "react";
-import ReactDatePicker from "react-datepicker";
-import { FormField } from "../FormField/FormField";
+import { FormField } from "../FormField";
 
-type DatePickerProps = FieldHookConfig<Date> & {
+type TextAreaProps = FieldHookConfig<string> & {
   id: string;
   label: string;
 };
 
-export function DatePicker(props: DatePickerProps): JSX.Element {
-  const [{ value, ...field }, meta, { setValue }] = useField(props);
+export function TextArea(props: TextAreaProps): JSX.Element {
+  const [field, meta] = useField(props);
   const hasError = meta.touched && meta.error;
 
   return (
@@ -19,7 +18,7 @@ export function DatePicker(props: DatePickerProps): JSX.Element {
       id={props.id}
       label={props.label}
     >
-      <ReactDatePicker
+      <textarea
         className={cn(
           {
             "form-field": !hasError,
@@ -28,9 +27,6 @@ export function DatePicker(props: DatePickerProps): JSX.Element {
           props.className
         )}
         {...field}
-        selected={value}
-        onChange={(v) => setValue(v as Date)}
-        wrapperClassName="w-full"
       />
     </FormField>
   );

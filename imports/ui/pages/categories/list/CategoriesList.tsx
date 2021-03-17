@@ -1,9 +1,9 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import { ICategory } from "../../../../api/categories";
-import { Button } from "/imports/ui/components/Button/Button";
+import { Button } from "../../../components/Button";
+import { Page } from "../../../components/Page";
 import { IconArrowRight } from "/imports/ui/components/Icons/ArrowRight";
-import { Page } from "/imports/ui/components/Page/Page";
 import { capitalize } from "/imports/utils/capitalize";
 
 type CategoriesViewProps = {

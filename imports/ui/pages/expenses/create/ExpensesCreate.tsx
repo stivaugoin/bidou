@@ -2,9 +2,9 @@ import { Formik } from "formik";
 import React from "react";
 import * as Yup from "yup";
 import { CategoryId, ICategory } from "../../../../api/categories";
+import { Page } from "../../../components/Page";
 import { ExpensesForm } from "../form";
 import { createExpense } from "/imports/api/expenses/methods/create";
-import { Page } from "/imports/ui/components/Page/Page";
 
 type Props = {
   categories: Array<Pick<ICategory, "_id" | "name">>;

@@ -2,7 +2,7 @@ import {
   CategoriesCollection,
   CategoryId,
   ICategory,
-} from "/imports/api/categories";
+} from "../../api/categories";
 
 export function getCategoryName(categoryId?: CategoryId): ICategory["name"] {
   const category = CategoriesCollection.findOne(categoryId);

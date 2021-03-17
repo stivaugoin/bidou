@@ -1,5 +1,5 @@
 import React from "react";
-import { Page } from "../../components/Page/Page";
+import { Page } from "../../components/Page";
 
 export function Dashboard(): JSX.Element {
   return (

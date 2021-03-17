@@ -3,8 +3,8 @@ import React from "react";
 import * as Yup from "yup";
 import { ICategory } from "../../../../api/categories";
 import { createCategory } from "../../../../api/categories/methods/create";
+import { Page } from "../../../components/Page";
 import { CategoriesForm } from "../form";
-import { Page } from "/imports/ui/components/Page/Page";
 
 type Props = {
   onAfterCreate: () => void;

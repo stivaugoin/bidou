@@ -1,19 +1,16 @@
 import cn from "classnames";
 import { FieldHookConfig, useField } from "formik";
 import React from "react";
-import { FormField } from "../FormField/FormField";
+import ReactDatePicker from "react-datepicker";
+import { FormField } from "../FormField";
 
-type SelectProps = FieldHookConfig<string> & {
+type DatePickerProps = FieldHookConfig<Date> & {
   id: string;
   label: string;
-  options: Array<{
-    label: string;
-    value: string;
-  }>;
 };
 
-export function Select(props: SelectProps): JSX.Element {
-  const [field, meta] = useField(props);
+export function DatePicker(props: DatePickerProps): JSX.Element {
+  const [{ value, ...field }, meta, { setValue }] = useField(props);
   const hasError = meta.touched && meta.error;
 
   return (
@@ -22,7 +19,7 @@ export function Select(props: SelectProps): JSX.Element {
       id={props.id}
       label={props.label}
     >
-      <select
+      <ReactDatePicker
         className={cn(
           {
             "form-field": !hasError,
@@ -31,13 +28,10 @@ export function Select(props: SelectProps): JSX.Element {
           props.className
         )}
         {...field}
-      >
-        {props.options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+        selected={value}
+        onChange={(v) => setValue(v as Date)}
+        wrapperClassName="w-full"
+      />
     </FormField>
   );
 }

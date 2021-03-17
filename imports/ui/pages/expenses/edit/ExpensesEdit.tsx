@@ -60,7 +60,6 @@ export function ExpensesEdit({
             { _id, amount: +amount * 100, categoryId, comments, date },
             () => {
               setSubmitting(false);
-              console.log(`${_id} updated!`);
               onAfterSave();
             }
           );

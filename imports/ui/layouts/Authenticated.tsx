@@ -11,7 +11,6 @@ import { Incomes } from "../pages/incomes";
 import { Logout } from "../pages/Logout";
 
 export function Authenticated(): JSX.Element {
-  console.log("Authenticated");
   const [isMinimalLoading] = useMinimalTimeLoading();
 
   const isSubLoading = useTracker(() => {
@@ -21,8 +20,6 @@ export function Authenticated(): JSX.Element {
       Meteor.subscribe("incomes.all"),
     ].some((sub) => !sub.ready());
   }, []);
-
-  console.log({ isSubLoading, isMinimalLoading });
 
   if (isSubLoading || isMinimalLoading) {
     return <Loading />;

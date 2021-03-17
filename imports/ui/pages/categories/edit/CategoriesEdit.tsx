@@ -49,7 +49,6 @@ export function CategoriesEdit({
             { _id, name, type: type as ICategory["type"] },
             () => {
               setSubmitting(false);
-              console.log(`${_id} updated!`);
               onAfterSave();
             }
           );

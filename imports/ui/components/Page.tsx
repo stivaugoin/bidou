@@ -22,7 +22,7 @@ export function Page({
       <div className="flex flex-col space-y-4 md:space-y-8">
         {/* Header */}
         <div className="bg-white shadow">
-          <div className="flex items-center justify-between p-4 md:p-6 max-w-5xl mx-auto">
+          <div className="flex items-center justify-between p-4 xl:py-6 xl:px-0 max-w-5xl mx-auto">
             <div className="text-xl md:text-2xl font-bold leading-7 text-gray-900">
               {title}
             </div>
@@ -32,7 +32,7 @@ export function Page({
 
         {/* Content */}
         <section className="h-full">
-          <div className="max-w-5xl mx-auto space-y-4 md:space-y-8 md:px-4 pb-8">
+          <div className="max-w-5xl mx-auto space-y-4 md:space-y-8 md:px-4 xl:px-0 pb-8">
             {children}
           </div>
         </section>

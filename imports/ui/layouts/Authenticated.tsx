@@ -18,6 +18,7 @@ export function Authenticated(): JSX.Element {
       Meteor.subscribe("categories.all"),
       Meteor.subscribe("expenses.all"),
       Meteor.subscribe("incomes.all"),
+      Meteor.subscribe("users.others"),
     ].some((sub) => !sub.ready());
   }, []);
 

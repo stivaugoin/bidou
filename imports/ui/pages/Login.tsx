@@ -1,9 +1,15 @@
+import { useTracker } from "meteor/react-meteor-data";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { Button } from "../components/Button";
+import { Loading } from "../components/Loading";
 
 export function Login(): JSX.Element {
   const [error, setError] = useState<string | null>();
+
+  const isLoggingIn = useTracker(() => {
+    return Meteor.loggingIn();
+  }, []);
 
   const handleClickLoginWithGoogle = () => {
     setError(null);
@@ -14,6 +20,10 @@ export function Login(): JSX.Element {
       }
     });
   };
+
+  if (isLoggingIn) {
+    return <Loading />;
+  }
 
   return (
     <>

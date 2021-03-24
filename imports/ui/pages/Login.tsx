@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Helmet } from "react-helmet";
 import { Button } from "../components/Button";
 
 export function Login(): JSX.Element {
@@ -15,16 +16,22 @@ export function Login(): JSX.Element {
   };
 
   return (
-    <div className="h-full flex flex-col items-center justify-center bg-gray-50 space-y-16">
-      <img className="h-12 w-auto" src="/images/logo-black.png" />
+    <>
+      <Helmet>
+        <title>Login - Bidou</title>
+      </Helmet>
 
-      <div className="flex flex-col space-y-4">
-        <Button onClick={handleClickLoginWithGoogle} variant="secondary">
-          Login with Google
-        </Button>
+      <div className="h-full flex flex-col items-center justify-center bg-gray-50 space-y-16">
+        <img className="h-12 w-auto" src="/images/logo-black.png" />
 
-        {error && <p className="text-red-500 text-xs">{error}</p>}
+        <div className="flex flex-col space-y-4">
+          <Button onClick={handleClickLoginWithGoogle} variant="secondary">
+            Login with Google
+          </Button>
+
+          {error && <p className="text-red-500 text-xs">{error}</p>}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

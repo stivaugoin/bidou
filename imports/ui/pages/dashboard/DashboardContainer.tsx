@@ -30,7 +30,10 @@ export function DashboardContainer(): JSX.Element {
     const minimalDate = dayjs().startOf("day").subtract(3, "month").toDate();
 
     return {
-      incomes: IncomesCollection.find({ date: { $gte: minimalDate } }).fetch(),
+      incomes: IncomesCollection.find(
+        { date: { $gte: minimalDate } },
+        { sort: { date: -1 } }
+      ).fetch(),
       users: Meteor.users
         .find({}, { sort: { "profile.fname": 1, "profile.lname": 1 } })
         .fetch(),

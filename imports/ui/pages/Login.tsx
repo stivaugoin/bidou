@@ -39,7 +39,7 @@ export function Login(): JSX.Element {
             Login with Google
           </Button>
 
-          {error && <p className="text-red-500 text-xs">{error}</p>}
+          {error && <p className="text-red-500 text-center text-xs">{error}</p>}
         </div>
       </div>
     </>

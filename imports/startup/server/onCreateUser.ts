@@ -7,6 +7,16 @@ Accounts.onCreateUser((_, user) => {
     throw new Meteor.Error(403, "Access denied");
   }
 
+  const { validEmails } = Meteor.settings;
+
+  if (validEmails && !validEmails.includes(user.services.google.email)) {
+    throw new Meteor.Error(
+      403,
+      "Access denied",
+      "This application isn't public"
+    );
+  }
+
   const {
     email,
     given_name: fname,

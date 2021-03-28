@@ -8,6 +8,7 @@ import { ExpensesForm } from "../form";
 import { ICategory } from "/imports/api/Categories";
 import { updateExpense } from "/imports/api/expenses/methods/update";
 import { IconTrash } from "/imports/ui/components/Icons/Trash";
+import { useSnackbar } from "/imports/ui/components/Snackbar/context";
 
 type ExpensesEditProps = {
   categories: Array<Pick<ICategory, "_id" | "name">>;
@@ -31,6 +32,7 @@ export function ExpensesEdit({
   onClickCancel,
   onClickDelete,
 }: ExpensesEditProps): JSX.Element {
+  const { showSnackbar } = useSnackbar();
   const { _id, amount, categoryId, comments, date } = expense;
 
   return (
@@ -60,6 +62,7 @@ export function ExpensesEdit({
             { _id, amount: +amount * 100, categoryId, comments, date },
             () => {
               setSubmitting(false);
+              showSnackbar("Expense saved!", "success");
               onAfterSave();
             }
           );

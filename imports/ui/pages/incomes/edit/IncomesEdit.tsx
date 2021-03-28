@@ -8,6 +8,7 @@ import { IncomesForm } from "../form";
 import { ICategory } from "/imports/api/Categories";
 import { updateIncome } from "/imports/api/incomes/methods/update";
 import { IconTrash } from "/imports/ui/components/Icons/Trash";
+import { useSnackbar } from "/imports/ui/components/Snackbar/context";
 
 type IncomesEditProps = {
   categories: Array<Pick<ICategory, "_id" | "name">>;
@@ -31,6 +32,7 @@ export function IncomesEdit({
   onClickCancel,
   onClickDelete,
 }: IncomesEditProps): JSX.Element {
+  const { showSnackbar } = useSnackbar();
   const { _id, amount, categoryId, comments, date } = income;
 
   return (
@@ -60,6 +62,7 @@ export function IncomesEdit({
             { _id, amount: +amount * 100, categoryId, comments, date },
             () => {
               setSubmitting(false);
+              showSnackbar("Income saved!", "success");
               onAfterSave();
             }
           );

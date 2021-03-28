@@ -5,6 +5,7 @@ import { CategoryId, ICategory } from "../../../../api/categories";
 import { Page } from "../../../components/Page";
 import { ExpensesForm } from "../form";
 import { createExpense } from "/imports/api/expenses/methods/create";
+import { useSnackbar } from "/imports/ui/components/Snackbar/context";
 
 type Props = {
   categories: Array<Pick<ICategory, "_id" | "name">>;
@@ -24,6 +25,8 @@ export function ExpensesCreate({
   onAfterCreate,
   onClickCancel,
 }: Props): JSX.Element {
+  const { showSnackbar } = useSnackbar();
+
   return (
     <Page header={{ title: "Create expense" }}>
       <Formik
@@ -43,7 +46,9 @@ export function ExpensesCreate({
             comments,
             date,
           });
+
           setSubmitting(false);
+          showSnackbar("Expense created!", "success");
           onAfterCreate();
         }}
         validationSchema={validationSchema}

@@ -5,6 +5,7 @@ import { CategoryId, ICategory } from "../../../../api/categories";
 import { Page } from "../../../components/Page";
 import { IncomesForm } from "../form";
 import { createIncome } from "/imports/api/incomes/methods/create";
+import { useSnackbar } from "/imports/ui/components/Snackbar/context";
 
 type Props = {
   categories: Array<Pick<ICategory, "_id" | "name">>;
@@ -26,6 +27,8 @@ export function IncomesCreate({
   onAfterCreate,
   onClickCancel,
 }: Props): JSX.Element {
+  const { showSnackbar } = useSnackbar();
+
   return (
     <Page header={{ title: "Create income" }}>
       <Formik
@@ -45,7 +48,9 @@ export function IncomesCreate({
             comments,
             date,
           });
+
           setSubmitting(false);
+          showSnackbar("Income created!", "success");
           onAfterCreate();
         }}
         validationSchema={validationSchema}

@@ -7,6 +7,7 @@ import { Button } from "../../../components/Button";
 import { Page } from "../../../components/Page";
 import { CategoriesForm } from "../form";
 import { IconTrash } from "/imports/ui/components/Icons/Trash";
+import { useSnackbar } from "/imports/ui/components/Snackbar/context";
 
 type CategoriesEditProps = {
   category: ICategory;
@@ -27,6 +28,7 @@ export function CategoriesEdit({
   onClickDelete,
 }: CategoriesEditProps): JSX.Element {
   const { _id, name, type } = category;
+  const { showSnackbar } = useSnackbar();
 
   return (
     <Page
@@ -49,6 +51,7 @@ export function CategoriesEdit({
             { _id, name, type: type as ICategory["type"] },
             () => {
               setSubmitting(false);
+              showSnackbar("Category saved!", "success");
               onAfterSave();
             }
           );

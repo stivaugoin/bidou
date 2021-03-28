@@ -5,6 +5,7 @@ import { ICategory } from "../../../../api/categories";
 import { createCategory } from "../../../../api/categories/methods/create";
 import { Page } from "../../../components/Page";
 import { CategoriesForm } from "../form";
+import { useSnackbar } from "/imports/ui/components/Snackbar/context";
 
 type Props = {
   onAfterCreate: () => void;
@@ -20,6 +21,8 @@ export function CategoriesCreate({
   onAfterCreate,
   onClickCancel,
 }: Props): JSX.Element {
+  const { showSnackbar } = useSnackbar();
+
   return (
     <Page header={{ title: "Create category" }}>
       <Formik
@@ -30,6 +33,7 @@ export function CategoriesCreate({
         onSubmit={({ name, type }, { setSubmitting }) => {
           createCategory.call({ name, type: type as ICategory["type"] }, () => {
             setSubmitting(false);
+            showSnackbar("Category created!", "success");
             onAfterCreate();
           });
         }}

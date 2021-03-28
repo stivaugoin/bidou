@@ -1,16 +1,18 @@
+import { useTracker } from "meteor/react-meteor-data";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { Button } from "../../../components/Button";
-import { Page } from "../../../components/Page";
-import { Transactions } from "../../../components/Transactions";
-import { IIncome } from "/imports/api/incomes";
+import { Button } from "../../components/Button";
+import { Page } from "../../components/Page";
+import { Transactions } from "../../components/Transactions";
+import { IncomesCollection } from "/imports/api/incomes";
 
-type Props = {
-  transactions: Array<IIncome>;
-};
-
-export function IncomesList({ transactions }: Props): JSX.Element {
+export function IncomesList(): JSX.Element {
   const history = useHistory();
+  const { transactions } = useTracker(() => {
+    return {
+      transactions: IncomesCollection.find({}, { sort: { date: -1 } }).fetch(),
+    };
+  });
 
   return (
     <Page

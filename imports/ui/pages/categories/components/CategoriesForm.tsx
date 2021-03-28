@@ -1,9 +1,9 @@
 import { Form } from "formik";
 import React from "react";
-import { Button } from "../../components/Button";
-import { Card } from "../../components/Card";
-import { Input } from "../../components/Form/Input";
-import { Select } from "../../components/Form/Select";
+import { Button } from "../../../components/Button";
+import { Card } from "../../../components/Card";
+import { Input } from "../../../components/Form/Input";
+import { Select } from "../../../components/Form/Select";
 
 type Props = {
   isSubmitting: boolean;

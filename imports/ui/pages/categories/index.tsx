@@ -1,22 +1,22 @@
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { CategoriesCreateContainer } from "./create/CategoriesCreateContainer";
-import { CategoriesEditContainer } from "./edit/CategoriesEditContainer";
-import { CategoriesListContainer } from "./list/CategoriesListContainer";
+import { CategoriesCreate } from "./CategoriesCreate";
+import { CategoriesEdit } from "./CategoriesEdit";
+import { CategoriesList } from "./CategoriesList";
 
 export function Categories(): JSX.Element {
   return (
     <Switch>
       <Route exact path="/categories/create">
-        <CategoriesCreateContainer />
+        <CategoriesCreate />
       </Route>
 
       <Route exact path="/categories/:categoryId">
-        <CategoriesEditContainer />
+        <CategoriesEdit />
       </Route>
 
       <Route exact path="/categories">
-        <CategoriesListContainer />
+        <CategoriesList />
       </Route>
 
       <Redirect to="/categories" />

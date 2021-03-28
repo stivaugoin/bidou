@@ -1,16 +1,18 @@
+import { useTracker } from "meteor/react-meteor-data";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { Button } from "../../../components/Button";
-import { Page } from "../../../components/Page";
-import { Transactions } from "../../../components/Transactions";
-import { IExpense } from "/imports/api/expenses";
+import { Button } from "../../components/Button";
+import { Page } from "../../components/Page";
+import { Transactions } from "../../components/Transactions";
+import { ExpensesCollection } from "/imports/api/expenses";
 
-type Props = {
-  transactions: Array<IExpense>;
-};
-
-export function ExpensesList({ transactions }: Props): JSX.Element {
+export function ExpensesList(): JSX.Element {
   const history = useHistory();
+  const { transactions } = useTracker(() => {
+    return {
+      transactions: ExpensesCollection.find({}, { sort: { date: -1 } }).fetch(),
+    };
+  });
 
   return (
     <Page

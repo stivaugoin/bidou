@@ -1,22 +1,17 @@
 import { Formik } from "formik";
+import { useTracker } from "meteor/react-meteor-data";
 import React from "react";
+import { Redirect, useHistory, useParams } from "react-router-dom";
 import * as Yup from "yup";
-import { IExpense } from "../../../../api/expenses";
-import { Button } from "../../../components/Button";
-import { Page } from "../../../components/Page";
-import { ExpensesForm } from "../form";
-import { ICategory } from "/imports/api/Categories";
+import { ExpenseId, ExpensesCollection } from "../../../api/expenses";
+import { Button } from "../../components/Button";
+import { Page } from "../../components/Page";
+import { ExpensesForm } from "./components/ExpensesForm";
+import { deleteExpense } from "/imports/api/expenses/methods/delete";
 import { updateExpense } from "/imports/api/expenses/methods/update";
 import { IconTrash } from "/imports/ui/components/Icons/Trash";
 import { useSnackbar } from "/imports/ui/components/Snackbar/context";
-
-type ExpensesEditProps = {
-  categories: Array<Pick<ICategory, "_id" | "name">>;
-  expense: IExpense;
-  onAfterSave: () => void;
-  onClickCancel: () => void;
-  onClickDelete: () => void;
-};
+import { useCategories } from "/imports/ui/hooks/useCategories";
 
 const validationSchema = Yup.object().shape({
   amount: Yup.number().required("Required"),
@@ -25,21 +20,50 @@ const validationSchema = Yup.object().shape({
   date: Yup.date().required("Required"),
 });
 
-export function ExpensesEdit({
-  categories,
-  expense,
-  onAfterSave,
-  onClickCancel,
-  onClickDelete,
-}: ExpensesEditProps): JSX.Element {
+export function ExpensesEdit(): JSX.Element {
+  const categories = useCategories(
+    { type: "expense" },
+    { fields: { _id: 1, name: 1 } }
+  );
+  const history = useHistory();
+  const { expenseId } = useParams<{ expenseId: ExpenseId }>();
   const { showSnackbar } = useSnackbar();
+
+  const expense = useTracker(() => ExpensesCollection.findOne(expenseId), [
+    expenseId,
+  ]);
+
+  const handleClickDelete = () => {
+    if (window.confirm("Are you sure you want to delete this expense?")) {
+      deleteExpense.call(expenseId, (err) => {
+        if (err) {
+          window.alert(err.message);
+        } else {
+          history.replace("/expenses");
+        }
+      });
+    }
+  };
+
+  const handleReturnToList = () => {
+    history.push("/expenses");
+  };
+
+  if (!expense) {
+    return <Redirect to="/expenses" />;
+  }
+
   const { _id, amount, categoryId, comments, date } = expense;
 
   return (
     <Page
       header={{
         actions: [
-          <Button key="delete" onClick={onClickDelete} variant="destructive">
+          <Button
+            key="delete"
+            onClick={handleClickDelete}
+            variant="destructive"
+          >
             <IconTrash />
           </Button>,
         ],
@@ -63,7 +87,7 @@ export function ExpensesEdit({
             () => {
               setSubmitting(false);
               showSnackbar("Expense saved!", "success");
-              onAfterSave();
+              handleReturnToList();
             }
           );
         }}
@@ -73,7 +97,7 @@ export function ExpensesEdit({
           <ExpensesForm
             categories={categories}
             isSubmitting={isSubmitting}
-            onClickCancel={onClickCancel}
+            onClickCancel={handleReturnToList}
           />
         )}
       </Formik>

@@ -1,22 +1,22 @@
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { ExpensesCreateContainer } from "./create/ExpensesCreateContainer";
-import { ExpensesEditContainer } from "./edit/ExpensesEditContainer";
-import { ExpenseListContainer } from "./list/ExpensesListContainer";
+import { ExpensesCreate } from "./ExpensesCreate";
+import { ExpensesEdit } from "./ExpensesEdit";
+import { ExpensesList } from "./ExpensesList";
 
 export function Expenses(): JSX.Element {
   return (
     <Switch>
       <Route exact path="/expenses/create">
-        <ExpensesCreateContainer />
+        <ExpensesCreate />
       </Route>
 
       <Route exact path="/expenses/:expenseId">
-        <ExpensesEditContainer />
+        <ExpensesEdit />
       </Route>
 
       <Route exact path="/expenses">
-        <ExpenseListContainer />
+        <ExpensesList />
       </Route>
 
       <Redirect to="/expenses" />

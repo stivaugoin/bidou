@@ -1,18 +1,14 @@
 import { Formik } from "formik";
+import { useTracker } from "meteor/react-meteor-data";
 import React from "react";
+import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
-import { CategoryId, ICategory } from "../../../../api/categories";
-import { Page } from "../../../components/Page";
-import { IncomesForm } from "../form";
+import { CategoryId } from "../../../api/categories";
+import { Page } from "../../components/Page";
+import { IncomesForm } from "./components/IncomesForm";
 import { createIncome } from "/imports/api/incomes/methods/create";
 import { useSnackbar } from "/imports/ui/components/Snackbar/context";
-
-type Props = {
-  categories: Array<Pick<ICategory, "_id" | "name">>;
-  defaultCategoryId: CategoryId | "";
-  onAfterCreate: () => void;
-  onClickCancel: () => void;
-};
+import { useCategories } from "/imports/ui/hooks/useCategories";
 
 const validationSchema = Yup.object().shape({
   amount: Yup.number().required("Required"),
@@ -21,13 +17,27 @@ const validationSchema = Yup.object().shape({
   date: Yup.date().required("Required"),
 });
 
-export function IncomesCreate({
-  categories,
-  defaultCategoryId,
-  onAfterCreate,
-  onClickCancel,
-}: Props): JSX.Element {
+export function IncomesCreate(): JSX.Element {
+  const categories = useCategories(
+    { type: "income" },
+    { fields: { _id: 1, defaultUserId: 1, name: 1, type: 1 } }
+  );
+  const history = useHistory();
   const { showSnackbar } = useSnackbar();
+
+  const currentUserId = useTracker(() => Meteor.userId());
+
+  const defaultCategoryId =
+    categories.find(({ defaultUserId }) => defaultUserId === currentUserId)
+      ?._id ?? "";
+
+  const handleClickCancel = () => {
+    history.goBack();
+  };
+
+  const handleAfterCreate = () => {
+    history.replace("/incomes");
+  };
 
   return (
     <Page header={{ title: "Create income" }}>
@@ -51,7 +61,7 @@ export function IncomesCreate({
 
           setSubmitting(false);
           showSnackbar("Income created!", "success");
-          onAfterCreate();
+          handleAfterCreate();
         }}
         validationSchema={validationSchema}
       >
@@ -59,7 +69,7 @@ export function IncomesCreate({
           <IncomesForm
             categories={categories}
             isSubmitting={isSubmitting}
-            onClickCancel={onClickCancel}
+            onClickCancel={handleClickCancel}
           />
         )}
       </Formik>

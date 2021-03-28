@@ -1,17 +1,13 @@
 import { Formik } from "formik";
 import React from "react";
+import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
-import { CategoryId, ICategory } from "../../../../api/categories";
-import { Page } from "../../../components/Page";
-import { ExpensesForm } from "../form";
+import { CategoryId } from "../../../api/categories";
+import { Page } from "../../components/Page";
+import { ExpensesForm } from "./components/ExpensesForm";
 import { createExpense } from "/imports/api/expenses/methods/create";
 import { useSnackbar } from "/imports/ui/components/Snackbar/context";
-
-type Props = {
-  categories: Array<Pick<ICategory, "_id" | "name">>;
-  onAfterCreate: () => void;
-  onClickCancel: () => void;
-};
+import { useCategories } from "/imports/ui/hooks/useCategories";
 
 const validationSchema = Yup.object().shape({
   amount: Yup.number().required("Required"),
@@ -20,12 +16,18 @@ const validationSchema = Yup.object().shape({
   date: Yup.date().required("Required"),
 });
 
-export function ExpensesCreate({
-  categories,
-  onAfterCreate,
-  onClickCancel,
-}: Props): JSX.Element {
+export function ExpensesCreate(): JSX.Element {
+  const categories = useCategories({ type: "expense" });
+  const history = useHistory();
   const { showSnackbar } = useSnackbar();
+
+  const handleClickCancel = () => {
+    history.goBack();
+  };
+
+  const handleAfterCreate = () => {
+    history.replace("/expenses");
+  };
 
   return (
     <Page header={{ title: "Create expense" }}>
@@ -49,7 +51,7 @@ export function ExpensesCreate({
 
           setSubmitting(false);
           showSnackbar("Expense created!", "success");
-          onAfterCreate();
+          handleAfterCreate();
         }}
         validationSchema={validationSchema}
       >
@@ -57,7 +59,7 @@ export function ExpensesCreate({
           <ExpensesForm
             categories={categories}
             isSubmitting={isSubmitting}
-            onClickCancel={onClickCancel}
+            onClickCancel={handleClickCancel}
           />
         )}
       </Formik>

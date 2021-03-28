@@ -1,19 +1,20 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
-import { ICategory } from "../../../../api/categories";
-import { Button } from "../../../components/Button";
-import { Page } from "../../../components/Page";
+import { Button } from "../../components/Button";
+import { Page } from "../../components/Page";
 import { IconArrowRight } from "/imports/ui/components/Icons/ArrowRight";
+import { useCategories } from "/imports/ui/hooks/useCategories";
 import { capitalize } from "/imports/utils/capitalize";
 
-type CategoriesViewProps = {
-  categories: Array<Pick<ICategory, "_id" | "name" | "type">>;
-};
-
-export function CategoriesList({
-  categories,
-}: CategoriesViewProps): JSX.Element {
+export function CategoriesList(): JSX.Element {
   const history = useHistory();
+  const categories = useCategories(
+    {},
+    {
+      fields: { _id: 1, name: 1, type: 1 },
+      sort: { type: 1, name: 1 },
+    }
+  );
 
   return (
     <Page
@@ -37,7 +38,6 @@ export function CategoriesList({
               to={`categories/${category._id}`}
               className="block px-4 py-4 bg-white hover:bg-gray-50"
             >
-              {/* Desktop */}
               <span className="flex justify-center items-center space-x-4">
                 <span className="flex-1 grid grid-cols-4">
                   <span className="truncate font-medium col-span-3">

@@ -1,11 +1,11 @@
 import { Form } from "formik";
 import React from "react";
-import { Button } from "../../components/Button";
-import { Card } from "../../components/Card";
-import { DatePicker } from "../../components/Form/DatePicker";
-import { Input } from "../../components/Form/Input";
-import { Select } from "../../components/Form/Select";
-import { TextArea } from "../../components/Form/TextArea";
+import { Button } from "../../../components/Button";
+import { Card } from "../../../components/Card";
+import { DatePicker } from "../../../components/Form/DatePicker";
+import { Input } from "../../../components/Form/Input";
+import { Select } from "../../../components/Form/Select";
+import { TextArea } from "../../../components/Form/TextArea";
 import { ICategory } from "/imports/api/categories";
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
   onClickCancel: () => void;
 };
 
-export function IncomesForm({
+export function ExpensesForm({
   categories,
   isSubmitting,
   onClickCancel,

@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { CategoryId, ICategory } from "../../../api/categories";
 import { updateCategory } from "../../../api/categories/methods/update";
 import { Button } from "../../components/Button";
+import { Loading } from "../../components/Loading";
 import { Page } from "../../components/Page";
 import { CategoriesForm } from "./components/CategoriesForm";
 import { deleteCategory } from "/imports/api/categories/methods/delete";
@@ -22,15 +23,20 @@ export function CategoriesEdit(): JSX.Element {
   const { categoryId } = useParams<{ categoryId: CategoryId }>();
   const { showSnackbar } = useSnackbar();
   const [category] = useCategories({ _id: categoryId });
+  const [isDeleting, setIsDeleting] = React.useState(false);
 
   const handleClickDelete = () => {
     if (window.confirm("Are you sure you want to delete this category?")) {
+      setIsDeleting(true);
+
       deleteCategory.call(categoryId, (error) => {
         if (error) {
           showSnackbar(error.message, "error");
+          setIsDeleting(false);
           return;
         }
 
+        showSnackbar("Category deleted!", "success");
         history.replace("/categories");
       });
     }
@@ -39,6 +45,10 @@ export function CategoriesEdit(): JSX.Element {
   const handleReturnToList = () => {
     history.push("/categories");
   };
+
+  if (isDeleting) {
+    return <Loading />;
+  }
 
   if (!category) {
     history.replace("/categories");

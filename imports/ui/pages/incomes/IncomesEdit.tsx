@@ -5,6 +5,7 @@ import { Redirect, useHistory, useParams } from "react-router-dom";
 import * as Yup from "yup";
 import { IncomeId, IncomesCollection } from "../../../api/incomes";
 import { Button } from "../../components/Button";
+import { Loading } from "../../components/Loading";
 import { Page } from "../../components/Page";
 import { IncomesForm } from "./components/IncomesForm";
 import { deleteIncome } from "/imports/api/incomes/methods/delete";
@@ -22,9 +23,9 @@ const validationSchema = Yup.object().shape({
 
 export function IncomesEdit(): JSX.Element {
   const { showSnackbar } = useSnackbar();
-
   const history = useHistory();
   const { incomeId } = useParams<{ incomeId: IncomeId }>();
+  const [isDeleting, setIsDeleting] = React.useState(false);
 
   const categories = useCategories(
     { type: "income" },
@@ -37,12 +38,16 @@ export function IncomesEdit(): JSX.Element {
 
   const handleClickDelete = () => {
     if (window.confirm("Are you sure you want to delete this income?")) {
+      setIsDeleting(true);
+
       deleteIncome.call(incomeId, (error) => {
         if (error) {
           showSnackbar(error.message, "error");
+          setIsDeleting(false);
           return;
         }
 
+        showSnackbar("Income deleted!", "success");
         history.replace("/incomes");
       });
     }
@@ -51,6 +56,10 @@ export function IncomesEdit(): JSX.Element {
   const handleReturnToList = () => {
     history.push("/incomes");
   };
+
+  if (isDeleting) {
+    return <Loading />;
+  }
 
   if (!income) {
     return <Redirect to="/incomes" />;

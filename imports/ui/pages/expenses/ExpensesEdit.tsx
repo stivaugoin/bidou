@@ -5,6 +5,7 @@ import { Redirect, useHistory, useParams } from "react-router-dom";
 import * as Yup from "yup";
 import { ExpenseId, ExpensesCollection } from "../../../api/expenses";
 import { Button } from "../../components/Button";
+import { Loading } from "../../components/Loading";
 import { Page } from "../../components/Page";
 import { ExpensesForm } from "./components/ExpensesForm";
 import { deleteExpense } from "/imports/api/expenses/methods/delete";
@@ -28,6 +29,7 @@ export function ExpensesEdit(): JSX.Element {
   const history = useHistory();
   const { expenseId } = useParams<{ expenseId: ExpenseId }>();
   const { showSnackbar } = useSnackbar();
+  const [isDeleting, setIsDeleting] = React.useState(false);
 
   const expense = useTracker(() => ExpensesCollection.findOne(expenseId), [
     expenseId,
@@ -35,12 +37,16 @@ export function ExpensesEdit(): JSX.Element {
 
   const handleClickDelete = () => {
     if (window.confirm("Are you sure you want to delete this expense?")) {
+      setIsDeleting(true);
+
       deleteExpense.call(expenseId, (error) => {
         if (error) {
           showSnackbar(error.message, "error");
+          setIsDeleting(false);
           return;
         }
 
+        showSnackbar("Expense deleted!", "success");
         history.replace("/expenses");
       });
     }
@@ -49,6 +55,10 @@ export function ExpensesEdit(): JSX.Element {
   const handleReturnToList = () => {
     history.push("/expenses");
   };
+
+  if (isDeleting) {
+    return <Loading />;
+  }
 
   if (!expense) {
     return <Redirect to="/expenses" />;

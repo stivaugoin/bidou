@@ -3,6 +3,8 @@ import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Loading } from "../components/Loading";
 import { Navbar } from "../components/Navbar";
+import { SnackbarProvider } from "../components/Snackbar/context";
+import { Snackbar } from "../components/Snackbar/Snackbar";
 import { useMinimalTimeLoading } from "../hooks/useMinimalTimeLoading";
 import { Categories } from "../pages/categories";
 import { DashboardContainer } from "../pages/dashboard/DashboardContainer";
@@ -27,34 +29,38 @@ export function Authenticated(): JSX.Element {
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <Navbar />
+    <SnackbarProvider>
+      <div className="flex flex-col h-full">
+        <Navbar />
 
-      <main className="bg-gray-100 flex-1">
-        <Switch>
-          <Route exact path="/">
-            <DashboardContainer />
-          </Route>
+        <main className="bg-gray-100 flex-1">
+          <Switch>
+            <Route exact path="/">
+              <DashboardContainer />
+            </Route>
 
-          <Route path="/categories">
-            <Categories />
-          </Route>
+            <Route path="/categories">
+              <Categories />
+            </Route>
 
-          <Route path="/expenses">
-            <Expenses />
-          </Route>
+            <Route path="/expenses">
+              <Expenses />
+            </Route>
 
-          <Route path="/incomes">
-            <Incomes />
-          </Route>
+            <Route path="/incomes">
+              <Incomes />
+            </Route>
 
-          <Route exact path="/logout">
-            <Logout />
-          </Route>
+            <Route exact path="/logout">
+              <Logout />
+            </Route>
 
-          <Redirect to="/" />
-        </Switch>
-      </main>
-    </div>
+            <Redirect to="/" />
+          </Switch>
+        </main>
+      </div>
+
+      <Snackbar />
+    </SnackbarProvider>
   );
 }

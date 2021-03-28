@@ -52,16 +52,24 @@ export function IncomesCreate(): JSX.Element {
           { amount, categoryId, comments, date },
           { setSubmitting }
         ) => {
-          createIncome.call({
-            amount: +amount * 100,
-            categoryId: categoryId as CategoryId,
-            comments,
-            date,
-          });
+          createIncome.call(
+            {
+              amount: +amount * 100,
+              categoryId: categoryId as CategoryId,
+              comments,
+              date,
+            },
+            (error) => {
+              setSubmitting(false);
 
-          setSubmitting(false);
-          showSnackbar("Income created!", "success");
-          handleAfterCreate();
+              if (error) {
+                showSnackbar(error.message, "error");
+              }
+
+              showSnackbar("Income created!", "success");
+              handleAfterCreate();
+            }
+          );
         }}
         validationSchema={validationSchema}
       >

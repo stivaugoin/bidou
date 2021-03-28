@@ -33,11 +33,20 @@ export function CategoriesCreate(): JSX.Element {
           type: "",
         }}
         onSubmit={({ name, type }, { setSubmitting }) => {
-          createCategory.call({ name, type: type as ICategory["type"] }, () => {
-            setSubmitting(false);
-            showSnackbar("Category created!", "success");
-            handleAfterCreate();
-          });
+          createCategory.call(
+            { name, type: type as ICategory["type"] },
+            (error) => {
+              setSubmitting(false);
+
+              if (error) {
+                showSnackbar(error.message, "error");
+                return;
+              }
+
+              showSnackbar("Category created!", "success");
+              handleAfterCreate();
+            }
+          );
         }}
         validationSchema={validationSchema}
       >

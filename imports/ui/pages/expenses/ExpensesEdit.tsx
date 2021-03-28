@@ -35,12 +35,13 @@ export function ExpensesEdit(): JSX.Element {
 
   const handleClickDelete = () => {
     if (window.confirm("Are you sure you want to delete this expense?")) {
-      deleteExpense.call(expenseId, (err) => {
-        if (err) {
-          window.alert(err.message);
-        } else {
-          history.replace("/expenses");
+      deleteExpense.call(expenseId, (error) => {
+        if (error) {
+          showSnackbar(error.message, "error");
+          return;
         }
+
+        history.replace("/expenses");
       });
     }
   };
@@ -84,8 +85,14 @@ export function ExpensesEdit(): JSX.Element {
           setSubmitting(false);
           updateExpense.call(
             { _id, amount: +amount * 100, categoryId, comments, date },
-            () => {
+            (error) => {
               setSubmitting(false);
+
+              if (error) {
+                showSnackbar(error.message, "error");
+                return;
+              }
+
               showSnackbar("Expense saved!", "success");
               handleReturnToList();
             }

@@ -42,16 +42,25 @@ export function ExpensesCreate(): JSX.Element {
           { amount, categoryId, comments, date },
           { setSubmitting }
         ) => {
-          createExpense.call({
-            amount: +amount * 100,
-            categoryId: categoryId as CategoryId,
-            comments,
-            date,
-          });
+          createExpense.call(
+            {
+              amount: +amount * 100,
+              categoryId: categoryId as CategoryId,
+              comments,
+              date,
+            },
+            (error) => {
+              setSubmitting(false);
 
-          setSubmitting(false);
-          showSnackbar("Expense created!", "success");
-          handleAfterCreate();
+              if (error) {
+                showSnackbar(error.message, "error");
+                return;
+              }
+
+              showSnackbar("Expense created!", "success");
+              handleAfterCreate();
+            }
+          );
         }}
         validationSchema={validationSchema}
       >

@@ -25,12 +25,13 @@ export function CategoriesEdit(): JSX.Element {
 
   const handleClickDelete = () => {
     if (window.confirm("Are you sure you want to delete this category?")) {
-      deleteCategory.call(categoryId, (err) => {
-        if (err) {
-          window.alert(err.message);
-        } else {
-          history.replace("/categories");
+      deleteCategory.call(categoryId, (error) => {
+        if (error) {
+          showSnackbar(error.message, "error");
+          return;
         }
+
+        history.replace("/categories");
       });
     }
   };
@@ -68,8 +69,14 @@ export function CategoriesEdit(): JSX.Element {
         onSubmit={({ name, type }, { setSubmitting }) => {
           updateCategory.call(
             { _id, name, type: type as ICategory["type"] },
-            () => {
+            (error) => {
               setSubmitting(false);
+
+              if (error) {
+                showSnackbar(error.message, "error");
+                return;
+              }
+
               showSnackbar("Category saved!", "success");
               handleReturnToList();
             }

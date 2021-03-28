@@ -37,12 +37,13 @@ export function IncomesEdit(): JSX.Element {
 
   const handleClickDelete = () => {
     if (window.confirm("Are you sure you want to delete this income?")) {
-      deleteIncome.call(incomeId, (err) => {
-        if (err) {
-          window.alert(err.message);
-        } else {
-          history.replace("/incomes");
+      deleteIncome.call(incomeId, (error) => {
+        if (error) {
+          showSnackbar(error.message, "error");
+          return;
         }
+
+        history.replace("/incomes");
       });
     }
   };
@@ -86,8 +87,14 @@ export function IncomesEdit(): JSX.Element {
           setSubmitting(false);
           updateIncome.call(
             { _id, amount: +amount * 100, categoryId, comments, date },
-            () => {
+            (error) => {
               setSubmitting(false);
+
+              if (error) {
+                showSnackbar(error.message, "error");
+                return;
+              }
+
               showSnackbar("Income saved!", "success");
               handleReturnToList();
             }

@@ -54,9 +54,7 @@ export function Transactions({ transactions }: TransactionsProps): JSX.Element {
                         <span className="text-gray-900 font-medium">
                           {formatAmount(transaction.amount)}
                         </span>
-                        <span>
-                          {dayjs(transaction.date).format("MMMM, DD YYYY")}
-                        </span>
+                        <span>{dayjs(transaction.date).format("LL")}</span>
                       </span>
                     </span>
                     <IconArrowRight className="flex-shrink-0 h-5 w-5 text-gray-400" />
@@ -68,9 +66,7 @@ export function Transactions({ transactions }: TransactionsProps): JSX.Element {
                       <span className="truncate font-medium col-span-2">
                         {getCategoryName(transaction.categoryId)}
                       </span>
-                      <span>
-                        {dayjs(transaction.date).format("MMMM, DD YYYY")}
-                      </span>
+                      <span>{dayjs(transaction.date).format("LL")}</span>
                       <span className="text-gray-900 font-medium text-right">
                         {formatAmount(transaction.amount)}
                       </span>

@@ -27,11 +27,16 @@ export function DashboardContainer(): JSX.Element {
   );
 
   const { incomes, users } = useTracker(() => {
-    const minimalDate = dayjs().startOf("day").subtract(3, "month").toDate();
+    const currentMonth = dayjs().endOf("month").endOf("day").toDate();
+    const minimalDate = dayjs()
+      .subtract(2, "month")
+      .startOf("month")
+      .startOf("day")
+      .toDate();
 
     return {
       incomes: IncomesCollection.find(
-        { date: { $gte: minimalDate } },
+        { date: { $gte: minimalDate, $lte: currentMonth } },
         { sort: { date: -1 } }
       ).fetch(),
       users: Meteor.users

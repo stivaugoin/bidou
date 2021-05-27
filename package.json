@@ -2,6 +2,7 @@
   "name": "bidou",
   "private": true,
   "scripts": {
+    "deploy": "git push heroky main",
     "eslint": "eslint .",
     "prettier": "prettier --write .",
     "start": "meteor run --exclude-archs web.browser.legacy,web.cordova --settings settings-local.json",

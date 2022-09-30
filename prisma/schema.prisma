@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum CategoryType {
+  Expense
+  Income
+}
+
+model Category {
+  id       String       @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  type     CategoryType
+
+  Income   Income[]
+  Provider Provider[]
+}
+
+model Provider {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  categoryId String
+  name       String
+
+  Category Category @relation(fields: [categoryId], references: [id])
+  Expense  Expense[]
+}
+
+model Expense {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  amount     Int
+  date       DateTime @db.Date
+  note       String?
+  providerId String
+
+  Provider Provider @relation(fields: [providerId], references: [id])
+}
+
+model Income {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  amount     Int
+  categoryId String
+  date       DateTime @db.Date
+  note       String?
+
+  Category Category @relation(fields: [categoryId], references: [id])
+}

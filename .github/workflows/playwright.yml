@@ -21,7 +21,7 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
-        run: pnpm dlx playwright test
+        run: pnpm test:e2e
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
       - uses: actions/upload-artifact@v2

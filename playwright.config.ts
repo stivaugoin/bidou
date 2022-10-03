@@ -1,10 +1,17 @@
 import { devices, PlaywrightTestConfig } from "@playwright/test";
+import dotenv from "dotenv";
 import path from "path";
 
-const PORT = process.env.PORT || 3000;
-const baseURL = `http://localhost:${PORT}`;
+dotenv.config();
+
+if (!process.env.BASE_URL)
+  throw new Error("BASE_URL environment variable is not set");
+
+const baseURL = process.env.BASE_URL;
 
 const config: PlaywrightTestConfig = {
+  globalSetup: "./e2e/global-setup",
+
   timeout: 30 * 1000,
   testDir: path.join(__dirname, "e2e"),
   retries: 2,
@@ -19,6 +26,7 @@ const config: PlaywrightTestConfig = {
 
   use: {
     baseURL,
+    storageState: "./e2e/storage-state.json",
     trace: "retry-with-trace",
   },
 
@@ -40,13 +48,13 @@ const config: PlaywrightTestConfig = {
     },
     {
       name: "Mobile Chrome",
-      use: devices["Pixel 5"],
       testMatch: ["**/*-mobile.spec.ts"],
+      use: devices["Pixel 5"],
     },
     {
       name: "Mobile Safari",
-      use: devices["iPhone 12"],
       testMatch: ["**/*-mobile.spec.ts"],
+      use: devices["iPhone 12"],
     },
   ],
 };

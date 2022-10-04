@@ -12,7 +12,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     !process.env.E2E_USER_PASSWORD
   )
     throw new Error(
-      "E2E_USER_EMAIL and process.env.E2E_USER_NAME and E2E_USER_PASSWORD must be set"
+      "E2E_USER_EMAIL and E2E_USER_NAME and E2E_USER_PASSWORD must be set"
     );
 
   const { email, password } = req.body;

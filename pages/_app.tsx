@@ -1,10 +1,16 @@
 import { MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { NotificationsProvider } from "@mantine/notifications";
+import { Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
 import Head from "next/head";
 
-export default function App(props: AppProps) {
+export default function App(
+  props: AppProps<{
+    session: Session;
+  }>
+) {
   const { Component, pageProps } = props;
 
   return (
@@ -35,7 +41,9 @@ export default function App(props: AppProps) {
       >
         <ModalsProvider>
           <NotificationsProvider>
-            <Component {...pageProps} />
+            <SessionProvider session={pageProps.session}>
+              <Component {...pageProps} />
+            </SessionProvider>
           </NotificationsProvider>
         </ModalsProvider>
       </MantineProvider>

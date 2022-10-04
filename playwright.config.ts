@@ -1,24 +1,26 @@
 import { devices, PlaywrightTestConfig } from "@playwright/test";
+import dotenv from "dotenv";
 import path from "path";
 
-const PORT = process.env.PORT || 3000;
-const baseURL = `http://localhost:${PORT}`;
+dotenv.config();
 
 const config: PlaywrightTestConfig = {
+  forbidOnly: !!process.env.CI,
   timeout: 30 * 1000,
   testDir: path.join(__dirname, "e2e"),
-  retries: 2,
-  outputDir: "test-results/",
+  retries: process.env.CI ? 2 : 0,
+  outputDir: "playwright-report/",
 
   webServer: {
     command: "pnpm dev",
-    url: baseURL,
+    url: process.env.E2E_BASE_URL,
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
   },
 
   use: {
-    baseURL,
+    baseURL: process.env.E2E_BASE_URL,
+    storageState: "./e2e/storage-state.json",
     trace: "retry-with-trace",
   },
 
@@ -40,13 +42,13 @@ const config: PlaywrightTestConfig = {
     },
     {
       name: "Mobile Chrome",
-      use: devices["Pixel 5"],
       testMatch: ["**/*-mobile.spec.ts"],
+      use: devices["Pixel 5"],
     },
     {
       name: "Mobile Safari",
-      use: devices["iPhone 12"],
       testMatch: ["**/*-mobile.spec.ts"],
+      use: devices["iPhone 12"],
     },
   ],
 };

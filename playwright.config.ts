@@ -5,7 +5,7 @@ import path from "path";
 dotenv.config();
 
 const config: PlaywrightTestConfig = {
-  globalSetup: "./e2e/global-setup",
+  // globalSetup: "./e2e/global-setup",
   forbidOnly: !!process.env.CI,
   timeout: 5 * 1000,
   testDir: path.join(__dirname, "e2e"),

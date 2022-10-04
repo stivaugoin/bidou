@@ -7,7 +7,7 @@ dotenv.config();
 const config: PlaywrightTestConfig = {
   globalSetup: "./e2e/global-setup",
   forbidOnly: !!process.env.CI,
-  // timeout: 5 * 1000,
+  timeout: 5 * 1000,
   testDir: path.join(__dirname, "e2e"),
   retries: process.env.CI ? 2 : 0,
   outputDir: "test-results/",

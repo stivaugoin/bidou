@@ -4,11 +4,6 @@ import path from "path";
 
 dotenv.config();
 
-if (!process.env.BASE_URL)
-  throw new Error("BASE_URL environment variable is not set");
-
-const baseURL = process.env.BASE_URL;
-
 const config: PlaywrightTestConfig = {
   globalSetup: "./e2e/global-setup",
 
@@ -19,13 +14,13 @@ const config: PlaywrightTestConfig = {
 
   webServer: {
     command: "pnpm dev",
-    url: baseURL,
+    url: process.env.E2E_BASE_URL,
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
   },
 
   use: {
-    baseURL,
+    baseURL: process.env.E2E_BASE_URL,
     storageState: "./e2e/storage-state.json",
     trace: "retry-with-trace",
   },

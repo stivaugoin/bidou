@@ -21,7 +21,7 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
-        run: pnpm test:e2e -g "should navigate to Categories page"
+        run: pnpm test:e2e"
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           E2E_BASE_URL: ${{ secrets.E2E_BASE_URL }}

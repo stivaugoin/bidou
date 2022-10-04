@@ -7,16 +7,15 @@ const credentials = {
 
 async function globalSetup(config: FullConfig) {
   console.log("globalSetup");
-  // console.log("config", config);
+  console.log("credentials", credentials);
   const [project] = config.projects;
-  // console.log("project", project);
   console.log(`Running global setup for project ${project.name}`);
   const { storageState, baseURL } = project.use;
 
   const browser = await chromium.launch();
   const page = await browser.newPage();
 
-  await page.goto(baseURL || "http://localhost:3000");
+  await page.goto(baseURL as string);
   await page.click('input[type="email"]');
   await page.fill('input[type="email"]', credentials.email);
   await page.click('input[type="password"]');

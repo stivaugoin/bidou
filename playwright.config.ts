@@ -10,7 +10,7 @@ const config: PlaywrightTestConfig = {
   timeout: 5 * 1000,
   testDir: path.join(__dirname, "e2e"),
   retries: process.env.CI ? 2 : 0,
-  outputDir: "test-results/",
+  outputDir: "playwright-report/",
 
   webServer: {
     command: "pnpm dev",

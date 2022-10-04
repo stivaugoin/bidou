@@ -24,6 +24,10 @@ jobs:
         run: pnpm test:e2e
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          E2E_BASE_URL: ${{ secrets.E2E_BASE_URL }}
+          E2E_USER_EMAIL: ${{ secrets.E2E_USER_EMAIL }}
+          E2E_USER_PASSWORD: ${{ secrets.E2E_USER_PASSWORD }}
+          E2E_USER_NAME: ${{ secrets.E2E_USER_NAME }}
       - uses: actions/upload-artifact@v2
         if: always()
         with:

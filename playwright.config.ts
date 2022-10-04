@@ -7,15 +7,15 @@ dotenv.config();
 const config: PlaywrightTestConfig = {
   globalSetup: "./e2e/global-setup",
 
-  timeout: 30 * 1000,
+  timeout: 5 * 1000,
   testDir: path.join(__dirname, "e2e"),
-  retries: 2,
+  retries: 1,
   outputDir: "test-results/",
 
   webServer: {
     command: "pnpm dev",
     url: process.env.E2E_BASE_URL,
-    timeout: 120 * 1000,
+    timeout: 5 * 1000,
     reuseExistingServer: !process.env.CI,
   },
 

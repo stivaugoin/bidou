@@ -27,7 +27,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import logoSrc from "../public/logo-white.png";
+import logoSrc from "../../public/logo-white.png";
 import { HEADER_HEIGHT } from "../utils/constant";
 
 const LINKS = [

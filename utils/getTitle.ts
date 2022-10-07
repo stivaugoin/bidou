@@ -1,3 +1,3 @@
 export function getTitle(title: string) {
-  return `${title} - Bidou v2`;
+  return `${title} - Bidou`;
 }

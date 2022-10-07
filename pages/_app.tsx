@@ -16,7 +16,7 @@ export default function App(
   return (
     <>
       <Head>
-        <title>Bidou v3</title>
+        <title>Bidou</title>
         <meta name="description" content="Manage your family budget" />
         <link rel="icon" href="/favicon.ico" />
         <meta

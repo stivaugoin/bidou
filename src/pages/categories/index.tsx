@@ -1,5 +1,4 @@
 import { Button, Group, Stack, Table, useMantineTheme } from "@mantine/core";
-import { Category } from "@prisma/client";
 import { IconCategory, IconChevronRight } from "@tabler/icons";
 import Head from "next/head";
 import Link from "next/link";
@@ -8,7 +7,11 @@ import PageHeader from "../../components/PageHeader";
 import { prisma } from "../../lib/prisma";
 import { getTitle } from "../../utils/getTitle";
 
-export default function Categories({ categories }: { categories: Category[] }) {
+export default function Categories({
+  categories,
+}: {
+  categories: ApiGetAllCategories;
+}) {
   const theme = useMantineTheme();
 
   return (
@@ -32,6 +35,7 @@ export default function Categories({ categories }: { categories: Category[] }) {
             <thead>
               <tr>
                 <th>Name</th>
+                <th>Parent</th>
                 <th>Type</th>
               </tr>
             </thead>
@@ -47,12 +51,13 @@ export default function Categories({ categories }: { categories: Category[] }) {
   );
 }
 
-function Row({ category }: { category: Category }) {
+function Row({ category }: { category: ApiGetAllCategories[number] }) {
   return (
     <Link href={`/categories/${category.id}`}>
       <tr style={{ cursor: "pointer" }}>
-        <td style={{ width: "50%" }}>{category.name}</td>
-        <td style={{ width: "50%" }}>
+        <td style={{ width: "33%" }}>{category.name}</td>
+        <td style={{ width: "33%" }}>{category.Parent?.name}</td>
+        <td style={{ width: "33%" }}>
           <Group position="apart">
             {category.type} <IconChevronRight size={16} />
           </Group>
@@ -63,9 +68,27 @@ function Row({ category }: { category: Category }) {
 }
 
 export async function getServerSideProps() {
-  const categories = await prisma.category.findMany({
-    orderBy: { name: "asc" },
-  });
+  const categories = await getAllCategories();
 
   return { props: { categories } };
+}
+
+// TODO: Use swr to fetch data and remove getServerSideProps
+export type ApiGetAllCategories = Awaited<ReturnType<typeof getAllCategories>>;
+
+async function getAllCategories() {
+  return prisma.category.findMany({
+    select: {
+      id: true,
+      name: true,
+      type: true,
+      Parent: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+    orderBy: { name: "asc" },
+  });
 }

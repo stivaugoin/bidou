@@ -14,7 +14,6 @@ import {
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import {
-  IconBuildingCommunity,
   IconCategory,
   IconChevronDown,
   IconHomeDollar,
@@ -35,7 +34,6 @@ const LINKS = [
   { href: "/incomes", Icon: IconTrendingUp, label: "Incomes" },
   { href: "/expenses", Icon: IconTrendingDown, label: "Expenses" },
   { href: "/categories", Icon: IconCategory, label: "Categories" },
-  { href: "/providers", Icon: IconBuildingCommunity, label: "Providers" },
 ];
 
 function isActive(href: string, pathname: string) {

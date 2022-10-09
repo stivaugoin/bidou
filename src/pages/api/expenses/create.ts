@@ -10,10 +10,10 @@ export default async function handler(
     return;
   }
 
-  const { amount, date, note, providerId } = req.body;
+  const { amount, date, note, categoryId } = req.body;
   try {
-    const provider = await prisma.provider.findFirstOrThrow({
-      where: { id: providerId },
+    const category = await prisma.category.findFirstOrThrow({
+      where: { id: categoryId },
     });
 
     const expense = await prisma.expense.create({
@@ -21,8 +21,8 @@ export default async function handler(
         amount,
         date,
         note,
-        Provider: {
-          connect: { id: provider.id },
+        Category: {
+          connect: { id: category.id },
         },
       },
     });

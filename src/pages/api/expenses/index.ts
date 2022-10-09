@@ -30,11 +30,12 @@ async function getAllExpenses() {
         id: true,
         amount: true,
         date: true,
-        Provider: {
+
+        Category: {
           select: {
             id: true,
             name: true,
-            Category: {
+            Parent: {
               select: {
                 id: true,
                 name: true,

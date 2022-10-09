@@ -1,5 +1,3 @@
-import data from "./data";
-
 export function randomNumber(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -28,26 +26,4 @@ export function isDateBeforeNMonthFromToday(date: Date, n: number): boolean {
 export function dateIsPast(date: Date): boolean {
   const today = new Date();
   return date.valueOf() < today.valueOf();
-}
-
-export function mapExpense(provider: typeof data.providers[number]) {
-  return (date: Date) => {
-    return {
-      amount: randomNumber(
-        provider.expenses.amount[0],
-        provider.expenses.amount[1]
-      ),
-      date,
-      Provider: { connect: { id: provider.id } },
-    };
-  };
-}
-export function mapIncome(category: typeof data.categories[number]) {
-  return (date: Date) => {
-    return {
-      amount: randomValue([100000, 150000, 200000, 250000, 300000]),
-      date,
-      Category: { connect: { id: category.id } },
-    };
-  };
 }

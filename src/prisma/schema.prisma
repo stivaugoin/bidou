@@ -69,17 +69,12 @@ model Category {
   name String
   type CategoryType
 
-  Income   Income[]
-  Provider Provider[]
-}
+  parentId String?    @unique @db.ObjectId
+  Parent   Category?  @relation("CategoryParent", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Children Category[] @relation("CategoryParent")
 
-model Provider {
-  id         String @id @default(auto()) @map("_id") @db.ObjectId
-  categoryId String
-  name       String
-
-  Category Category  @relation(fields: [categoryId], references: [id])
-  Expense  Expense[]
+  Income  Income[]
+  Expense Expense[]
 }
 
 model Expense {
@@ -87,9 +82,9 @@ model Expense {
   amount     Int
   date       DateTime @db.Date
   note       String?
-  providerId String
+  categoryId String   @db.ObjectId
 
-  Provider Provider @relation(fields: [providerId], references: [id])
+  Category Category @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 }
 
 model Income {
@@ -99,5 +94,5 @@ model Income {
   date       DateTime @db.Date
   note       String?
 
-  Category Category @relation(fields: [categoryId], references: [id])
+  Category Category @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 }

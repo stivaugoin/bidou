@@ -10,6 +10,7 @@ import {
 import { DatePicker } from "@mantine/dates";
 import { useForm, zodResolver } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
+import { CategoryType } from "@prisma/client";
 import { IconCheck, IconExclamationMark } from "@tabler/icons";
 import { useRouter } from "next/router";
 import { TypeOf, z } from "zod";
@@ -22,14 +23,14 @@ const schema = z.object({
   amount: z.number(),
   date: z.date({ required_error: "Required" }),
   note: z.string(),
-  providerId: z.string().min(1, "Required"),
+  categoryId: z.string().min(1, "Required"),
 });
 
 interface Props {
-  providers: Awaited<ReturnType<typeof getProviders>>;
+  categories: Awaited<ReturnType<typeof getCategories>>;
 }
 
-export default function IncomeCreate({ providers }: Props) {
+export default function IncomeCreate({ categories }: Props) {
   const router = useRouter();
   const theme = useMantineTheme();
 
@@ -38,7 +39,7 @@ export default function IncomeCreate({ providers }: Props) {
       amount: undefined as unknown as number,
       date: new Date(),
       note: "",
-      providerId: "",
+      categoryId: "",
     },
     validate: zodResolver(schema),
   });
@@ -49,6 +50,7 @@ export default function IncomeCreate({ providers }: Props) {
       headers: { "Content-Type": "application/json" },
       method: "POST",
     });
+    console.log(result);
 
     if (!result.ok) {
       showNotification({
@@ -91,13 +93,13 @@ export default function IncomeCreate({ providers }: Props) {
           />
 
           <Select
-            data={providers.map((provider) => ({
-              value: provider.id,
-              label: provider.name,
-              group: provider.Category.name,
+            data={categories.map((category) => ({
+              value: category.id,
+              label: category.name,
+              group: category.Parent?.name,
             }))}
-            label="Provider"
-            {...form.getInputProps("providerId")}
+            label="Category"
+            {...form.getInputProps("categoryId")}
           />
 
           <Textarea label="Note" {...form.getInputProps("note")} />
@@ -112,13 +114,14 @@ export default function IncomeCreate({ providers }: Props) {
 }
 
 export async function getServerSideProps() {
-  const providers = await getProviders();
-  return { props: { providers } };
+  const categories = await getCategories();
+  return { props: { categories } };
 }
 
-async function getProviders() {
-  return prisma.provider.findMany({
-    orderBy: [{ Category: { name: "asc" } }, { name: "asc" }],
-    select: { id: true, name: true, Category: { select: { name: true } } },
+async function getCategories() {
+  return prisma.category.findMany({
+    select: { id: true, name: true, Parent: { select: { name: true } } },
+    where: { type: CategoryType.Expense, parentId: { not: null } },
+    orderBy: { name: "asc" },
   });
 }

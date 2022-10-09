@@ -13,6 +13,7 @@ import { DatePicker } from "@mantine/dates";
 import { useForm, zodResolver } from "@mantine/form";
 import { openConfirmModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
+import { CategoryType } from "@prisma/client";
 import { IconCheck, IconExclamationMark, IconTrash } from "@tabler/icons";
 import dayjs from "dayjs";
 import { GetServerSideProps } from "next";
@@ -27,15 +28,15 @@ const schema = z.object({
   amount: z.number(),
   date: z.date({ required_error: "Required" }),
   note: z.string().nullable(),
-  providerId: z.string().min(1, "Required"),
+  categoryId: z.string().min(1, "Required"),
 });
 
 interface Props {
-  providers: Awaited<ReturnType<typeof getProviders>>;
+  categories: Awaited<ReturnType<typeof getCategories>>;
   expense: Awaited<ReturnType<typeof getExpense>>;
 }
 
-export default function IncomeView({ expense, providers }: Props) {
+export default function IncomeView({ expense, categories }: Props) {
   const router = useRouter();
   const theme = useMantineTheme();
 
@@ -44,7 +45,7 @@ export default function IncomeView({ expense, providers }: Props) {
       amount: expense.amount / 100,
       date: dayjs(expense.date).toDate(),
       note: expense.note,
-      providerId: expense.Provider.id,
+      categoryId: expense.Category.id,
     },
     validate: zodResolver(schema),
   });
@@ -139,12 +140,13 @@ export default function IncomeView({ expense, providers }: Props) {
           />
 
           <Select
-            data={providers.map((provider) => ({
-              value: provider.id,
-              label: provider.name,
+            data={categories.map((category) => ({
+              value: category.id,
+              label: category.name,
+              group: category.Parent?.name,
             }))}
-            label="Provider"
-            {...form.getInputProps("providerId")}
+            label="Category"
+            {...form.getInputProps("categoryId")}
           />
 
           <Textarea label="Note" {...form.getInputProps("note")} />
@@ -161,24 +163,25 @@ export default function IncomeView({ expense, providers }: Props) {
 export const getServerSideProps: GetServerSideProps<
   {
     expense: Awaited<ReturnType<typeof getExpense>>;
-    providers: Awaited<ReturnType<typeof getProviders>>;
+    categories: Awaited<ReturnType<typeof getCategories>>;
   },
   { id: string }
 > = async ({ params }) => {
   try {
     const expense = await getExpense(params?.id);
-    const providers = await getProviders();
+    const categories = await getCategories();
 
-    return { props: { providers, expense } };
+    return { props: { categories, expense } };
   } catch (error) {
     console.error(error);
     throw error;
   }
 };
 
-async function getProviders() {
-  return prisma.provider.findMany({
-    select: { id: true, name: true },
+async function getCategories() {
+  return prisma.category.findMany({
+    select: { id: true, name: true, Parent: { select: { name: true } } },
+    where: { type: CategoryType.Expense, parentId: { not: null } },
     orderBy: { name: "asc" },
   });
 }
@@ -190,7 +193,7 @@ async function getExpense(id?: string) {
       amount: true,
       date: true,
       note: true,
-      Provider: { select: { id: true } },
+      Category: { select: { id: true } },
     },
     where: { id },
   });

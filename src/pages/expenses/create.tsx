@@ -50,7 +50,6 @@ export default function IncomeCreate({ categories }: Props) {
       headers: { "Content-Type": "application/json" },
       method: "POST",
     });
-    console.log(result);
 
     if (!result.ok) {
       showNotification({
@@ -93,11 +92,13 @@ export default function IncomeCreate({ categories }: Props) {
           />
 
           <Select
-            data={categories.map((category) => ({
-              value: category.id,
-              label: category.name,
-              group: category.Parent?.name,
-            }))}
+            data={categories
+              .filter((category) => category.Children.length === 0)
+              .map((category) => ({
+                value: category.id,
+                label: category.name,
+                group: category.Parent?.name || "No parent",
+              }))}
             label="Category"
             {...form.getInputProps("categoryId")}
           />
@@ -120,8 +121,13 @@ export async function getServerSideProps() {
 
 async function getCategories() {
   return prisma.category.findMany({
-    select: { id: true, name: true, Parent: { select: { name: true } } },
-    where: { type: CategoryType.Expense, parentId: { not: null } },
+    select: {
+      id: true,
+      name: true,
+      Parent: { select: { name: true } },
+      Children: { select: { name: true } },
+    },
+    where: { type: CategoryType.Expense },
     orderBy: { name: "asc" },
   });
 }

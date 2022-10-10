@@ -140,11 +140,13 @@ export default function IncomeView({ expense, categories }: Props) {
           />
 
           <Select
-            data={categories.map((category) => ({
-              value: category.id,
-              label: category.name,
-              group: category.Parent?.name,
-            }))}
+            data={categories
+              .filter((category) => category.Children.length === 0)
+              .map((category) => ({
+                value: category.id,
+                label: category.name,
+                group: category.Parent?.name || "No parent",
+              }))}
             label="Category"
             {...form.getInputProps("categoryId")}
           />
@@ -180,8 +182,13 @@ export const getServerSideProps: GetServerSideProps<
 
 async function getCategories() {
   return prisma.category.findMany({
-    select: { id: true, name: true, Parent: { select: { name: true } } },
-    where: { type: CategoryType.Expense, parentId: { not: null } },
+    select: {
+      id: true,
+      name: true,
+      Parent: { select: { name: true } },
+      Children: { select: { name: true } },
+    },
+    where: { type: CategoryType.Expense },
     orderBy: { name: "asc" },
   });
 }

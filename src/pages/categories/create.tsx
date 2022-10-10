@@ -11,14 +11,10 @@ import { showNotification } from "@mantine/notifications";
 import { CategoryType } from "@prisma/client";
 import { IconCheck, IconExclamationMark } from "@tabler/icons";
 import { useRouter } from "next/router";
-import useSWR, { Fetcher } from "swr";
 import { TypeOf, z } from "zod";
 import MainLayout from "../../components/MainLayout";
 import PageHeader from "../../components/PageHeader";
-import { ApiGetAllCategories } from "../api/categories";
-
-const fetcher: Fetcher<ApiGetAllCategories, string> = (...args) =>
-  fetch(...args).then((res) => res.json());
+import useCategories from "../../hooks/useCategories";
 
 const schema = z.object({
   name: z.string().min(1),
@@ -35,7 +31,7 @@ const OPTIONS = [
 export default function CategoryCreate() {
   const router = useRouter();
   const theme = useMantineTheme();
-  const { data } = useSWR<ApiGetAllCategories>("/api/categories", fetcher);
+  const [categories] = useCategories();
 
   const form = useForm({
     initialValues: {
@@ -46,7 +42,7 @@ export default function CategoryCreate() {
     validate: zodResolver(schema),
   });
 
-  const parentCategories = data?.filter(
+  const parentCategories = categories?.filter(
     (category) => category.type === form.values.type && category.Parent === null
   );
 

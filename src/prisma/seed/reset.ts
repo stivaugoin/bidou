@@ -6,10 +6,6 @@ export default async function resetDatabase(db: PrismaClient) {
   await db.expense.deleteMany({});
   await db.category.deleteMany({});
   await db.income.deleteMany({});
-  await db.user.deleteMany({});
-  await db.account.deleteMany({});
-  await db.session.deleteMany({});
-  await db.verificationToken.deleteMany({});
 
   console.info(" => Resetting database... [DONE]");
 }

@@ -1,21 +1,16 @@
 import {
   AppShell,
-  Avatar,
   Burger,
   createStyles,
   Group,
   Header,
   MediaQuery,
-  Menu,
   Navbar,
   NavLink,
-  Text,
-  UnstyledButton,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import {
   IconCategory,
-  IconChevronDown,
   IconHomeDollar,
   IconLogout,
   IconTrendingDown,
@@ -104,6 +99,14 @@ export default function MainLayout({
               />
             </Link>
           ))}
+
+          <NavLink
+            icon={<IconLogout size={16} stroke={1.5} />}
+            component="button"
+            label="Logout"
+            onClick={() => signOut()}
+            sx={{ marginTop: "auto" }}
+          />
         </Navbar>
       }
       header={
@@ -124,49 +127,6 @@ export default function MainLayout({
               />
             </MediaQuery>
             <Image alt="Bidou" src={logoSrc} height={20} width={120} />
-            <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-              <Menu
-                width={260}
-                position="bottom-end"
-                transition="pop-top-right"
-                onClose={() => setOpened(false)}
-                onOpen={() => setOpened(true)}
-              >
-                <Menu.Target>
-                  <UnstyledButton
-                    className={cx(classes.user, {
-                      [classes.userActive]: opened,
-                    })}
-                  >
-                    <Group spacing={7}>
-                      <Avatar
-                        src={session.data?.user?.image}
-                        alt={session.data?.user?.name as string}
-                        radius="xl"
-                        size={32}
-                      />
-                      <Text
-                        weight={500}
-                        size="sm"
-                        sx={{ lineHeight: 1 }}
-                        mr={3}
-                      >
-                        {session.data?.user?.name}
-                      </Text>
-                      <IconChevronDown size={12} stroke={1.5} />
-                    </Group>
-                  </UnstyledButton>
-                </Menu.Target>
-                <Menu.Dropdown>
-                  <Menu.Item
-                    icon={<IconLogout size={14} stroke={1.5} />}
-                    onClick={() => signOut()}
-                  >
-                    Logout
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
-            </MediaQuery>
           </Group>
         </Header>
       }

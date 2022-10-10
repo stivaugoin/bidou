@@ -1,18 +1,15 @@
-import { Button, Group, Stack, Table, useMantineTheme } from "@mantine/core";
+import { Button, Group, Stack, Table } from "@mantine/core";
 import { IconCategory, IconChevronRight } from "@tabler/icons";
 import Head from "next/head";
 import Link from "next/link";
 import MainLayout from "../../components/MainLayout";
 import PageHeader from "../../components/PageHeader";
-import { prisma } from "../../lib/prisma";
+import useCategories from "../../hooks/useCategories";
 import { getTitle } from "../../utils/getTitle";
+import { ApiGetAllCategories } from "../api/categories";
 
-export default function Categories({
-  categories,
-}: {
-  categories: ApiGetAllCategories;
-}) {
-  const theme = useMantineTheme();
+export default function Categories() {
+  const [categories] = useCategories();
 
   return (
     <>
@@ -40,7 +37,7 @@ export default function Categories({
               </tr>
             </thead>
             <tbody>
-              {categories.map((category) => (
+              {categories?.map((category) => (
                 <Row category={category} key={category.id} />
               ))}
             </tbody>
@@ -65,30 +62,4 @@ function Row({ category }: { category: ApiGetAllCategories[number] }) {
       </tr>
     </Link>
   );
-}
-
-export async function getServerSideProps() {
-  const categories = await getAllCategories();
-
-  return { props: { categories } };
-}
-
-// TODO: Use swr to fetch data and remove getServerSideProps
-export type ApiGetAllCategories = Awaited<ReturnType<typeof getAllCategories>>;
-
-async function getAllCategories() {
-  return prisma.category.findMany({
-    select: {
-      id: true,
-      name: true,
-      type: true,
-      Parent: {
-        select: {
-          id: true,
-          name: true,
-        },
-      },
-    },
-    orderBy: { name: "asc" },
-  });
 }

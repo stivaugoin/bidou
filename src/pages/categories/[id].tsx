@@ -11,18 +11,20 @@ import {
 import { useForm, zodResolver } from "@mantine/form";
 import { openConfirmModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
-import { Category, CategoryType } from "@prisma/client";
+import { CategoryType } from "@prisma/client";
 import { IconCheck, IconExclamationMark, IconTrash } from "@tabler/icons";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { TypeOf, z } from "zod";
 import MainLayout from "../../components/MainLayout";
 import PageHeader from "../../components/PageHeader";
+import useCategories from "../../hooks/useCategories";
 import { prisma } from "../../lib/prisma";
 
 const schema = z.object({
   name: z.string().min(1),
   type: z.nativeEnum(CategoryType),
+  parentId: z.string().optional().nullable(),
 });
 
 const OPTIONS = [
@@ -30,17 +32,32 @@ const OPTIONS = [
   { value: CategoryType.Income, label: "Income" },
 ];
 
-export default function CategoryView({ category }: { category: Category }) {
+export default function CategoryView({
+  category,
+}: {
+  category: Awaited<ReturnType<typeof getCategory>>;
+}) {
   const router = useRouter();
   const theme = useMantineTheme();
+  const [categories] = useCategories();
 
   const form = useForm({
     initialValues: {
       name: category.name,
       type: category.type as CategoryType,
+      parentId: category.Parent?.id || null,
     },
     validate: zodResolver(schema),
   });
+
+  const parentCategories = categories?.filter(
+    (category) => category.type === form.values.type && category.Parent === null
+  );
+
+  const categoriesParentOptions = (parentCategories || [])?.map((category) => ({
+    value: category.id,
+    label: category.name,
+  }));
 
   const handleDelete = async () => {
     const result = await fetch(`/api/categories/${category.id}`, {
@@ -124,6 +141,17 @@ export default function CategoryView({ category }: { category: Category }) {
             {...form.getInputProps("type")}
           />
 
+          {form.values.type && category.Children.length === 0 && (
+            <Select
+              data={[
+                { value: null, label: "No parent" },
+                ...categoriesParentOptions,
+              ]}
+              label="Parent"
+              {...form.getInputProps("parentId")}
+            />
+          )}
+
           <Group>
             <Button type="submit">Save</Button>
           </Group>
@@ -136,9 +164,14 @@ export default function CategoryView({ category }: { category: Category }) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   if (typeof context.query.id !== "string") throw new Error("Invalid id");
 
-  const category = await prisma.category.findFirstOrThrow({
-    where: { id: context.query.id },
-  });
+  const category = await getCategory(context.query.id);
 
   return { props: { category } };
 };
+
+async function getCategory(id: string) {
+  return await prisma.category.findFirstOrThrow({
+    where: { id },
+    include: { Parent: true, Children: true },
+  });
+}

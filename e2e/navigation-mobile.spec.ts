@@ -29,9 +29,3 @@ test("should navigate to Categories page", async ({ page }) => {
   await page.locator("nav a", { hasText: "Categories" }).click();
   await expect(page).toHaveURL("/categories");
 });
-test("should navigate to Providers page", async ({ page }) => {
-  await page.goto("/");
-  await page.locator("#burgerBtn").click();
-  await page.locator("nav a", { hasText: "Providers" }).click();
-  await expect(page).toHaveURL("/providers");
-});

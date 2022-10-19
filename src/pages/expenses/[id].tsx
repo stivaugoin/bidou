@@ -1,8 +1,4 @@
-import {
-  faCheckCircle,
-  faExclamationTriangle,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   ActionIcon,
@@ -18,7 +14,6 @@ import {
 import { DatePicker } from "@mantine/dates";
 import { useForm, zodResolver } from "@mantine/form";
 import { openConfirmModal } from "@mantine/modals";
-import { showNotification } from "@mantine/notifications";
 import { CategoryType } from "@prisma/client";
 import dayjs from "dayjs";
 import { GetServerSideProps } from "next";
@@ -26,6 +21,7 @@ import { useRouter } from "next/router";
 import { TypeOf, z } from "zod";
 import MainLayout from "../../components/MainLayout";
 import PageHeader from "../../components/PageHeader";
+import notification from "../../lib/notification";
 import { prisma } from "../../lib/prisma";
 import { formatTransactionToSave } from "../../utils/formatTransactionToSave";
 
@@ -60,24 +56,8 @@ export default function IncomeView({ expense, categories }: Props) {
       method: "DELETE",
     });
 
-    if (!result.ok) {
-      showNotification({
-        color: "red",
-        title: "Error",
-        message: "There was an error deleting the expense.",
-        icon: <FontAwesomeIcon icon={faExclamationTriangle} />,
-      });
-      return;
-    }
-
-    showNotification({
-      color: "teal",
-      title: `Expense deleted`,
-      message: "The expense was deleted successfully.",
-      icon: <FontAwesomeIcon icon={faCheckCircle} />,
-    });
-
-    router.push("/expenses");
+    notification(result.ok ? "success" : "error");
+    if (result.ok) router.push("/expenses");
   };
 
   const handleSubmit = async (data: TypeOf<typeof schema>) => {
@@ -87,26 +67,8 @@ export default function IncomeView({ expense, categories }: Props) {
       method: "PUT",
     });
 
-    if (!result.ok) {
-      showNotification({
-        color: "red",
-        title: "Error",
-        message: "There was an error updating the income.",
-        icon: <FontAwesomeIcon icon={faExclamationTriangle} />,
-      });
-      return;
-    }
-
-    showNotification({
-      color: "teal",
-      title: "Expense updated",
-      message: "The expense was updated successfully.",
-      icon: <FontAwesomeIcon icon={faCheckCircle} />,
-    });
-
-    router.push("/expenses");
-
-    return;
+    notification(result.ok ? "success" : "error");
+    if (result.ok) router.push("/expenses");
   };
 
   const openModal = () =>

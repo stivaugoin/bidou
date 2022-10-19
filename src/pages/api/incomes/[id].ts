@@ -48,7 +48,7 @@ export default async function handler(
           where: { id: incomeId },
           data,
         });
-        res.status(200).json(income);
+        res.status(400).json(income);
       } catch (error) {
         console.error(error);
         res.status(500).end();

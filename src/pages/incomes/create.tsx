@@ -1,9 +1,4 @@
 import {
-  faCheckCircle,
-  faExclamationTriangle,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
   Button,
   Group,
   NumberInput,
@@ -14,13 +9,13 @@ import {
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useForm, zodResolver } from "@mantine/form";
-import { showNotification } from "@mantine/notifications";
 import { Category, CategoryType } from "@prisma/client";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { TypeOf, z } from "zod";
 import MainLayout from "../../components/MainLayout";
 import PageHeader from "../../components/PageHeader";
+import notification from "../../lib/notification";
 import { prisma } from "../../lib/prisma";
 
 const schema = z.object({
@@ -55,24 +50,8 @@ export default function IncomeCreate({ categories }: Props) {
       method: "POST",
     });
 
-    if (!result.ok) {
-      showNotification({
-        color: "red",
-        title: "Error",
-        message: "An error occurred while creating the income.",
-        icon: <FontAwesomeIcon icon={faExclamationTriangle} />,
-      });
-      return;
-    }
-
-    showNotification({
-      color: "teal",
-      title: "Income created",
-      message: "The income was created successfully.",
-      icon: <FontAwesomeIcon icon={faCheckCircle} />,
-    });
-
-    router.push("/incomes");
+    notification(result.ok ? "success" : "error");
+    if (result.ok) router.push("/incomes");
   };
 
   return (

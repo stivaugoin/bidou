@@ -1,9 +1,4 @@
 import {
-  faCheckCircle,
-  faExclamationTriangle,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
   Button,
   Group,
   NumberInput,
@@ -14,12 +9,12 @@ import {
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useForm, zodResolver } from "@mantine/form";
-import { showNotification } from "@mantine/notifications";
 import { CategoryType } from "@prisma/client";
 import { useRouter } from "next/router";
 import { TypeOf, z } from "zod";
 import MainLayout from "../../components/MainLayout";
 import PageHeader from "../../components/PageHeader";
+import notification from "../../lib/notification";
 import { prisma } from "../../lib/prisma";
 import { formatTransactionToSave } from "../../utils/formatTransactionToSave";
 
@@ -55,24 +50,8 @@ export default function IncomeCreate({ categories }: Props) {
       method: "POST",
     });
 
-    if (!result.ok) {
-      showNotification({
-        color: "red",
-        title: "Error",
-        message: "An error occurred while creating the expense.",
-        icon: <FontAwesomeIcon icon={faExclamationTriangle} />,
-      });
-      return;
-    }
-
-    showNotification({
-      color: "teal",
-      title: "Expense created",
-      message: "The expense was created successfully.",
-      icon: <FontAwesomeIcon icon={faCheckCircle} />,
-    });
-
-    router.push("/expenses");
+    notification(result.ok ? "success" : "error");
+    if (result.ok) router.push("/expenses");
   };
 
   return (

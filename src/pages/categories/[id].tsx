@@ -1,8 +1,4 @@
-import {
-  faCheckCircle,
-  faExclamationTriangle,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   ActionIcon,
@@ -16,7 +12,6 @@ import {
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { openConfirmModal } from "@mantine/modals";
-import { showNotification } from "@mantine/notifications";
 import { CategoryType } from "@prisma/client";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
@@ -24,6 +19,7 @@ import { TypeOf, z } from "zod";
 import MainLayout from "../../components/MainLayout";
 import PageHeader from "../../components/PageHeader";
 import useCategories from "../../hooks/useCategories";
+import notification from "../../lib/notification";
 import { prisma } from "../../lib/prisma";
 
 const schema = z.object({
@@ -69,24 +65,8 @@ export default function CategoryView({
       method: "DELETE",
     });
 
-    if (!result.ok) {
-      showNotification({
-        color: "red",
-        title: "Error",
-        message: "There was an error deleting the category.",
-        icon: <FontAwesomeIcon icon={faExclamationTriangle} />,
-      });
-      return;
-    }
-
-    showNotification({
-      color: "teal",
-      title: `${category.name} deleted`,
-      message: "The category was deleted successfully.",
-      icon: <FontAwesomeIcon icon={faCheckCircle} />,
-    });
-
-    router.push("/categories");
+    notification(result.ok ? "success" : "error");
+    if (result.ok) router.push("/categories");
   };
 
   const handleSubmit = async (data: TypeOf<typeof schema>) => {
@@ -96,24 +76,8 @@ export default function CategoryView({
       method: "PUT",
     });
 
-    if (!result.ok) {
-      showNotification({
-        color: "red",
-        title: "Error",
-        message: "An error occurred while updating the category.",
-        icon: <FontAwesomeIcon icon={faExclamationTriangle} />,
-      });
-      return;
-    }
-
-    showNotification({
-      color: "teal",
-      title: "Category updated",
-      message: "The category was updated successfully.",
-      icon: <FontAwesomeIcon icon={faCheckCircle} />,
-    });
-
-    router.push("/categories");
+    notification(result.ok ? "success" : "error");
+    if (result.ok) router.push("/categories");
   };
 
   const openModal = () =>

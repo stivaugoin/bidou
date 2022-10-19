@@ -1,9 +1,4 @@
 import {
-  faCheckCircle,
-  faExclamationTriangle,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
   Button,
   Group,
   Select,
@@ -12,13 +7,13 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { showNotification } from "@mantine/notifications";
 import { CategoryType } from "@prisma/client";
 import { useRouter } from "next/router";
 import { TypeOf, z } from "zod";
 import MainLayout from "../../components/MainLayout";
 import PageHeader from "../../components/PageHeader";
 import useCategories from "../../hooks/useCategories";
+import notification from "../../lib/notification";
 
 const schema = z.object({
   name: z.string().min(1),
@@ -62,24 +57,8 @@ export default function CategoryCreate() {
       method: "POST",
     });
 
-    if (!result.ok) {
-      showNotification({
-        color: "red",
-        title: "Error",
-        message: "An error occurred while creating the category.",
-        icon: <FontAwesomeIcon icon={faExclamationTriangle} />,
-      });
-      return;
-    }
-
-    showNotification({
-      color: "teal",
-      title: "Category created",
-      message: "The category was created successfully.",
-      icon: <FontAwesomeIcon icon={faCheckCircle} />,
-    });
-
-    router.push("/categories");
+    notification(result.ok ? "success" : "error");
+    if (result.ok) router.push("/categories");
   };
 
   return (

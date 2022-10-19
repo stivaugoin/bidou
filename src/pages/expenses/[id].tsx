@@ -1,4 +1,10 @@
 import {
+  faCheckCircle,
+  faExclamationTriangle,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
   ActionIcon,
   Button,
   Group,
@@ -14,7 +20,6 @@ import { useForm, zodResolver } from "@mantine/form";
 import { openConfirmModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { CategoryType } from "@prisma/client";
-import { IconCheck, IconExclamationMark, IconTrash } from "@tabler/icons";
 import dayjs from "dayjs";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
@@ -60,7 +65,7 @@ export default function IncomeView({ expense, categories }: Props) {
         color: "red",
         title: "Error",
         message: "There was an error deleting the expense.",
-        icon: <IconExclamationMark size={16} />,
+        icon: <FontAwesomeIcon icon={faExclamationTriangle} />,
       });
       return;
     }
@@ -69,7 +74,7 @@ export default function IncomeView({ expense, categories }: Props) {
       color: "teal",
       title: `Expense deleted`,
       message: "The expense was deleted successfully.",
-      icon: <IconCheck size={16} />,
+      icon: <FontAwesomeIcon icon={faCheckCircle} />,
     });
 
     router.push("/expenses");
@@ -87,7 +92,7 @@ export default function IncomeView({ expense, categories }: Props) {
         color: "red",
         title: "Error",
         message: "There was an error updating the income.",
-        icon: <IconExclamationMark size={16} />,
+        icon: <FontAwesomeIcon icon={faExclamationTriangle} />,
       });
       return;
     }
@@ -96,7 +101,7 @@ export default function IncomeView({ expense, categories }: Props) {
       color: "teal",
       title: "Expense updated",
       message: "The expense was updated successfully.",
-      icon: <IconCheck size={16} />,
+      icon: <FontAwesomeIcon icon={faCheckCircle} />,
     });
 
     router.push("/expenses");
@@ -119,7 +124,7 @@ export default function IncomeView({ expense, categories }: Props) {
     <MainLayout>
       <PageHeader backHref="/expenses" title="Edit expense">
         <ActionIcon color="red" onClick={openModal} size="lg" variant="subtle">
-          <IconTrash />
+          <FontAwesomeIcon icon={faTrash} />
         </ActionIcon>
       </PageHeader>
 

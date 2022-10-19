@@ -1,4 +1,12 @@
 import {
+  faArrowTrendDown,
+  faArrowTrendUp,
+  faFolderTree,
+  faHome,
+  faSignOut,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
   AppShell,
   Burger,
   createStyles,
@@ -9,13 +17,6 @@ import {
   NavLink,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import {
-  IconCategory,
-  IconHomeDollar,
-  IconLogout,
-  IconTrendingDown,
-  IconTrendingUp,
-} from "@tabler/icons";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,10 +26,10 @@ import logoSrc from "../../public/logo-white.png";
 import { HEADER_HEIGHT } from "../utils/constant";
 
 const LINKS = [
-  { href: "/", Icon: IconHomeDollar, label: "Dashboard" },
-  { href: "/incomes", Icon: IconTrendingUp, label: "Incomes" },
-  { href: "/expenses", Icon: IconTrendingDown, label: "Expenses" },
-  { href: "/categories", Icon: IconCategory, label: "Categories" },
+  { href: "/", icon: faHome, label: "Dashboard" },
+  { href: "/incomes", icon: faArrowTrendUp, label: "Incomes" },
+  { href: "/expenses", icon: faArrowTrendDown, label: "Expenses" },
+  { href: "/categories", icon: faFolderTree, label: "Categories" },
 ];
 
 function isActive(href: string, pathname: string) {
@@ -89,10 +90,10 @@ export default function MainLayout({
           p="md"
           width={{ sm: 200, lg: 300 }}
         >
-          {LINKS.map(({ href, Icon, label }) => (
+          {LINKS.map(({ href, icon, label }) => (
             <Link href={href} key={href} passHref>
               <NavLink
-                icon={<Icon size={16} stroke={1.5} />}
+                icon={<FontAwesomeIcon icon={icon} />}
                 component="a"
                 label={label}
                 active={isActive(href, router.pathname)}
@@ -101,7 +102,7 @@ export default function MainLayout({
           ))}
 
           <NavLink
-            icon={<IconLogout size={16} stroke={1.5} />}
+            icon={<FontAwesomeIcon icon={faSignOut} />}
             component="button"
             label="Logout"
             onClick={() => signOut()}

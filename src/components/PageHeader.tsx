@@ -1,5 +1,9 @@
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  FontAwesomeIcon,
+  FontAwesomeIconProps,
+} from "@fortawesome/react-fontawesome";
 import { ActionIcon, Group, Title, useMantineTheme } from "@mantine/core";
-import { IconChevronLeft, TablerIcon } from "@tabler/icons";
 import Link from "next/link";
 
 interface PropsBackButton {
@@ -7,7 +11,7 @@ interface PropsBackButton {
 }
 
 interface PropsIcon {
-  icon: TablerIcon;
+  icon: FontAwesomeIconProps["icon"];
 }
 
 interface Props {
@@ -21,7 +25,6 @@ export default function PageHeader({
   ...props
 }: Props & (PropsBackButton | PropsIcon)) {
   const theme = useMantineTheme();
-  const Icon = "icon" in props ? props.icon : null;
 
   return (
     <Group mb="xl" mx={-theme.spacing.md} pb="md" position="apart" px="xl">
@@ -29,11 +32,11 @@ export default function PageHeader({
         {"backHref" in props && (
           <Link href={props.backHref} passHref>
             <ActionIcon component="a">
-              <IconChevronLeft size={24} />
+              <FontAwesomeIcon icon={faChevronLeft} size="lg" />
             </ActionIcon>
           </Link>
         )}
-        {Icon && <Icon size={24} />}
+        {"icon" in props && <FontAwesomeIcon icon={props.icon} size="xl" />}
         <Title size="h2">{title}</Title>
       </Group>
       {children}

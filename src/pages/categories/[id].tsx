@@ -1,4 +1,10 @@
 import {
+  faCheckCircle,
+  faExclamationTriangle,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
   ActionIcon,
   Button,
   Group,
@@ -12,7 +18,6 @@ import { useForm, zodResolver } from "@mantine/form";
 import { openConfirmModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { CategoryType } from "@prisma/client";
-import { IconCheck, IconExclamationMark, IconTrash } from "@tabler/icons";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { TypeOf, z } from "zod";
@@ -69,7 +74,7 @@ export default function CategoryView({
         color: "red",
         title: "Error",
         message: "There was an error deleting the category.",
-        icon: <IconExclamationMark size={16} />,
+        icon: <FontAwesomeIcon icon={faExclamationTriangle} />,
       });
       return;
     }
@@ -78,7 +83,7 @@ export default function CategoryView({
       color: "teal",
       title: `${category.name} deleted`,
       message: "The category was deleted successfully.",
-      icon: <IconCheck size={16} />,
+      icon: <FontAwesomeIcon icon={faCheckCircle} />,
     });
 
     router.push("/categories");
@@ -96,7 +101,7 @@ export default function CategoryView({
         color: "red",
         title: "Error",
         message: "An error occurred while updating the category.",
-        icon: <IconExclamationMark size={16} />,
+        icon: <FontAwesomeIcon icon={faExclamationTriangle} />,
       });
       return;
     }
@@ -105,7 +110,7 @@ export default function CategoryView({
       color: "teal",
       title: "Category updated",
       message: "The category was updated successfully.",
-      icon: <IconCheck size={16} />,
+      icon: <FontAwesomeIcon icon={faCheckCircle} />,
     });
 
     router.push("/categories");
@@ -126,7 +131,7 @@ export default function CategoryView({
     <MainLayout>
       <PageHeader backHref="/categories" title="Edit category">
         <ActionIcon color="red" onClick={openModal} size="lg" variant="subtle">
-          <IconTrash />
+          <FontAwesomeIcon icon={faTrash} />
         </ActionIcon>
       </PageHeader>
 

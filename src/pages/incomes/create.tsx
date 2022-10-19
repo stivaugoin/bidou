@@ -1,4 +1,9 @@
 import {
+  faCheckCircle,
+  faExclamationTriangle,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
   Button,
   Group,
   NumberInput,
@@ -11,7 +16,6 @@ import { DatePicker } from "@mantine/dates";
 import { useForm, zodResolver } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { Category, CategoryType } from "@prisma/client";
-import { IconCheck, IconExclamationMark } from "@tabler/icons";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { TypeOf, z } from "zod";
@@ -56,7 +60,7 @@ export default function IncomeCreate({ categories }: Props) {
         color: "red",
         title: "Error",
         message: "An error occurred while creating the income.",
-        icon: <IconExclamationMark size={16} />,
+        icon: <FontAwesomeIcon icon={faExclamationTriangle} />,
       });
       return;
     }
@@ -65,7 +69,7 @@ export default function IncomeCreate({ categories }: Props) {
       color: "teal",
       title: "Income created",
       message: "The income was created successfully.",
-      icon: <IconCheck size={16} />,
+      icon: <FontAwesomeIcon icon={faCheckCircle} />,
     });
 
     router.push("/incomes");

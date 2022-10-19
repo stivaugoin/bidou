@@ -1,5 +1,6 @@
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Group } from "@mantine/core";
-import { IconChevronRight } from "@tabler/icons";
 import Link from "next/link";
 import { ApiGetAllIncomes } from "../pages/api/incomes";
 import displayAmount from "../utils/displayAmount";
@@ -21,7 +22,8 @@ export default function IncomeRow({ income }: RowProps) {
           }}
         >
           <Group position="right">
-            {displayAmount(income.amount)} <IconChevronRight size={16} />
+            {displayAmount(income.amount)}{" "}
+            <FontAwesomeIcon icon={faChevronRight} size="sm" />
           </Group>
         </td>
       </tr>

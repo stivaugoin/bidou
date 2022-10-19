@@ -1,5 +1,6 @@
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Group } from "@mantine/core";
-import { IconChevronRight } from "@tabler/icons";
 import Link from "next/link";
 import { ApiGetAllExpenses } from "../pages/api/expenses";
 import displayAmount from "../utils/displayAmount";
@@ -17,7 +18,8 @@ export default function ExpenseRow({ expense }: RowProps) {
         <td style={{ width: "25%" }}>{displayDate(expense.date)}</td>
         <td style={{ width: "25%" }}>
           <Group position="right">
-            {displayAmount(expense.amount)} <IconChevronRight size={16} />
+            {displayAmount(expense.amount)}{" "}
+            <FontAwesomeIcon icon={faChevronRight} size="sm" />
           </Group>
         </td>
       </tr>

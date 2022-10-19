@@ -1,5 +1,9 @@
+import {
+  faChevronRight,
+  faFolderTree,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Group, Stack, Table } from "@mantine/core";
-import { IconCategory, IconChevronRight } from "@tabler/icons";
 import Head from "next/head";
 import Link from "next/link";
 import MainLayout from "../../components/MainLayout";
@@ -18,7 +22,7 @@ export default function Categories() {
       </Head>
 
       <MainLayout>
-        <PageHeader icon={IconCategory} title="Categories">
+        <PageHeader icon={faFolderTree} title="Categories">
           <Link href="/categories/create" passHref>
             <Button component="a" id="createBtn">
               Create
@@ -56,7 +60,7 @@ function Row({ category }: { category: ApiGetAllCategories[number] }) {
         <td style={{ width: "33%" }}>{category.Parent?.name}</td>
         <td style={{ width: "33%" }}>
           <Group position="apart">
-            {category.type} <IconChevronRight size={16} />
+            {category.type} <FontAwesomeIcon icon={faChevronRight} size="sm" />
           </Group>
         </td>
       </tr>

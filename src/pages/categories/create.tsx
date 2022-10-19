@@ -1,4 +1,9 @@
 import {
+  faCheckCircle,
+  faExclamationTriangle,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
   Button,
   Group,
   Select,
@@ -9,7 +14,6 @@ import {
 import { useForm, zodResolver } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { CategoryType } from "@prisma/client";
-import { IconCheck, IconExclamationMark } from "@tabler/icons";
 import { useRouter } from "next/router";
 import { TypeOf, z } from "zod";
 import MainLayout from "../../components/MainLayout";
@@ -63,7 +67,7 @@ export default function CategoryCreate() {
         color: "red",
         title: "Error",
         message: "An error occurred while creating the category.",
-        icon: <IconExclamationMark size={16} />,
+        icon: <FontAwesomeIcon icon={faExclamationTriangle} />,
       });
       return;
     }
@@ -72,7 +76,7 @@ export default function CategoryCreate() {
       color: "teal",
       title: "Category created",
       message: "The category was created successfully.",
-      icon: <IconCheck size={16} />,
+      icon: <FontAwesomeIcon icon={faCheckCircle} />,
     });
 
     router.push("/categories");

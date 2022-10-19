@@ -1,5 +1,5 @@
+import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { Stack, Text } from "@mantine/core";
-import { IconHomeDollar } from "@tabler/icons";
 import Head from "next/head";
 import MainLayout from "../components/MainLayout";
 import PageHeader from "../components/PageHeader";
@@ -13,7 +13,7 @@ export default function Dashboard() {
       </Head>
 
       <MainLayout>
-        <PageHeader icon={IconHomeDollar} title="Dashboard" />
+        <PageHeader icon={faHome} title="Dashboard" />
 
         <Stack spacing="xl">
           <Text>Dashboard</Text>

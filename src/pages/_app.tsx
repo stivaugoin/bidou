@@ -5,6 +5,7 @@ import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
 import Head from "next/head";
+import { SWRConfig } from "swr";
 
 export default function App(
   props: AppProps<{
@@ -40,11 +41,23 @@ export default function App(
         }}
       >
         <ModalsProvider>
-          <NotificationsProvider>
-            <SessionProvider session={pageProps.session}>
-              <Component {...pageProps} />
-            </SessionProvider>
-          </NotificationsProvider>
+          <SWRConfig
+            value={{
+              fetcher: async (url) => {
+                const res = await fetch(url);
+                if (!res.ok) {
+                  throw new Error("An error occurred while fetching the data.");
+                }
+                return res.json();
+              },
+            }}
+          >
+            <NotificationsProvider>
+              <SessionProvider session={pageProps.session}>
+                <Component {...pageProps} />
+              </SessionProvider>
+            </NotificationsProvider>
+          </SWRConfig>
         </ModalsProvider>
       </MantineProvider>
     </>

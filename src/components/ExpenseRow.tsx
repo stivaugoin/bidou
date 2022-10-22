@@ -2,12 +2,12 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Group } from "@mantine/core";
 import Link from "next/link";
-import { ApiGetAllExpenses } from "../pages/api/expenses";
+import { ApiGetExpenses } from "../server/expenses";
 import displayAmount from "../utils/displayAmount";
 import { displayDate } from "../utils/displayDate";
 
 interface RowProps {
-  expense: ApiGetAllExpenses[number]["transactions"][number];
+  expense: ApiGetExpenses[number]["transactions"][number];
 }
 export default function ExpenseRow({ expense }: RowProps) {
   return (

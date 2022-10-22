@@ -1,28 +1,17 @@
 import { Loader, Table, useMantineTheme } from "@mantine/core";
-import useSWR, { Fetcher } from "swr";
-import { ApiGetAllExpenses } from "../pages/api/expenses";
+import useSWR from "swr";
+import { ApiGetExpenses } from "../server/expenses";
 import { HEADER_HEIGHT } from "../utils/constant";
 import displayAmount from "../utils/displayAmount";
+import AlertFetchError from "./AlertFetchError";
 import ExpenseRow from "./ExpenseRow";
-
-const fetcher: Fetcher<ApiGetAllExpenses, string> = (url) =>
-  fetch(url).then((res) => res.json());
 
 export default function ExpensesList() {
   const theme = useMantineTheme();
-  const { data, error } = useSWR("/api/expenses", fetcher);
-  const loading = !data && !error;
+  const { data, error } = useSWR<ApiGetExpenses>("/api/expenses");
 
-  if (error) {
-    return (
-      <div>
-        <p>Failed to load</p>
-        <pre>{error.message}</pre>
-      </div>
-    );
-  }
-
-  if (loading) return <Loader />;
+  if (error) return <AlertFetchError />;
+  if (!data) return <Loader />;
 
   return (
     <>
@@ -39,9 +28,10 @@ export default function ExpensesList() {
             }}
           >
             <tr>
-              <th colSpan={3} style={{ width: "200px" }}>
+              <th colSpan={2} style={{ width: "200px" }}>
                 {value.title}
               </th>
+              <th />
               <th
                 style={{
                   fontVariantNumeric: "tabular-nums lining-nums",

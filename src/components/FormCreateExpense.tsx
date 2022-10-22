@@ -26,13 +26,13 @@ const schema = z.object({
   note: z.string().nullable(),
 });
 
-export default function FormCreateIncome() {
+export default function FormCreateExpense() {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
   const theme = useMantineTheme();
 
   const [categories, categoriesLoading, categoriesError] = useCategories(
-    CategoryType.Income
+    CategoryType.Expense
   );
 
   const form = useForm({
@@ -47,7 +47,7 @@ export default function FormCreateIncome() {
 
   const handleSubmit = async (data: TypeOf<typeof schema>) => {
     setSaving(true);
-    const response = await fetch("/api/incomes/create", {
+    const response = await fetch("/api/expenses/create", {
       body: JSON.stringify(formatTransactionToSave(data)),
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +57,7 @@ export default function FormCreateIncome() {
 
     notification(response.ok ? "success" : "error");
     setSaving(false);
-    if (response.ok) router.push("/incomes");
+    if (response.ok) router.push("/expenses");
   };
 
   if (categoriesError) return <AlertFetchError />;
@@ -82,8 +82,9 @@ export default function FormCreateIncome() {
 
         <Select
           data={categories.map((category) => ({
-            value: category.id,
+            group: category.Parent?.name,
             label: category.name,
+            value: category.id,
           }))}
           label="Category"
           {...form.getInputProps("categoryId")}

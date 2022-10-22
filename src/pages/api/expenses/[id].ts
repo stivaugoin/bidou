@@ -1,5 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../../lib/prisma";
+import {
+  deleteExpense,
+  getExpense,
+  updateExpense,
+} from "../../../server/expenses";
+import handleApiResponse from "../../../server/handleApiResponse";
 
 export default async function handler(
   req: NextApiRequest,
@@ -13,48 +19,22 @@ export default async function handler(
 
   try {
     await prisma.expense.findFirstOrThrow({ where: { id: expenseId } });
-  } catch (e) {
+  } catch (err) {
     res.status(404).end();
     return;
   }
 
   switch (req.method) {
     case "DELETE":
-      try {
-        await prisma.expense.delete({ where: { id: expenseId } });
-        res.status(200).end();
-      } catch (error) {
-        console.error(error);
-        res.status(500).end();
-      }
+      await handleApiResponse(res, deleteExpense(expenseId));
       break;
-
     case "GET":
-      try {
-        const expense = await prisma.expense.findFirst({
-          where: { id: expenseId },
-        });
-        res.status(200).json(expense);
-      } catch (error) {
-        console.error(error);
-        res.status(500).end();
-      }
+      await handleApiResponse(res, getExpense(expenseId));
       break;
-
     case "PUT":
-      try {
-        const { id, ...data } = req.body;
-        const expense = await prisma.expense.update({
-          where: { id: expenseId },
-          data,
-        });
-        res.status(200).json(expense);
-      } catch (error) {
-        console.error(error);
-        res.status(500).end();
-      }
+      const { id, ...data } = req.body;
+      await handleApiResponse(res, updateExpense(expenseId, data));
       break;
-
     default:
       res.status(405).end();
       break;

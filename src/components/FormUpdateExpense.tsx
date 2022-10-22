@@ -11,11 +11,14 @@ import {
 import { DatePicker } from "@mantine/dates";
 import { useForm, zodResolver } from "@mantine/form";
 import { CategoryType } from "@prisma/client";
+import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useSWRConfig } from "swr";
 import { TypeOf, z } from "zod";
 import useCategories from "../hooks/useCategories";
 import notification from "../lib/notification";
+import { ApiGetExpense } from "../server/expenses";
 import { formatTransactionToSave } from "../utils/formatTransactionToSave";
 import AlertFetchError from "./AlertFetchError";
 
@@ -26,38 +29,58 @@ const schema = z.object({
   note: z.string().nullable(),
 });
 
-export default function FormCreateIncome() {
+interface Props {
+  expense: ApiGetExpense;
+}
+
+export default function FormUpdateExpense({ expense }: Props) {
   const router = useRouter();
+  const { mutate } = useSWRConfig();
   const [saving, setSaving] = useState(false);
   const theme = useMantineTheme();
 
   const [categories, categoriesLoading, categoriesError] = useCategories(
-    CategoryType.Income
+    CategoryType.Expense
   );
 
   const form = useForm({
     initialValues: {
-      amount: undefined as unknown as number,
-      categoryId: "",
-      date: new Date(),
-      note: "",
+      amount: expense.amount / 100,
+      categoryId: expense.Category.id,
+      date: dayjs(expense.date).toDate(),
+      note: expense.note,
     },
     validate: zodResolver(schema),
   });
 
   const handleSubmit = async (data: TypeOf<typeof schema>) => {
     setSaving(true);
-    const response = await fetch("/api/incomes/create", {
-      body: JSON.stringify(formatTransactionToSave(data)),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-    });
 
-    notification(response.ok ? "success" : "error");
-    setSaving(false);
-    if (response.ok) router.push("/incomes");
+    try {
+      await mutate(
+        `/api/expenses/${expense.id}`,
+        updateExpense(expense.id, data),
+        {
+          populateCache: (data) => ({
+            id: expense.id,
+            amount: data.amount,
+            Category: {
+              id: data.categoryId,
+            },
+            date: data.date,
+            note: data.note,
+          }),
+          revalidate: false,
+        }
+      );
+      notification("success");
+      router.push("/expenses");
+    } catch (error) {
+      console.error(error);
+      notification("error");
+    } finally {
+      setSaving(false);
+    }
   };
 
   if (categoriesError) return <AlertFetchError />;
@@ -82,8 +105,9 @@ export default function FormCreateIncome() {
 
         <Select
           data={categories.map((category) => ({
-            value: category.id,
+            group: category.Parent?.name,
             label: category.name,
+            value: category.id,
           }))}
           label="Category"
           {...form.getInputProps("categoryId")}
@@ -93,10 +117,24 @@ export default function FormCreateIncome() {
 
         <Group>
           <Button loading={saving} type="submit">
-            Create
+            Save
           </Button>
         </Group>
       </Stack>
     </form>
   );
+}
+
+async function updateExpense(expenseId: string, data: TypeOf<typeof schema>) {
+  const response = await fetch(`/api/expenses/${expenseId}`, {
+    body: JSON.stringify(formatTransactionToSave(data)),
+    headers: { "Content-Type": "application/json" },
+    method: "PUT",
+  });
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  return response.json();
 }

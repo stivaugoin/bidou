@@ -35,6 +35,7 @@ export default function App(
             Button: {
               defaultProps: {
                 radius: "xl",
+                size: "md",
               },
             },
           },

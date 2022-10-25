@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("should navigate to Incomes page", async ({ page }) => {
   await page.goto("/");
-  await page.locator("nav a", { hasText: "Incomes" }).click();
+  await page.locator(".mantine-Group-root > a", { hasText: "Incomes" }).click();
   await expect(page).toHaveURL("/incomes");
 });
 

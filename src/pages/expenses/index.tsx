@@ -1,4 +1,4 @@
-import { faArrowTrendUp } from "@fortawesome/free-solid-svg-icons";
+import { faArrowTrendDown } from "@fortawesome/free-solid-svg-icons";
 import { Button, Stack } from "@mantine/core";
 import Head from "next/head";
 import Link from "next/link";
@@ -15,7 +15,7 @@ export default function Expenses() {
       </Head>
 
       <MainLayout>
-        <PageHeader icon={faArrowTrendUp} title="Expenses">
+        <PageHeader icon={faArrowTrendDown} title="Expenses">
           <Link href="/expenses/create" passHref>
             <Button component="a" id="createBtn">
               Create

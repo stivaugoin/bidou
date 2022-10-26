@@ -1,4 +1,11 @@
-import { Card, Group, Table, Text, useMantineTheme } from "@mantine/core";
+import {
+  Card,
+  createStyles,
+  Group,
+  Table,
+  Text,
+  useMantineTheme,
+} from "@mantine/core";
 import displayAmount from "../utils/displayAmount";
 
 function TransactionTable({ children }: { children: React.ReactNode }) {
@@ -17,6 +24,7 @@ function TransactionTableHeader({
   total: number;
 }) {
   const theme = useMantineTheme();
+  const { classes } = styles();
 
   return (
     <Card.Section
@@ -32,11 +40,7 @@ function TransactionTableHeader({
         <Text size="xl" weight={700}>
           {title}
         </Text>
-        <Text
-          size="xl"
-          style={{ fontVariantNumeric: "tabular-nums lining-nums" }}
-          weight={700}
-        >
+        <Text className={classes.amount} size="xl" weight={700}>
           {displayAmount(total)}
         </Text>
       </Group>
@@ -53,6 +57,10 @@ function TransactionTableBody({ children }: { children: React.ReactNode }) {
     </Card.Section>
   );
 }
+
+const styles = createStyles(() => ({
+  amount: { fontVariantNumeric: "tabular-nums lining-nums" },
+}));
 
 TransactionTable.Header = TransactionTableHeader;
 TransactionTable.Body = TransactionTableBody;

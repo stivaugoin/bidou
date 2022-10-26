@@ -3,7 +3,7 @@ import {
   faFolderTree,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Group, Stack, Table } from "@mantine/core";
+import { createStyles, Group, Stack, Table } from "@mantine/core";
 import Link from "next/link";
 import CreateButton from "../../components/CreateButton";
 import MainLayout from "../../components/MainLayout";
@@ -42,12 +42,14 @@ export default function Categories() {
 }
 
 function Row({ category }: { category: ApiGetAllCategories[number] }) {
+  const { classes } = styles();
+
   return (
     <Link href={`/categories/${category.id}`}>
-      <tr style={{ cursor: "pointer" }}>
-        <td style={{ width: "33%" }}>{category.name}</td>
-        <td style={{ width: "33%" }}>{category.Parent?.name}</td>
-        <td style={{ width: "33%" }}>
+      <tr className={classes.row}>
+        <td className={classes.cell}>{category.name}</td>
+        <td className={classes.cell}>{category.Parent?.name}</td>
+        <td className={classes.cell}>
           <Group position="apart">
             {category.type} <FontAwesomeIcon icon={faChevronRight} size="sm" />
           </Group>
@@ -56,3 +58,8 @@ function Row({ category }: { category: ApiGetAllCategories[number] }) {
     </Link>
   );
 }
+
+const styles = createStyles(() => ({
+  cell: { width: "33%" },
+  row: { cursor: "pointer" },
+}));

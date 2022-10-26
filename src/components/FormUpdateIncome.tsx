@@ -48,7 +48,7 @@ export default function FormUpdateIncome({ income }: Props) {
       amount: income.amount / 100,
       categoryId: income.Category.id,
       date: dayjs(income.date).toDate(),
-      note: income.note,
+      note: income.note || "",
     },
     validate: zodResolver(schema),
   });

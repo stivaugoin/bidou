@@ -6,6 +6,7 @@ import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { SWRConfig } from "swr";
+import { defaultProps } from "../lib/mantine";
 
 export default function App(
   props: AppProps<{
@@ -32,12 +33,12 @@ export default function App(
         theme={{
           colorScheme: "dark",
           components: {
-            Button: {
-              defaultProps: {
-                radius: "xl",
-                size: "md",
-              },
-            },
+            Button: { defaultProps: defaultProps.Button },
+            DatePicker: { defaultProps: defaultProps.Input },
+            NumberInput: { defaultProps: defaultProps.Input },
+            Select: { defaultProps: defaultProps.Input },
+            TextInput: { defaultProps: defaultProps.Input },
+            Textarea: { defaultProps: defaultProps.Input },
           },
         }}
       >

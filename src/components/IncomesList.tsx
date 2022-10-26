@@ -1,10 +1,9 @@
-import { Loader, Table, useMantineTheme } from "@mantine/core";
+import { Loader, useMantineTheme } from "@mantine/core";
 import useSWR from "swr";
 import { ApiGetIncomes } from "../server/incomes";
-import { HEADER_HEIGHT } from "../utils/constant";
-import displayAmount from "../utils/displayAmount";
 import AlertFetchError from "./AlertFetchError";
 import IncomeRow from "./IncomeRow";
+import TransactionTable from "./TransactionTable";
 
 export default function IncomesList() {
   const theme = useMantineTheme();
@@ -16,38 +15,14 @@ export default function IncomesList() {
   return (
     <>
       {data?.map((value) => (
-        <Table key={value.title}>
-          <thead
-            style={{
-              background:
-                theme.colorScheme === "dark"
-                  ? theme.colors.dark[8]
-                  : theme.colors.gray[0],
-              position: "sticky",
-              top: `${HEADER_HEIGHT}px`,
-            }}
-          >
-            <tr>
-              <th colSpan={2} style={{ width: "200px" }}>
-                {value.title}
-              </th>
-              <th
-                style={{
-                  fontVariantNumeric: "tabular-nums lining-nums",
-                  textAlign: "right",
-                  width: "200px",
-                }}
-              >
-                {displayAmount(value.total)}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+        <TransactionTable key={value.title}>
+          <TransactionTable.Header title={value.title} total={value.total} />
+          <TransactionTable.Body>
             {value.transactions.map((transaction) => (
               <IncomeRow key={transaction.id} income={transaction} />
             ))}
-          </tbody>
-        </Table>
+          </TransactionTable.Body>
+        </TransactionTable>
       ))}
     </>
   );

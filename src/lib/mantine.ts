@@ -13,6 +13,7 @@ const Input: Partial<InputProps> = {
 const Table: Partial<TableProps> = {
   fontSize: "md",
   highlightOnHover: true,
+  horizontalSpacing: "md",
   verticalSpacing: "md",
 };
 

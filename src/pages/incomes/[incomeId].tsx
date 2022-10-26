@@ -1,5 +1,4 @@
 import { Loader } from "@mantine/core";
-import Head from "next/head";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import AlertFetchError from "../../components/AlertFetchError";
@@ -9,7 +8,6 @@ import PageHeader from "../../components/PageHeader";
 import PageOptions from "../../components/PageOptions";
 import notification from "../../lib/notification";
 import { ApiGetIncome } from "../../server/incomes";
-import { getTitle } from "../../utils/getTitle";
 
 export default function IncomeView() {
   const router = useRouter();
@@ -29,19 +27,14 @@ export default function IncomeView() {
   };
 
   return (
-    <>
-      <Head>
-        <title>{getTitle("Edit income")}</title>
-      </Head>
-      <MainLayout>
-        <PageHeader backHref="/incomes" title="Edit income">
-          <PageOptions onConfirmDelete={handleDelete} />
-        </PageHeader>
+    <MainLayout>
+      <PageHeader backHref="/incomes" title="Edit income">
+        <PageOptions onConfirmDelete={handleDelete} />
+      </PageHeader>
 
-        {error && <AlertFetchError />}
-        {!error && !data && <Loader />}
-        {!error && data && <FormUpdateIncome income={data} />}
-      </MainLayout>
-    </>
+      {error && <AlertFetchError />}
+      {!error && !data && <Loader />}
+      {!error && data && <FormUpdateIncome income={data} />}
+    </MainLayout>
   );
 }

@@ -4,6 +4,7 @@ import {
   FontAwesomeIconProps,
 } from "@fortawesome/react-fontawesome";
 import { ActionIcon, Group, Title } from "@mantine/core";
+import Head from "next/head";
 import Link from "next/link";
 
 interface PropsBackButton {
@@ -25,19 +26,24 @@ export default function PageHeader({
   ...props
 }: Props & (PropsBackButton | PropsIcon)) {
   return (
-    <Group mb="xl" position="apart">
-      <Group align="center">
-        {"backHref" in props && (
-          <Link href={props.backHref} passHref>
-            <ActionIcon component="a" size="lg">
-              <FontAwesomeIcon icon={faChevronLeft} size="lg" />
-            </ActionIcon>
-          </Link>
-        )}
-        {"icon" in props && <FontAwesomeIcon icon={props.icon} size="lg" />}
-        <Title>{title}</Title>
+    <>
+      <Head>
+        <title>{`${title} - Bidou`}</title>
+      </Head>
+      <Group mb="xl" position="apart">
+        <Group align="center">
+          {"backHref" in props && (
+            <Link href={props.backHref} passHref>
+              <ActionIcon component="a" size="lg">
+                <FontAwesomeIcon icon={faChevronLeft} size="lg" />
+              </ActionIcon>
+            </Link>
+          )}
+          {"icon" in props && <FontAwesomeIcon icon={props.icon} size="lg" />}
+          <Title>{title}</Title>
+        </Group>
+        {children}
       </Group>
-      {children}
-    </Group>
+    </>
   );
 }

@@ -1,5 +1,4 @@
 import { Loader } from "@mantine/core";
-import Head from "next/head";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import AlertFetchError from "../../components/AlertFetchError";
@@ -9,7 +8,6 @@ import PageHeader from "../../components/PageHeader";
 import PageOptions from "../../components/PageOptions";
 import notification from "../../lib/notification";
 import { ApiGetExpense } from "../../server/expenses";
-import { getTitle } from "../../utils/getTitle";
 
 export default function ExpenseView() {
   const router = useRouter();
@@ -29,19 +27,14 @@ export default function ExpenseView() {
   };
 
   return (
-    <>
-      <Head>
-        <title>{getTitle("Edit expense")}</title>
-      </Head>
-      <MainLayout>
-        <PageHeader backHref="/expenses" title="Edit expense">
-          <PageOptions onConfirmDelete={handleDelete} />
-        </PageHeader>
+    <MainLayout>
+      <PageHeader backHref="/expenses" title="Edit expense">
+        <PageOptions onConfirmDelete={handleDelete} />
+      </PageHeader>
 
-        {error && <AlertFetchError />}
-        {!error && !data && <Loader />}
-        {!error && data && <FormUpdateExpense expense={data} />}
-      </MainLayout>
-    </>
+      {error && <AlertFetchError />}
+      {!error && !data && <Loader />}
+      {!error && data && <FormUpdateExpense expense={data} />}
+    </MainLayout>
   );
 }

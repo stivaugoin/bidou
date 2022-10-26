@@ -1,23 +1,19 @@
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  ActionIcon,
   Button,
   Group,
   Select,
   Stack,
-  Text,
   TextInput,
   useMantineTheme,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { openConfirmModal } from "@mantine/modals";
 import { CategoryType } from "@prisma/client";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { TypeOf, z } from "zod";
 import MainLayout from "../../components/MainLayout";
 import PageHeader from "../../components/PageHeader";
+import PageOptions from "../../components/PageOptions";
 import useCategories from "../../hooks/useCategories";
 import notification from "../../lib/notification";
 import { prisma } from "../../lib/prisma";
@@ -80,23 +76,10 @@ export default function CategoryView({
     if (result.ok) router.push("/categories");
   };
 
-  const openModal = () =>
-    openConfirmModal({
-      title: `Are you sure you want to delete ${category.name}?`,
-      children: <Text size="sm">This action cannot be reverted.</Text>,
-      labels: { confirm: "Delete", cancel: "Cancel" },
-      confirmProps: {
-        color: "red",
-      },
-      onConfirm: handleDelete,
-    });
-
   return (
     <MainLayout>
       <PageHeader backHref="/categories" title="Edit category">
-        <ActionIcon color="red" onClick={openModal} size="lg" variant="subtle">
-          <FontAwesomeIcon icon={faTrash} />
-        </ActionIcon>
+        <PageOptions onConfirmDelete={handleDelete} />
       </PageHeader>
 
       <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>

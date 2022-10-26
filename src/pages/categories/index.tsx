@@ -3,9 +3,10 @@ import {
   faFolderTree,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Group, Stack, Table } from "@mantine/core";
+import { Group, Stack, Table } from "@mantine/core";
 import Head from "next/head";
 import Link from "next/link";
+import CreateButton from "../../components/CreateButton";
 import MainLayout from "../../components/MainLayout";
 import PageHeader from "../../components/PageHeader";
 import useCategories from "../../hooks/useCategories";
@@ -23,11 +24,7 @@ export default function Categories() {
 
       <MainLayout>
         <PageHeader icon={faFolderTree} title="Categories">
-          <Link href="/categories/create" passHref>
-            <Button component="a" id="createBtn">
-              Create
-            </Button>
-          </Link>
+          <CreateButton />
         </PageHeader>
 
         <Stack spacing="xl">

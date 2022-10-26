@@ -3,10 +3,10 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import AlertFetchError from "../../components/AlertFetchError";
-import DeleteButton from "../../components/DeleteButton";
 import FormUpdateIncome from "../../components/FormUpdateIncome";
 import MainLayout from "../../components/MainLayout";
 import PageHeader from "../../components/PageHeader";
+import PageOptions from "../../components/PageOptions";
 import notification from "../../lib/notification";
 import { ApiGetIncome } from "../../server/incomes";
 import { getTitle } from "../../utils/getTitle";
@@ -35,7 +35,7 @@ export default function IncomeView() {
       </Head>
       <MainLayout>
         <PageHeader backHref="/incomes" title="Edit income">
-          <DeleteButton onConfirmDelete={handleDelete} />
+          <PageOptions onConfirmDelete={handleDelete} />
         </PageHeader>
 
         {error && <AlertFetchError />}

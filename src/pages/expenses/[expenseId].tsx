@@ -3,10 +3,10 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import AlertFetchError from "../../components/AlertFetchError";
-import DeleteButton from "../../components/DeleteButton";
 import FormUpdateExpense from "../../components/FormUpdateExpense";
 import MainLayout from "../../components/MainLayout";
 import PageHeader from "../../components/PageHeader";
+import PageOptions from "../../components/PageOptions";
 import notification from "../../lib/notification";
 import { ApiGetExpense } from "../../server/expenses";
 import { getTitle } from "../../utils/getTitle";
@@ -35,7 +35,7 @@ export default function ExpenseView() {
       </Head>
       <MainLayout>
         <PageHeader backHref="/expenses" title="Edit expense">
-          <DeleteButton onConfirmDelete={handleDelete} />
+          <PageOptions onConfirmDelete={handleDelete} />
         </PageHeader>
 
         {error && <AlertFetchError />}

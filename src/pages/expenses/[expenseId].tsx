@@ -1,13 +1,13 @@
 import { Loader } from "@mantine/core";
 import { useRouter } from "next/router";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import AlertFetchError from "../../components/AlertFetchError";
 import FormUpdateExpense from "../../components/FormUpdateExpense";
 import MainLayout from "../../components/MainLayout";
 import PageHeader from "../../components/PageHeader";
 import PageOptions from "../../components/PageOptions";
 import notification from "../../lib/notification";
-import { ApiGetExpense } from "../../server/expenses";
+import { ApiGetExpense, ApiGetExpenses } from "../../server/expenses";
 
 export default function ExpenseView() {
   const router = useRouter();
@@ -16,14 +16,27 @@ export default function ExpenseView() {
   const { data, error } = useSWR<ApiGetExpense>(
     () => expenseId && `/api/expenses/${expenseId}`
   );
+  const { data: expenses } = useSWR<ApiGetExpenses>("/api/expenses");
+  const { mutate } = useSWRConfig();
 
   const handleDelete = async () => {
-    const result = await fetch(`/api/expenses/${expenseId}`, {
-      method: "DELETE",
-    });
+    try {
+      await mutate(`/api/expenses`, deleteExpense(expenseId as string), {
+        populateCache: () => {
+          return expenses?.map((expense) => {
+            return expense.transactions.filter(
+              (transaction) => transaction.id !== expenseId
+            );
+          });
+        },
+      });
 
-    notification(result.ok ? "success" : "error");
-    if (result.ok) router.push("/expenses");
+      notification("success");
+      router.push("/expenses");
+    } catch (error) {
+      console.error(error);
+      notification("error");
+    }
   };
 
   return (
@@ -37,4 +50,12 @@ export default function ExpenseView() {
       {!error && data && <FormUpdateExpense expense={data} />}
     </MainLayout>
   );
+}
+
+async function deleteExpense(expenseId: string) {
+  const response = await fetch(`/api/expenses/${expenseId}`, {
+    method: "DELETE",
+  });
+  if (!response.ok) throw new Error("Failed to delete expense");
+  return response.json();
 }

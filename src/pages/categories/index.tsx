@@ -29,7 +29,7 @@ export default function Categories() {
 
         <Stack spacing="xl">
           {/* TODO: Add filters */}
-          <Table fontSize="md" highlightOnHover>
+          <Table>
             <thead>
               <tr>
                 <th>Name</th>

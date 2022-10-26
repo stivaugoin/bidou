@@ -37,8 +37,9 @@ export default function App(
             DatePicker: { defaultProps: defaultProps.Input },
             NumberInput: { defaultProps: defaultProps.Input },
             Select: { defaultProps: defaultProps.Input },
-            TextInput: { defaultProps: defaultProps.Input },
+            Table: { defaultProps: defaultProps.Table },
             Textarea: { defaultProps: defaultProps.Input },
+            TextInput: { defaultProps: defaultProps.Input },
           },
         }}
       >

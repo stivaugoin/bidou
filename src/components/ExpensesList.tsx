@@ -16,7 +16,7 @@ export default function ExpensesList() {
   return (
     <>
       {data?.map((value) => (
-        <Table fontSize="md" highlightOnHover key={value.title}>
+        <Table key={value.title}>
           <thead
             style={{
               background:

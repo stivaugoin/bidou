@@ -83,7 +83,7 @@ const useStyles = createStyles((theme) => ({
       theme.colorScheme === "dark"
         ? theme.colors.dark[0]
         : theme.colors.gray[7],
-    fontSize: theme.fontSizes.sm,
+    fontSize: theme.fontSizes.md,
     fontWeight: 500,
 
     "&:hover": {
@@ -132,7 +132,7 @@ export default function AppHeader() {
     <Header height={HEADER_HEIGHT} mb="xl" className={classes.root}>
       <Container className={classes.header}>
         <Image alt="Bidou" src={logoSrc} height={20} width={120} />
-        <Group spacing={5} className={classes.links}>
+        <Group spacing="md" className={classes.links}>
           {items}
         </Group>
 

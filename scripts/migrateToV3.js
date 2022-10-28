@@ -10,7 +10,7 @@ if (!DATABASE_V2_PRODUCTION_URL || !DATABASE_V3_PRODUCTION_URL) {
   throw new Error("Missing environment variables");
 }
 
-console.log(" == Migrating database to v3 ==");
+console.info(" == Migrating database to v3 ==");
 
 // Connection URL
 const clientV2 = new MongoClient(DATABASE_V2_PRODUCTION_URL, {
@@ -28,9 +28,9 @@ const dbNameV3 = "production";
 
 async function main() {
   await clientV2.connect();
-  console.log(" > Connected successfully to server v2");
+  console.info(" > Connected successfully to server v2");
   await clientV3.connect();
-  console.log(" > Connected successfully to server v3");
+  console.info(" > Connected successfully to server v3");
 
   const dbV2 = clientV2.db(dbNameV2);
   const dbV3 = clientV3.db(dbNameV3);
@@ -46,32 +46,32 @@ async function main() {
   };
 
   if (process.env.RESET_DB) {
-    console.log(" > Dropping collections");
+    console.info(" > Dropping collections");
     try {
       await Promise.all(
         Object.values(newCollections).map((collection) => collection.drop())
       );
     } catch (e) {
-      console.log(" > Collections already dropped");
+      console.info(" > Collections already dropped");
     }
   }
 
-  console.log(" > Getting all categories from v2...");
+  console.info(" > Getting all categories from v2...");
   const oldCategories = await oldCollections.categories
     .find({ type: "income" })
     .toArray();
-  console.log(
+  console.info(
     ` > Getting all categories from v2... ${oldCategories.length} found`
   );
 
-  console.log(" > Inserting categories into v3...");
+  console.info(" > Inserting categories into v3...");
   await newCollections.categories.insertMany(
     oldCategories.map((category) => ({
       name: category.name,
       type: CategoryType.Income,
     }))
   );
-  console.log(" > Inserting categories into v3... done");
+  console.info(" > Inserting categories into v3... done");
 
   // Map old category id to new category id
   const newCategories = await newCollections.categories
@@ -84,11 +84,11 @@ async function main() {
     ])
   );
 
-  console.log(" > Getting all incomes from v2...");
+  console.info(" > Getting all incomes from v2...");
   const oldIncomes = await oldCollections.incomes.find().toArray();
-  console.log(` > Getting all incomes from v2... ${oldIncomes.length} found`);
+  console.info(` > Getting all incomes from v2... ${oldIncomes.length} found`);
 
-  console.log(" > Inserting incomes into v3...");
+  console.info(" > Inserting incomes into v3...");
   await newCollections.incomes.insertMany(
     oldIncomes.map((income) => ({
       amount: income.amount,
@@ -97,12 +97,12 @@ async function main() {
       note: income.comments,
     }))
   );
-  console.log(" > Inserting incomes into v3... done");
+  console.info(" > Inserting incomes into v3... done");
 }
 
 main()
   .then(() => {
-    console.log(" > Done");
+    console.info(" > Done");
   })
   .catch(console.error)
   .finally(() => {

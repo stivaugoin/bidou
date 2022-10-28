@@ -10,7 +10,7 @@ import {
 const YEARS = [2020, 2021, 2022];
 
 export default async function seedIncomes(prisma: PrismaClient) {
-  console.log(" => Seeding incomes...");
+  console.info(" => Seeding incomes...");
 
   const incomeCategories = data.categories.filter(
     ({ type }) => type === CategoryType.Income
@@ -30,7 +30,7 @@ export default async function seedIncomes(prisma: PrismaClient) {
     await prisma.income.createMany({ data: incomes });
   }
 
-  console.log(" => Seeding incomes... [DONE]");
+  console.info(" => Seeding incomes... [DONE]");
 }
 
 function mapIncome(category: typeof data.categories[number]) {

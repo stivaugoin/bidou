@@ -5,7 +5,7 @@ import { dateIsPast, getRandomDatesByMonth, randomNumber } from "../utils";
 const YEARS = [2020, 2021, 2022];
 
 export default async function seedExpenses(prisma: PrismaClient) {
-  console.log(" => Seeding expenses...");
+  console.info(" => Seeding expenses...");
   const expenseCategories = getSubCategories(data.categories);
   for await (const category of expenseCategories) {
     const expenses = YEARS.flatMap((year) => {
@@ -22,7 +22,7 @@ export default async function seedExpenses(prisma: PrismaClient) {
 
     await prisma.expense.createMany({ data: expenses });
   }
-  console.log(" => Seeding expenses... [DONE]");
+  console.info(" => Seeding expenses... [DONE]");
 }
 
 function mapExpense(category: SeedSubCategory) {

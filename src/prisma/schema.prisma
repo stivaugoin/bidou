@@ -38,7 +38,7 @@ model Expense {
 model Income {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   amount     Int
-  categoryId String
+  categoryId String   @db.ObjectId
   date       DateTime @db.Date
   note       String?
 

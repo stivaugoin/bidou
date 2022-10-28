@@ -1,3 +1,5 @@
+import { config as fontAwesomeConfig } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 import { MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { NotificationsProvider } from "@mantine/notifications";
@@ -7,6 +9,8 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import { SWRConfig } from "swr";
 import { defaultProps } from "../lib/mantine";
+
+fontAwesomeConfig.autoAddCss = false;
 
 export default function App(
   props: AppProps<{

@@ -8,7 +8,15 @@ export default async function handler(
 ) {
   switch (req.method) {
     case "POST":
-      await handleApiResponse(res, createCategory(req.body));
+      const { name, type, parentId } = req.body;
+      await handleApiResponse(
+        res,
+        createCategory({
+          name,
+          type,
+          ...(parentId && { Parent: { connect: { id: parentId } } }),
+        })
+      );
       break;
     default:
       res.status(405).end();

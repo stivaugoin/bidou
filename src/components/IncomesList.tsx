@@ -3,7 +3,7 @@ import useSWR from "swr";
 import { ApiGetIncomes } from "../server/incomes";
 import AlertFetchError from "./AlertFetchError";
 import IncomeRow from "./IncomeRow";
-import TransactionTable from "./TransactionTable";
+import Table from "./Table";
 
 export default function IncomesList() {
   const theme = useMantineTheme();
@@ -15,14 +15,14 @@ export default function IncomesList() {
   return (
     <>
       {data?.map((value) => (
-        <TransactionTable key={value.title}>
-          <TransactionTable.Header title={value.title} total={value.total} />
-          <TransactionTable.Body>
+        <Table key={value.title}>
+          <Table.TransactionHeader title={value.title} total={value.total} />
+          <Table.Body>
             {value.transactions.map((transaction) => (
               <IncomeRow key={transaction.id} income={transaction} />
             ))}
-          </TransactionTable.Body>
-        </TransactionTable>
+          </Table.Body>
+        </Table>
       ))}
     </>
   );

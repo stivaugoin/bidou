@@ -2,17 +2,35 @@ import {
   Card,
   createStyles,
   Group,
-  Table,
+  Table as MantineTable,
   Text,
   useMantineTheme,
 } from "@mantine/core";
 import displayAmount from "../utils/displayAmount";
 
-function TransactionTable({ children }: { children: React.ReactNode }) {
+function Table({ children }: { children: React.ReactNode }) {
   return (
     <Card shadow="sm" p={0} radius="md">
       {children}
     </Card>
+  );
+}
+
+function TableHeader({ children }: { children: React.ReactNode }) {
+  const theme = useMantineTheme();
+
+  return (
+    <Card.Section
+      p="md"
+      sx={{
+        background:
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[8]
+            : theme.colors.gray[0],
+      }}
+    >
+      {children}
+    </Card.Section>
   );
 }
 
@@ -27,15 +45,7 @@ function TransactionTableHeader({
   const { classes } = styles();
 
   return (
-    <Card.Section
-      p="md"
-      sx={{
-        background:
-          theme.colorScheme === "dark"
-            ? theme.colors.dark[8]
-            : theme.colors.gray[0],
-      }}
-    >
+    <TableHeader>
       <Group position="apart">
         <Text size="xl" weight={700}>
           {title}
@@ -44,16 +54,16 @@ function TransactionTableHeader({
           {displayAmount(total)}
         </Text>
       </Group>
-    </Card.Section>
+    </TableHeader>
   );
 }
 
-function TransactionTableBody({ children }: { children: React.ReactNode }) {
+function TableBody({ children }: { children: React.ReactNode }) {
   return (
     <Card.Section>
-      <Table>
+      <MantineTable>
         <tbody>{children}</tbody>
-      </Table>
+      </MantineTable>
     </Card.Section>
   );
 }
@@ -62,7 +72,8 @@ const styles = createStyles(() => ({
   amount: { fontVariantNumeric: "tabular-nums lining-nums" },
 }));
 
-TransactionTable.Header = TransactionTableHeader;
-TransactionTable.Body = TransactionTableBody;
+Table.Body = TableBody;
+Table.Header = TableHeader;
+Table.TransactionHeader = TransactionTableHeader;
 
-export default TransactionTable;
+export default Table;

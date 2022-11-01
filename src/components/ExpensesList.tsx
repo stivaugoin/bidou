@@ -3,7 +3,7 @@ import useSWR from "swr";
 import { ApiGetExpenses } from "../server/expenses";
 import AlertFetchError from "./AlertFetchError";
 import ExpenseRow from "./ExpenseRow";
-import TransactionTable from "./TransactionTable";
+import Table from "./Table";
 
 export default function ExpensesList() {
   const theme = useMantineTheme();
@@ -15,14 +15,14 @@ export default function ExpensesList() {
   return (
     <>
       {data?.map((value) => (
-        <TransactionTable key={value.title}>
-          <TransactionTable.Header title={value.title} total={value.total} />
-          <TransactionTable.Body>
+        <Table key={value.title}>
+          <Table.TransactionHeader title={value.title} total={value.total} />
+          <Table.Body>
             {value.transactions.map((transaction) => (
               <ExpenseRow key={transaction.id} expense={transaction} />
             ))}
-          </TransactionTable.Body>
-        </TransactionTable>
+          </Table.Body>
+        </Table>
       ))}
     </>
   );

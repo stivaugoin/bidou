@@ -1,24 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "../../../lib/prisma";
+import { createCategory } from "../../../server/categories";
+import handleApiResponse from "../../../server/handleApiResponse";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== "POST") {
-    res.status(405).end();
-    return;
-  }
-
-  const { name, type } = req.body;
-  try {
-    const category = await prisma.category.create({
-      data: { name, type },
-    });
-
-    res.status(200).json(category);
-  } catch (error) {
-    console.error(error);
-    res.status(500).end();
+  switch (req.method) {
+    case "POST":
+      await handleApiResponse(res, createCategory(req.body));
+      break;
+    default:
+      res.status(405).end();
+      break;
   }
 }

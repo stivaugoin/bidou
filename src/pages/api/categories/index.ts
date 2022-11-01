@@ -1,40 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "../../../lib/prisma";
+import { getCategories } from "../../../server/categories";
+import handleApiResponse from "../../../server/handleApiResponse";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== "GET") {
-    res.status(405).end();
-    return;
+  switch (req.method) {
+    case "GET":
+      await handleApiResponse(res, getCategories());
+      break;
+    default:
+      res.status(405).end();
+      break;
   }
-
-  try {
-    const categories = await getAllCategories();
-
-    res.status(200).json(categories);
-  } catch (error) {
-    console.error(error);
-    res.status(500).end();
-  }
-}
-
-export type ApiGetAllCategories = Awaited<ReturnType<typeof getAllCategories>>;
-
-async function getAllCategories() {
-  return prisma.category.findMany({
-    select: {
-      id: true,
-      name: true,
-      type: true,
-      Parent: {
-        select: {
-          id: true,
-          name: true,
-        },
-      },
-    },
-    orderBy: { name: "asc" },
-  });
 }

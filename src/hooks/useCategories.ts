@@ -1,18 +1,15 @@
 import { CategoryType } from "@prisma/client";
 import useSWR from "swr";
-import { ApiGetAllCategories } from "../pages/api/categories";
+import { ApiGetCategories } from "../server/categories";
 
 type ReturnError = [undefined, false, Error];
 type ReturnLoading = [undefined, true, undefined];
-type ReturnData = [ApiGetAllCategories, false, undefined];
+type ReturnData = [ApiGetCategories, false, undefined];
 
 export default function useCategories(
   type?: CategoryType
 ): ReturnError | ReturnLoading | ReturnData {
-  const { data, error } = useSWR<ApiGetAllCategories>([
-    "/api/categories",
-    CategoryType.Income,
-  ]);
+  const { data, error } = useSWR<ApiGetCategories>(["/api/categories", type]);
 
   if (error) return [undefined, false, error];
   if (!data) return [undefined, true, undefined];

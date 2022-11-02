@@ -9,7 +9,7 @@ export default function MainLayout({ children }: Props) {
   return (
     <>
       <AppHeader />
-      <Container>{children}</Container>
+      <Container pb="xl">{children}</Container>
     </>
   );
 }

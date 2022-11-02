@@ -8,9 +8,9 @@ export default class _Document extends Document {
 
   render() {
     return (
-      <Html>
+      <Html style={{ height: "100vh" }}>
         <Head />
-        <body>
+        <body style={{ height: "100vh" }}>
           <Main />
           <NextScript />
         </body>

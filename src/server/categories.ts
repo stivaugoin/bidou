@@ -29,6 +29,15 @@ export async function updateCategory(
   id: string,
   data: Prisma.CategoryUpdateInput
 ) {
+  const category = await prisma.category.findFirstOrThrow({
+    select: { type: true },
+    where: { id },
+  });
+
+  if (data.type !== category.type) {
+    throw new Error("Cannot change category type");
+  }
+
   return prisma.category.update({ data, select, where: { id } });
 }
 

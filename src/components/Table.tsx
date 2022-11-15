@@ -58,10 +58,16 @@ function TransactionTableHeader({
   );
 }
 
-function TableBody({ children }: { children: React.ReactNode }) {
+function TableBody({
+  children,
+  highlightOnHover,
+}: {
+  children: React.ReactNode;
+  highlightOnHover?: boolean;
+}) {
   return (
     <Card.Section>
-      <MantineTable>
+      <MantineTable highlightOnHover={highlightOnHover}>
         <tbody>{children}</tbody>
       </MantineTable>
     </Card.Section>

@@ -13,11 +13,20 @@ import useCategories from "../../../hooks/useCategories";
 import notification from "../../../lib/notification";
 import { ApiGetCategory } from "../../../server/categories";
 
-export default function CategoryView() {
+export default function RootCategoryView() {
+  return (
+    <MainLayout>
+      <CategoryView />
+    </MainLayout>
+  );
+}
+
+function CategoryView() {
   const router = useRouter();
   const { categoryId } = router.query;
   const [categories] = useCategories();
-  const [tab, setTab] = useState<null | string>(null);
+
+  const [tab, setTab] = useState<string | null>(null);
 
   const { data, error } = useSWR<ApiGetCategory>(
     () => categoryId && `/api/categories/${categoryId}`
@@ -29,6 +38,19 @@ export default function CategoryView() {
     if (data.Children.length > 0) setTab("subcategories");
     else setTab("transactions");
   }, [data]);
+
+  if (error) return <AlertFetchError />;
+  if (!data) return <Loader />;
+
+  const backHref = (() => {
+    if (data.Parent?.id) return `/categories/${data.Parent.id}`;
+    return "/categories";
+  })();
+
+  const title = (() => {
+    if (data.Parent?.id) return `${data.Parent.name} - ${data.name}`;
+    return data.name;
+  })();
 
   const handleClickDelete = () =>
     openConfirmModal({
@@ -59,21 +81,8 @@ export default function CategoryView() {
       },
     });
 
-  if (error) return <AlertFetchError />;
-  if (!data) return <Loader />;
-
-  const backHref = (() => {
-    if (data.Parent?.id) return `/categories/${data.Parent.id}`;
-    return "/categories";
-  })();
-
-  const title = (() => {
-    if (data.Parent?.id) return `${data.Parent.name} - ${data.name}`;
-    return data.name;
-  })();
-
   return (
-    <MainLayout>
+    <>
       <PageHeader backHref={backHref} title={title}>
         <MenuButton
           color="gray"
@@ -86,7 +95,6 @@ export default function CategoryView() {
           ]}
         />
       </PageHeader>
-
       <Tabs keepMounted={false} onTabChange={setTab} value={tab}>
         <Tabs.List>
           {data.Children.length > 0 && (
@@ -142,7 +150,7 @@ export default function CategoryView() {
           Coming soon
         </Tabs.Panel>
       </Tabs>
-    </MainLayout>
+    </>
   );
 }
 

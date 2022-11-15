@@ -63,7 +63,7 @@ export default function FormUpdateCategory({ category }: Props) {
         updateCategory(category.id, data),
         {
           populateCache: (data) => ({
-            id: category.id,
+            ...data,
             name: data.name,
             Parent: {
               id: data.parentId,
@@ -74,7 +74,7 @@ export default function FormUpdateCategory({ category }: Props) {
         }
       );
       notification("success");
-      router.push("/categories");
+      router.push(`/categories/${category.id}`);
     } catch (error) {
       console.error(error);
       notification("error");

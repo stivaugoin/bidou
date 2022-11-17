@@ -1,4 +1,4 @@
-import { Loader } from "@mantine/core";
+import { Loader, Stack } from "@mantine/core";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { ApiGetCategoryExpenses } from "../server/categories";
@@ -18,7 +18,7 @@ export default function CategoryTransactions() {
   if (!data) return <Loader />;
 
   return (
-    <>
+    <Stack spacing="xl">
       {data?.map((value) => (
         <Table key={value.title}>
           <Table.TransactionHeader title={value.title} total={value.total} />
@@ -29,6 +29,6 @@ export default function CategoryTransactions() {
           </Table.Body>
         </Table>
       ))}
-    </>
+    </Stack>
   );
 }

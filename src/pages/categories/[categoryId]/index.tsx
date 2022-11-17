@@ -1,15 +1,14 @@
-import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Loader, Tabs, Text } from "@mantine/core";
 import { openConfirmModal } from "@mantine/modals";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR from "swr";
 import AlertFetchError from "../../../components/AlertFetchError";
 import MainLayout from "../../../components/MainLayout";
 import { MenuButton } from "../../../components/MenuButton";
 import PageHeader from "../../../components/PageHeader";
-import Table from "../../../components/Table";
-import useCategories from "../../../hooks/useCategories";
+import Subcategories from "../../../components/Subcategories";
 import notification from "../../../lib/notification";
 import { ApiGetCategory } from "../../../server/categories";
 
@@ -23,15 +22,13 @@ export default function RootCategoryView() {
 
 function CategoryView() {
   const router = useRouter();
-  const { categoryId } = router.query;
-  const [categories] = useCategories();
+  const categoryId = router.query.categoryId as string;
 
   const [tab, setTab] = useState<string | null>(null);
 
   const { data, error } = useSWR<ApiGetCategory>(
     () => categoryId && `/api/categories/${categoryId}`
   );
-  const { mutate } = useSWRConfig();
 
   useEffect(() => {
     if (!data) return;
@@ -60,20 +57,9 @@ function CategoryView() {
       labels: { confirm: "Delete category", cancel: "Cancel" },
       onConfirm: async () => {
         try {
-          await mutate(
-            `/api/categories`,
-            deleteCategory(categoryId as string),
-            {
-              populateCache: () => {
-                return categories?.filter((category) => {
-                  return category.id !== categoryId;
-                });
-              },
-            }
-          );
-
+          await deleteCategory(categoryId);
           notification("success");
-          router.push("/categories");
+          router.push(backHref);
         } catch (error) {
           console.error(error);
           notification("error");
@@ -106,41 +92,7 @@ function CategoryView() {
 
         {data.Children.length > 0 && (
           <Tabs.Panel value="subcategories" pt="xl">
-            <Table>
-              <Table.Body highlightOnHover={false}>
-                {categories
-                  ?.filter((category) => category.Parent?.id === categoryId)
-                  .map((category) => (
-                    <tr key={category.id}>
-                      <td>{category.name}</td>
-                      <td>
-                        <MenuButton
-                          color="gray"
-                          mainButton={{
-                            label: "View",
-                            onClick: () =>
-                              router.push(`/categories/${category.id}`),
-                          }}
-                          options={[
-                            {
-                              icon: faPencil,
-                              label: "Edit",
-                              onClick: () =>
-                                router.push(`/categories/${category.id}/edit`),
-                            },
-                            {
-                              icon: faTrash,
-                              label: "Delete",
-                              onClick: handleClickDelete,
-                            },
-                          ]}
-                          size="xs"
-                        />
-                      </td>
-                    </tr>
-                  ))}
-              </Table.Body>
-            </Table>
+            <Subcategories categoryId={categoryId as string} />
           </Tabs.Panel>
         )}
         <Tabs.Panel value="transactions" pt="xl">

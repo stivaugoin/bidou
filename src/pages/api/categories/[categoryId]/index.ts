@@ -1,17 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "../../../lib/prisma";
+import { prisma } from "../../../../lib/prisma";
 import {
   deleteCategory,
   getCategory,
   updateCategory,
-} from "../../../server/categories";
-import handleApiResponse from "../../../server/handleApiResponse";
+} from "../../../../server/categories";
+import handleApiResponse from "../../../../server/handleApiResponse";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const categoryId = req.query.id;
+  const { categoryId } = req.query;
   if (!categoryId || typeof categoryId !== "string") {
     res.status(400).end();
     return;

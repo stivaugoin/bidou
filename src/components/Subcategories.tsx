@@ -1,8 +1,7 @@
-import { faPencil } from "@fortawesome/free-solid-svg-icons";
+import { createStyles } from "@mantine/core";
 import { CategoryType } from "@prisma/client";
-import router from "next/router";
+import Link from "next/link";
 import useCategories from "../hooks/useCategories";
-import { MenuButton } from "./MenuButton";
 import Table from "./Table";
 
 interface Props {
@@ -11,6 +10,7 @@ interface Props {
 
 export default function Subcategories({ categoryId }: Props) {
   const [categories] = useCategories(CategoryType.Expense);
+  const { classes } = styles();
 
   return (
     <Table>
@@ -18,29 +18,17 @@ export default function Subcategories({ categoryId }: Props) {
         {categories
           ?.filter((category) => category.Parent?.id === categoryId)
           .map((category) => (
-            <tr key={category.id}>
-              <td>{category.name}</td>
-              <td>
-                <MenuButton
-                  color="gray"
-                  mainButton={{
-                    label: "View",
-                    onClick: () => router.push(`/categories/${category.id}`),
-                  }}
-                  options={[
-                    {
-                      icon: faPencil,
-                      label: "Edit",
-                      onClick: () =>
-                        router.push(`/categories/${category.id}/edit`),
-                    },
-                  ]}
-                  size="xs"
-                />
-              </td>
-            </tr>
+            <Link href={`/categories/${category.id}`} key={category.id}>
+              <tr className={classes.row}>
+                <td>{category.name}</td>
+              </tr>
+            </Link>
           ))}
       </Table.Body>
     </Table>
   );
 }
+
+const styles = createStyles(() => ({
+  row: { cursor: "pointer" },
+}));

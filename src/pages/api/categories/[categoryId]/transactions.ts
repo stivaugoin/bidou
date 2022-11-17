@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../../../lib/prisma";
-import { getCategoryExpenses } from "../../../../server/categories";
+import { getCategoryTransactions } from "../../../../server/categories";
 import handleApiResponse from "../../../../server/handleApiResponse";
 
 export default async function handler(
@@ -22,7 +22,7 @@ export default async function handler(
 
   switch (req.method) {
     case "GET":
-      await handleApiResponse(res, getCategoryExpenses(categoryId));
+      await handleApiResponse(res, getCategoryTransactions(categoryId));
       break;
 
     default:

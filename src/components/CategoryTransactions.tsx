@@ -1,7 +1,7 @@
 import { Loader, Stack } from "@mantine/core";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import { ApiGetCategoryExpenses } from "../server/categories";
+import { ApiGetCategoryTransactions } from "../server/categories";
 import AlertFetchError from "./AlertFetchError";
 import ExpenseRow from "./ExpenseRow";
 import Table from "./Table";
@@ -10,8 +10,8 @@ export default function CategoryTransactions() {
   const router = useRouter();
   const categoryId = router.query.categoryId as string;
 
-  const { data, error } = useSWR<ApiGetCategoryExpenses>(
-    categoryId && `/api/categories/${categoryId}/expenses`
+  const { data, error } = useSWR<ApiGetCategoryTransactions>(
+    categoryId && `/api/categories/${categoryId}/transactions`
   );
 
   if (error) return <AlertFetchError />;

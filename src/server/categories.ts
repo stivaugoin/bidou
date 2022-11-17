@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { CategoryType, Prisma } from "@prisma/client";
 import { prisma } from "../lib/prisma";
 import { groupTransactionsByMonth } from "../utils/groupTransactionsByMonth";
 
@@ -26,7 +26,7 @@ export async function getCategory(id: string) {
   return prisma.category.findFirstOrThrow({ select, where: { id } });
 }
 
-export async function getCategoryExpenses(categoryId: string) {
+export async function getCategoryTransactions(categoryId: string) {
   const select = Prisma.validator<Prisma.ExpenseSelect>()({
     id: true,
     amount: true,
@@ -40,14 +40,22 @@ export async function getCategoryExpenses(categoryId: string) {
     },
   });
 
-  const expenses = await prisma.expense.findMany({
+  const category = await prisma.category.findUniqueOrThrow({
+    select: { type: true },
+    where: { id: categoryId },
+  });
+
+  const collection =
+    category.type === CategoryType.Expense ? "expense" : "income";
+
+  const transactions = await prisma[collection].findMany({
     orderBy: { date: "desc" },
     select,
     where: { categoryId },
   });
 
-  if (expenses.length > 0) {
-    return groupTransactionsByMonth(expenses);
+  if (transactions.length > 0) {
+    return groupTransactionsByMonth(transactions);
   }
 
   const children = await prisma.category.findMany({
@@ -56,7 +64,7 @@ export async function getCategoryExpenses(categoryId: string) {
   });
 
   return groupTransactionsByMonth(
-    await prisma.expense.findMany({
+    await prisma[collection].findMany({
       orderBy: { date: "desc" },
       select,
       where: { categoryId: { in: children.map(({ id }) => id) } },
@@ -83,8 +91,8 @@ export async function updateCategory(
 export type ApiCreateCategory = Awaited<ReturnType<typeof createCategory>>;
 export type ApiDeleteCategory = Awaited<ReturnType<typeof deleteCategory>>;
 export type ApiGetCategory = Awaited<ReturnType<typeof getCategory>>;
-export type ApiGetCategoryExpenses = Awaited<
-  ReturnType<typeof getCategoryExpenses>
+export type ApiGetCategoryTransactions = Awaited<
+  ReturnType<typeof getCategoryTransactions>
 >;
 export type ApiGetCategories = Awaited<ReturnType<typeof getCategories>>;
 export type ApiUpdateCategory = Awaited<ReturnType<typeof updateCategory>>;

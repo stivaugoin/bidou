@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "../lib/prisma";
+import { groupTransactionsByMonth } from "../utils/groupTransactionsByMonth";
 
 const select = {
   id: true,
@@ -25,6 +26,44 @@ export async function getCategory(id: string) {
   return prisma.category.findFirstOrThrow({ select, where: { id } });
 }
 
+export async function getCategoryExpenses(categoryId: string) {
+  const select = Prisma.validator<Prisma.ExpenseSelect>()({
+    id: true,
+    amount: true,
+    date: true,
+    Category: {
+      select: {
+        id: true,
+        name: true,
+        Parent: { select: { id: true, name: true } },
+      },
+    },
+  });
+
+  const expenses = await prisma.expense.findMany({
+    orderBy: { date: "desc" },
+    select,
+    where: { categoryId },
+  });
+
+  if (expenses.length > 0) {
+    return groupTransactionsByMonth(expenses);
+  }
+
+  const children = await prisma.category.findMany({
+    select: { id: true },
+    where: { parentId: categoryId },
+  });
+
+  return groupTransactionsByMonth(
+    await prisma.expense.findMany({
+      orderBy: { date: "desc" },
+      select,
+      where: { categoryId: { in: children.map(({ id }) => id) } },
+    })
+  );
+}
+
 export async function updateCategory(
   id: string,
   data: Prisma.CategoryUpdateInput
@@ -44,5 +83,8 @@ export async function updateCategory(
 export type ApiCreateCategory = Awaited<ReturnType<typeof createCategory>>;
 export type ApiDeleteCategory = Awaited<ReturnType<typeof deleteCategory>>;
 export type ApiGetCategory = Awaited<ReturnType<typeof getCategory>>;
+export type ApiGetCategoryExpenses = Awaited<
+  ReturnType<typeof getCategoryExpenses>
+>;
 export type ApiGetCategories = Awaited<ReturnType<typeof getCategories>>;
 export type ApiUpdateCategory = Awaited<ReturnType<typeof updateCategory>>;

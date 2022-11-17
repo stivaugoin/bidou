@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import AlertFetchError from "../../../components/AlertFetchError";
+import CategoryTransactions from "../../../components/CategoryTransactions";
 import MainLayout from "../../../components/MainLayout";
 import { MenuButton } from "../../../components/MenuButton";
 import PageHeader from "../../../components/PageHeader";
@@ -96,7 +97,7 @@ function CategoryView() {
           </Tabs.Panel>
         )}
         <Tabs.Panel value="transactions" pt="xl">
-          Coming soon
+          <CategoryTransactions />
         </Tabs.Panel>
         <Tabs.Panel value="report" pt="xl">
           Coming soon

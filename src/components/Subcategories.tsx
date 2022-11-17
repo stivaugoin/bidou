@@ -1,3 +1,5 @@
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { createStyles } from "@mantine/core";
 import { CategoryType } from "@prisma/client";
 import Link from "next/link";
@@ -20,7 +22,10 @@ export default function Subcategories({ categoryId }: Props) {
           .map((category) => (
             <Link href={`/categories/${category.id}`} key={category.id}>
               <tr className={classes.row}>
-                <td>{category.name}</td>
+                <td className={classes.cell}>{category.name}</td>
+                <td className={classes.lastCell}>
+                  <FontAwesomeIcon icon={faChevronRight} size="sm" />
+                </td>
               </tr>
             </Link>
           ))}
@@ -30,5 +35,7 @@ export default function Subcategories({ categoryId }: Props) {
 }
 
 const styles = createStyles(() => ({
+  cell: { width: "50%" },
+  lastCell: { width: "50%", textAlign: "right" },
   row: { cursor: "pointer" },
 }));

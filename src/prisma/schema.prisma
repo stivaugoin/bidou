@@ -32,7 +32,7 @@ model Expense {
   note       String?
   categoryId String   @db.ObjectId
 
-  Category Category @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  Category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
 }
 
 model Income {
@@ -42,5 +42,5 @@ model Income {
   date       DateTime @db.Date
   note       String?
 
-  Category Category @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  Category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
 }

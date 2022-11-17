@@ -74,7 +74,7 @@ export default function FormUpdateCategory({ category }: Props) {
         }
       );
       notification("success");
-      router.push(`/categories/${category.id}`);
+      router.back();
     } catch (error) {
       console.error(error);
       notification("error");

@@ -35,7 +35,7 @@ function isActive(href: string, pathname: string) {
 const useStyles = createStyles((theme) => ({
   root: {
     position: "sticky",
-    zIndex: 1,
+    zIndex: 100,
   },
 
   dropdown: {

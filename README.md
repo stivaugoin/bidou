@@ -21,10 +21,8 @@
 <br />
 <div align="center">
   <a href="https://github.com/stivaugoin/bidou">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="public/logo-white.png" alt="Logo" width="600" height="100">
   </a>
-
-  <h3 align="center">Bidou</h3>
 
   <p align="center">
     Manage your family budget

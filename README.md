@@ -169,7 +169,7 @@ Project Link: [https://github.com/stivaugoin/bidou](https://github.com/stivaugoi
 [issues-shield]: https://img.shields.io/github/issues/stivaugoin/bidou.svg?style=for-the-badge
 [issues-url]: https://github.com/stivaugoin/bidou/issues
 [license-shield]: https://img.shields.io/github/license/stivaugoin/bidou.svg?style=for-the-badge
-[license-url]: https://github.com/stivaugoin/bidou/blob/main/LICENSE.txt
+[license-url]: https://github.com/stivaugoin/bidou/blob/main/LICENSE
 
 <!-- Stack -->
 [Typescript]: https://img.shields.io/badge/Typescript-20232A?style=for-the-badge&logo=typescript

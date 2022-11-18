@@ -23,6 +23,9 @@
   <a href="https://github.com/stivaugoin/bidou">
     <img src="public/logo-white.png" alt="Logo" width="600" height="100">
   </a>
+  
+  <br />
+  <br />
 
   <p align="center">
     Manage your family budget

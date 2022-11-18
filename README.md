@@ -50,8 +50,6 @@ Bidou is a simple webapp to manage your family expenses and how much money each 
 
 ### Built With
 
-This section should list any major frameworks/libraries used to built Bidou.
-
 [![Typescript][Typescript]][Typescript-url]
 [![Next][Next.js]][Next-url]
 [![React][React]][React-url]

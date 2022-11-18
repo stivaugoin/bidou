@@ -9,13 +9,6 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-
-
 
 <!-- PROJECT LOGO -->
 <br />
@@ -148,21 +141,6 @@ Distributed under the MIT License.
 Steve Bourgoin - stiv.aw@gmail.com
 
 Project Link: [https://github.com/stivaugoin/bidou](https://github.com/stivaugoin/bidou)
-
-
-
-<!-- MARKDOWN LINKS -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/stivaugoin/bidou.svg?style=for-the-badge
-[contributors-url]: https://github.com/stivaugoin/bidou/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/stivaugoin/bidou.svg?style=for-the-badge
-[forks-url]: https://github.com/stivaugoin/bidou/network/members
-[stars-shield]: https://img.shields.io/github/stars/stivaugoin/bidou.svg?style=for-the-badge
-[stars-url]: https://github.com/stivaugoin/bidou/stargazers
-[issues-shield]: https://img.shields.io/github/issues/stivaugoin/bidou.svg?style=for-the-badge
-[issues-url]: https://github.com/stivaugoin/bidou/issues
-[license-shield]: https://img.shields.io/github/license/stivaugoin/bidou.svg?style=for-the-badge
-[license-url]: https://github.com/stivaugoin/bidou/blob/main/LICENSE
 
 <!-- Stack -->
 [Typescript]: https://img.shields.io/badge/Typescript-20232A?style=for-the-badge&logo=typescript

@@ -121,9 +121,6 @@ vercel deploy --prod
 - [ ] Responsive (mobile is not yet well supported)
 - [ ] Remove Mantine and use a custom UI
 
-See the [open issues](https://github.com/stivaugoin/bidou/issues) for a full list of proposed features (and known issues).
-
-
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -138,9 +135,6 @@ Don't forget to give the project a star! Thanks again!
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- LICENSE -->

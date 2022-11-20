@@ -70,6 +70,7 @@ export default function FormCreateIncome() {
           hideControls
           label="Amount"
           precision={2}
+          step="0.01"
           {...form.getInputProps("amount")}
         />
 

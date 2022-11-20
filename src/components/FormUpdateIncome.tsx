@@ -89,6 +89,7 @@ export default function FormUpdateIncome({ income }: Props) {
           hideControls
           label="Amount"
           precision={2}
+          step="0.01"
           {...form.getInputProps("amount")}
         />
 

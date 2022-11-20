@@ -5,7 +5,7 @@ export function formatTransactionToSave<
 >(data: Transaction): Override<Transaction, { date: string }> {
   return {
     ...data,
-    amount: data.amount * 100,
+    amount: Math.round(data.amount * 100),
     date: dayjs(data.date).format(),
   };
 }

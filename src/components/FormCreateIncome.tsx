@@ -67,6 +67,7 @@ export default function FormCreateIncome() {
     <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
       <Stack spacing="xl" sx={{ maxWidth: theme.breakpoints.xs }}>
         <NumberInput
+          formatter={(value) => value?.replace(",", ".")}
           hideControls
           label="Amount"
           precision={2}

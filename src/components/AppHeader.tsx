@@ -3,9 +3,12 @@ import {
   faArrowTrendUp,
   faFolderTree,
   faHome,
+  faSignOut,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Burger,
+  Button,
   Container,
   createStyles,
   Group,
@@ -14,6 +17,7 @@ import {
   Transition,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -116,17 +120,32 @@ export default function AppHeader() {
   const { classes, cx } = useStyles();
   const router = useRouter();
 
-  const items = LINKS.map((link) => (
-    <Link href={link.href} key={link.href} passHref>
-      <a
-        className={cx(classes.link, {
-          [classes.linkActive]: isActive(link.href, router.pathname),
-        })}
-      >
-        {link.label}
-      </a>
-    </Link>
-  ));
+  const items = [
+    ...LINKS.map((link) => (
+      <Link href={link.href} key={link.href} passHref>
+        <a
+          className={cx(classes.link, {
+            [classes.linkActive]: isActive(link.href, router.pathname),
+          })}
+        >
+          {link.label}
+        </a>
+      </Link>
+    )),
+    ...(process.env.NODE_ENV === "development"
+      ? [
+          <Button
+            component="a"
+            className={cx(classes.link)}
+            key="signOut"
+            onClick={() => signOut()}
+            variant="subtle"
+          >
+            <FontAwesomeIcon icon={faSignOut} size="sm" />
+          </Button>,
+        ]
+      : []),
+  ];
 
   return (
     <Header height={HEADER_HEIGHT} mb="xl" className={classes.root}>

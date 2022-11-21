@@ -83,11 +83,13 @@ export default function FormCreateExpense() {
         />
 
         <Select
-          data={categories.map((category) => ({
-            group: category.Parent?.name,
-            label: category.name,
-            value: category.id,
-          }))}
+          data={categories
+            .filter((category) => category.Children.length === 0)
+            .map((category) => ({
+              group: category.Parent?.name,
+              label: category.name,
+              value: category.id,
+            }))}
           label="Category"
           {...form.getInputProps("categoryId")}
         />

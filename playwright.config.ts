@@ -10,6 +10,7 @@ const config: PlaywrightTestConfig = {
   testDir: path.join(__dirname, "e2e"),
   retries: process.env.CI ? 2 : 0,
   outputDir: "playwright-report/",
+  globalSetup: require.resolve("./e2e/global-setup"),
 
   webServer: {
     command: "pnpm dev",

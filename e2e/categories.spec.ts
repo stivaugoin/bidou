@@ -23,7 +23,7 @@ test("should have a create button", async ({ page }) => {
   await expect(page.locator("#createBtn", { hasText: "Create" })).toBeVisible();
 });
 
-test("should have a table", async ({ page }) => {
+test("should have two tables", async ({ page }) => {
   await page.goto("/categories");
-  await expect(page.locator("table")).toBeVisible();
+  await expect(page.locator("table")).toHaveCount(2);
 });

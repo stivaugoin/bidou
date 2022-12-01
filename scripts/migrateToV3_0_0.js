@@ -10,7 +10,7 @@ if (!DATABASE_V2_PRODUCTION_URL || !DATABASE_V3_PRODUCTION_URL) {
   throw new Error("Missing environment variables");
 }
 
-console.info(" == Migrating database to v3 ==");
+console.info(" == Migrating database to v3.0.0 ==");
 
 // Connection URL
 const clientV2 = new MongoClient(DATABASE_V2_PRODUCTION_URL, {

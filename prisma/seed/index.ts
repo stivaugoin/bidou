@@ -1,4 +1,4 @@
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../../src/lib/prisma";
 import seedCategories from "./collections/categories";
 import seedExpenses from "./collections/expenses";
 import seedIncomes from "./collections/incomes";

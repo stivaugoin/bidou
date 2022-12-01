@@ -12,11 +12,11 @@ datasource db {
 // ##############################################################################
 
 model Category {
-  id        String       @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime     @default(now())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
   name      String
-  parentId  String?      @unique @db.ObjectId
-  type      CategoryType
+  parentId  String?  @unique @db.ObjectId
+  type      Type
 
   // Relations
   Parent       Category?     @relation("CategoryParent", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -31,6 +31,7 @@ model Transaction {
   createdAt  DateTime @default(now())
   date       DateTime @map("date")
   note       String?
+  type       Type
 
   // Relations
   Category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
@@ -40,7 +41,7 @@ model Transaction {
 // # ENUMS
 // ##############################################################################
 
-enum CategoryType {
+enum Type {
   Expense
   Income
 }

@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import data from "../data";
 import {
   dateIsPast,
-  getCategories,
+  getCategoriesWithTransactions,
   getRandomDatesByMonth,
   getYears,
   mapTransaction,
@@ -13,7 +13,7 @@ export default async function seedTransactions(prisma: PrismaClient) {
   console.info(" => Seeding transactions...");
 
   const years = getYears(3);
-  const categories = getCategories(data.categories);
+  const categories = getCategoriesWithTransactions(data.categories);
 
   for await (const category of categories) {
     const data = years.flatMap((year) => {

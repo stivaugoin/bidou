@@ -12,26 +12,30 @@ datasource db {
 // ##############################################################################
 
 model Category {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime     @default(now())
   name      String
-  parentId  String?  @unique @db.ObjectId
-  type      Type
+  parentId  String?      @unique @db.ObjectId
+  type      CategoryType
 
   // Relations
   Parent       Category?     @relation("CategoryParent", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Children     Category[]    @relation("CategoryParent")
   Transactions Transaction[]
+
+  // Temporary relations
+  Income  Income[]
+  Expense Expense[]
 }
 
 model Transaction {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
   amount     Int
-  categoryId String   @db.ObjectId
-  createdAt  DateTime @default(now())
-  date       DateTime @map("date")
+  categoryId String       @db.ObjectId
+  createdAt  DateTime     @default(now())
+  date       DateTime     @map("date")
   note       String?
-  type       Type
+  type       CategoryType
 
   // Relations
   Category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
@@ -41,7 +45,29 @@ model Transaction {
 // # ENUMS
 // ##############################################################################
 
-enum Type {
+enum CategoryType {
   Expense
   Income
+}
+
+// ##############################################################################
+// # TEMPORARY MODELS. THESE WILL BE REMOVED AFTER THE MIGRATION
+// ##############################################################################
+
+model Expense {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  amount     Int
+  date       DateTime @db.Date
+  note       String?
+  categoryId String   @db.ObjectId
+  Category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+}
+
+model Income {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  amount     Int
+  categoryId String   @db.ObjectId
+  date       DateTime @db.Date
+  note       String?
+  Category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
 }

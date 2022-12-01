@@ -1,9 +1,8 @@
+import dayjs from "dayjs";
+import { SeedCategory, SeedSubCategory } from "./data";
+
 export function randomNumber(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-export function randomValue<T>(array: T[]): T {
-  return array[randomNumber(0, array.length - 1)];
 }
 
 export function getRandomDatesByMonth(
@@ -18,12 +17,31 @@ export function getRandomDatesByMonth(
   return dates;
 }
 
-export function isDateBeforeNMonthFromToday(date: Date, n: number): boolean {
-  const today = new Date();
-  return date.valueOf() < today.setMonth(today.getMonth() + n);
-}
-
 export function dateIsPast(date: Date): boolean {
   const today = new Date();
   return date.valueOf() < today.valueOf();
+}
+
+export function mapTransaction(category: SeedSubCategory) {
+  return (date: Date) => {
+    const [min, max] = category.transactions.amount;
+    return {
+      amount: randomNumber(min, max),
+      categoryId: category.id,
+      date,
+    };
+  };
+}
+
+export function getCategories(categories: SeedCategory[]) {
+  return categories.flatMap((category) => {
+    if (category.subCategories) return category.subCategories;
+    return [];
+  });
+}
+
+export function getYears(count: number) {
+  return Array.from({ length: count })
+    .map((_, i) => dayjs().year() - i)
+    .reverse();
 }

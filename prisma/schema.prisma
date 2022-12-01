@@ -7,40 +7,40 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ##############################################################################
+// # MODELS
+// ##############################################################################
+
+model Category {
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime     @default(now())
+  name      String
+  parentId  String?      @unique @db.ObjectId
+  type      CategoryType
+
+  // Relations
+  Parent       Category?     @relation("CategoryParent", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Children     Category[]    @relation("CategoryParent")
+  Transactions Transaction[]
+}
+
+model Transaction {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  amount     Int
+  categoryId String   @db.ObjectId
+  createdAt  DateTime @default(now())
+  date       DateTime @map("date")
+  note       String?
+
+  // Relations
+  Category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+}
+
+// ##############################################################################
+// # ENUMS
+// ##############################################################################
+
 enum CategoryType {
   Expense
   Income
-}
-
-model Category {
-  id   String       @id @default(auto()) @map("_id") @db.ObjectId
-  name String
-  type CategoryType
-
-  parentId String?    @unique @db.ObjectId
-  Parent   Category?  @relation("CategoryParent", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Children Category[] @relation("CategoryParent")
-
-  Income  Income[]
-  Expense Expense[]
-}
-
-model Expense {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  amount     Int
-  date       DateTime @db.Date
-  note       String?
-  categoryId String   @db.ObjectId
-
-  Category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
-}
-
-model Income {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  amount     Int
-  categoryId String   @db.ObjectId
-  date       DateTime @db.Date
-  note       String?
-
-  Category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
 }

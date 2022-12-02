@@ -16,7 +16,7 @@ import { useState } from "react";
 import { TypeOf, z } from "zod";
 import useCategories from "../hooks/useCategories";
 import notification from "../lib/notification";
-import { formatTransactionToSave } from "../utils/formatTransactionToSave";
+import { trpc } from "../lib/trpc";
 import AlertFetchError from "./AlertFetchError";
 
 const schema = z.object({
@@ -26,14 +26,18 @@ const schema = z.object({
   note: z.string().nullable(),
 });
 
-export default function FormCreateIncome() {
+type Props = {
+  type: CategoryType;
+};
+
+export default function FormCreateTransaction({ type }: Props) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
   const theme = useMantineTheme();
 
-  const [categories, categoriesLoading, categoriesError] = useCategories(
-    CategoryType.Income
-  );
+  const mutation = trpc.transactions.create.useMutation();
+
+  const [categories, categoriesLoading, categoriesError] = useCategories(type);
 
   const form = useForm({
     initialValues: {
@@ -47,17 +51,15 @@ export default function FormCreateIncome() {
 
   const handleSubmit = async (data: TypeOf<typeof schema>) => {
     setSaving(true);
-    const response = await fetch("/api/incomes/create", {
-      body: JSON.stringify(formatTransactionToSave(data)),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-    });
 
-    notification(response.ok ? "success" : "error");
-    setSaving(false);
-    if (response.ok) router.push("/incomes");
+    try {
+      await mutation.mutateAsync(data);
+      router.back();
+    } catch (error) {
+      notification("error");
+    } finally {
+      setSaving(false);
+    }
   };
 
   if (categoriesError) return <AlertFetchError />;
@@ -83,10 +85,13 @@ export default function FormCreateIncome() {
         />
 
         <Select
-          data={categories.map((category) => ({
-            value: category.id,
-            label: category.name,
-          }))}
+          data={categories
+            .filter((category) => category.Children.length === 0)
+            .map((category) => ({
+              group: category.Parent?.name,
+              label: category.name,
+              value: category.id,
+            }))}
           label="Category"
           {...form.getInputProps("categoryId")}
         />

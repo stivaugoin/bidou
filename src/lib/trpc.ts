@@ -1,6 +1,6 @@
 import { httpBatchLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
-import type { AppRouter } from "../server/trpc";
+import { AppRouter } from "../server/trpc/_app";
 
 function getBaseUrl() {
   if (typeof window !== "undefined") return "";

@@ -1,26 +1,30 @@
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { createStyles, Group } from "@mantine/core";
+import { inferRouterOutputs } from "@trpc/server";
 import Link from "next/link";
-import { ApiGetExpenses } from "../server/expenses";
+import { TransactionRouter } from "../server/trpc/transactions";
 import displayAmount from "../utils/displayAmount";
 import { displayDate } from "../utils/displayDate";
+import BadgeCategory from "./BadgeCategory";
 
 interface RowProps {
-  expense: ApiGetExpenses[number]["transactions"][number];
+  transaction: inferRouterOutputs<TransactionRouter>["getByType"][number]["transactions"][number];
 }
-export default function ExpenseRow({ expense }: RowProps) {
+
+export default function TransactionItem({ transaction }: RowProps) {
   const { classes } = styles();
 
   return (
-    <Link href={`/expenses/${expense.id}`}>
+    <Link href={`/transactions/${transaction.id}`}>
       <tr className={classes.row}>
-        <td className={classes.cell}>{expense.Category.name}</td>
-        <td className={classes.cell}>{expense.Category.Parent?.name || ""}</td>
-        <td className={classes.cellAmount}>{displayDate(expense.date)}</td>
+        <td className={classes.cellAmount}>{displayDate(transaction.date)}</td>
+        <td className={classes.cell}>
+          <BadgeCategory category={transaction.Category} />
+        </td>
         <td className={classes.cell}>
           <Group position="right">
-            {displayAmount(expense.amount)}{" "}
+            {displayAmount(transaction.amount)}{" "}
             <FontAwesomeIcon icon={faChevronRight} size="sm" />
           </Group>
         </td>

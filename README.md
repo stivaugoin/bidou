@@ -65,15 +65,15 @@ Bidou is a simple webapp to manage your family expenses and how much money each 
 
 ### Installation
 
-2. Clone the repo
+1. Clone the repo
    ```sh
    git clone https://github.com/stivaugoin/bidou.git
    ```
-3. Install NPM packages
+2. Install NPM packages
    ```sh
    pnpm install
    ```
-4. Create a `.env` based on `.env.example` and add your config
+3. Create a `.env` based on `.env.example` and add your config
    ```js
    // Your database connection (need to include database name)
    const DATABASE_URL = "";
@@ -96,6 +96,8 @@ pnpm dev
 ### Deploy on Vercel
 
 _You need to setup your environment before_
+
+Do not deploy `main` branch. Use latest version with tag instead.
 
 ```
 vercel deploy --prod

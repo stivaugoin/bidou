@@ -9,13 +9,12 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import { SWRConfig } from "swr";
 import { defaultProps } from "../lib/mantine";
+import { trpc } from "../lib/trpc";
 
 fontAwesomeConfig.autoAddCss = false;
 
-export default function App(
-  props: AppProps<{
-    session: Session;
-  }>
+export default trpc.withTRPC(function App(
+  props: AppProps<{ session: Session }>
 ) {
   const { Component, pageProps } = props;
 
@@ -69,4 +68,4 @@ export default function App(
       </MantineProvider>
     </>
   );
-}
+});

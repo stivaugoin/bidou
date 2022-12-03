@@ -50,7 +50,7 @@ export async function getCategoryTransactions(categoryId: string) {
   const collection =
     category.type === CategoryType.Expense ? "expense" : "income";
 
-  const transactions = await prisma[collection].findMany({
+  const transactions = await prisma.transaction.findMany({
     orderBy: { date: "desc" },
     select,
     where: { categoryId },
@@ -66,7 +66,7 @@ export async function getCategoryTransactions(categoryId: string) {
   });
 
   return groupTransactionsByMonth(
-    await prisma[collection].findMany({
+    await prisma.transaction.findMany({
       orderBy: { date: "desc" },
       select,
       where: { categoryId: { in: children.map(({ id }) => id) } },

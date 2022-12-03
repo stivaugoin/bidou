@@ -27,10 +27,12 @@ export async function getCategory(id: string) {
 }
 
 export async function getCategoryTransactions(categoryId: string) {
-  const select = Prisma.validator<Prisma.ExpenseSelect>()({
+  const select = Prisma.validator<Prisma.TransactionSelect>()({
     id: true,
     amount: true,
     date: true,
+    type: true,
+    // TODO: Remove this relation and use a separate query to get the category
     Category: {
       select: {
         id: true,
@@ -48,7 +50,7 @@ export async function getCategoryTransactions(categoryId: string) {
   const collection =
     category.type === CategoryType.Expense ? "expense" : "income";
 
-  const transactions = await prisma[collection].findMany({
+  const transactions = await prisma.transaction.findMany({
     orderBy: { date: "desc" },
     select,
     where: { categoryId },
@@ -64,7 +66,7 @@ export async function getCategoryTransactions(categoryId: string) {
   });
 
   return groupTransactionsByMonth(
-    await prisma[collection].findMany({
+    await prisma.transaction.findMany({
       orderBy: { date: "desc" },
       select,
       where: { categoryId: { in: children.map(({ id }) => id) } },

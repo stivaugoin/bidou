@@ -1,9 +1,10 @@
 import { faArrowTrendUp } from "@fortawesome/free-solid-svg-icons";
 import { Stack } from "@mantine/core";
+import { CategoryType } from "@prisma/client";
 import CreateButton from "../../components/CreateButton";
-import IncomesList from "../../components/IncomesList";
 import MainLayout from "../../components/MainLayout";
 import PageHeader from "../../components/PageHeader";
+import TransactionList from "../../components/TransactionList";
 
 export default function Incomes() {
   return (
@@ -14,7 +15,7 @@ export default function Incomes() {
 
       <Stack spacing="xl">
         {/* TODO: Add filters */}
-        <IncomesList />
+        <TransactionList type={CategoryType.Income} />
       </Stack>
     </MainLayout>
   );

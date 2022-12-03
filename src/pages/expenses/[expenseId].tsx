@@ -1,38 +1,26 @@
 import { Loader } from "@mantine/core";
 import { useRouter } from "next/router";
-import useSWR, { useSWRConfig } from "swr";
 import AlertFetchError from "../../components/AlertFetchError";
-import FormUpdateExpense from "../../components/FormUpdateExpense";
+import FormUpdateTransaction from "../../components/FormUpdateTransaction";
 import MainLayout from "../../components/MainLayout";
 import PageHeader from "../../components/PageHeader";
 import PageOptions from "../../components/PageOptions";
 import notification from "../../lib/notification";
-import { ApiGetExpense, ApiGetExpenses } from "../../server/expenses";
+import { trpc } from "../../lib/trpc";
 
 export default function ExpenseView() {
   const router = useRouter();
-  const { expenseId } = router.query;
+  const expenseId = router.query.expenseId as string;
+  const mutationDelete = trpc.transactions.delete.useMutation();
 
-  const { data, error } = useSWR<ApiGetExpense>(
-    () => expenseId && `/api/expenses/${expenseId}`
-  );
-  const { data: expenses } = useSWR<ApiGetExpenses>("/api/expenses");
-  const { mutate } = useSWRConfig();
+  const { data, error, isLoading } =
+    trpc.transactions.getById.useQuery(expenseId);
 
   const handleDelete = async () => {
     try {
-      await mutate(`/api/expenses`, deleteExpense(expenseId as string), {
-        populateCache: () => {
-          return expenses?.map((expense) => {
-            return expense.transactions.filter(
-              (transaction) => transaction.id !== expenseId
-            );
-          });
-        },
-      });
-
+      await mutationDelete.mutateAsync(expenseId);
       notification("success");
-      router.push("/expenses");
+      router.back();
     } catch (error) {
       console.error(error);
       notification("error");
@@ -46,16 +34,8 @@ export default function ExpenseView() {
       </PageHeader>
 
       {error && <AlertFetchError />}
-      {!error && !data && <Loader />}
-      {!error && data && <FormUpdateExpense expense={data} />}
+      {isLoading && <Loader />}
+      {data && <FormUpdateTransaction transaction={data} />}
     </MainLayout>
   );
-}
-
-async function deleteExpense(expenseId: string) {
-  const response = await fetch(`/api/expenses/${expenseId}`, {
-    method: "DELETE",
-  });
-  if (!response.ok) throw new Error("Failed to delete expense");
-  return response.json();
 }

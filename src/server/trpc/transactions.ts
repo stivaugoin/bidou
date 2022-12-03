@@ -56,7 +56,7 @@ export const transactionRouter = router({
 
       return ctx.prisma.transaction.create({
         data: {
-          amount: input.amount,
+          amount: Math.round(input.amount * 100),
           categoryId: input.categoryId,
           date: input.date,
           note: input.note,
@@ -65,6 +65,20 @@ export const transactionRouter = router({
         select: defaultSelect,
       });
     }),
+
+  delete: procedure.input(z.string()).mutation(async ({ input, ctx }) => {
+    return ctx.prisma.transaction.delete({
+      select: defaultSelect,
+      where: { id: input },
+    });
+  }),
+
+  getById: procedure.input(z.string()).query(async ({ input, ctx }) => {
+    return ctx.prisma.transaction.findUnique({
+      select: defaultSelect,
+      where: { id: input },
+    });
+  }),
 
   getByType: procedure
     .input(z.object({ type: z.nativeEnum(CategoryType) }))
@@ -76,6 +90,42 @@ export const transactionRouter = router({
       });
 
       return groupTransactionsByMonth(transactions);
+    }),
+
+  update: procedure
+    .input(
+      z.object({
+        id: z.string(),
+        amount: z.number(),
+        categoryId: z.string(),
+        date: z.date(),
+        note: z.string().nullable(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const category = await ctx.prisma.category.findUnique({
+        select: { id: true, type: true },
+        where: { id: input.categoryId },
+      });
+
+      if (!category) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Category not found",
+        });
+      }
+
+      return ctx.prisma.transaction.update({
+        data: {
+          amount: Math.round(input.amount * 100),
+          categoryId: input.categoryId,
+          date: input.date,
+          note: input.note,
+          type: category.type,
+        },
+        select: defaultSelect,
+        where: { id: input.id },
+      });
     }),
 });
 

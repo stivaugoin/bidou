@@ -91,8 +91,9 @@ export default function FormUpdateTransaction({ transaction }: Props) {
 
         <Select
           data={categories.map((category) => ({
-            value: category.id,
+            group: category.Parent?.name,
             label: category.name,
+            value: category.id,
           }))}
           label="Category"
           {...form.getInputProps("categoryId")}

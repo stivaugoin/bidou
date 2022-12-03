@@ -27,10 +27,12 @@ export async function getCategory(id: string) {
 }
 
 export async function getCategoryTransactions(categoryId: string) {
-  const select = Prisma.validator<Prisma.ExpenseSelect>()({
+  const select = Prisma.validator<Prisma.TransactionSelect>()({
     id: true,
     amount: true,
     date: true,
+    type: true,
+    // TODO: Remove this relation and use a separate query to get the category
     Category: {
       select: {
         id: true,

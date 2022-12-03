@@ -10,7 +10,9 @@ import { displayDate } from "../utils/displayDate";
 import BadgeCategory from "./BadgeCategory";
 
 interface RowProps {
-  transaction: inferRouterOutputs<TransactionRouter>["getByType"][number]["transactions"][number];
+  transaction:
+    | inferRouterOutputs<TransactionRouter>["getByType"][number]["transactions"][number]
+    | inferRouterOutputs<TransactionRouter>["getByCategoryId"][number]["transactions"][number];
 }
 
 export default function TransactionItem({ transaction }: RowProps) {

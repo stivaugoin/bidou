@@ -3,6 +3,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { procedure, router } from ".";
 import { groupTransactionsByMonth } from "../../utils/groupTransactionsByMonth";
+import { getCategoryTransactions } from "../categories";
 
 const defaultOrderBy =
   Prisma.validator<Prisma.TransactionOrderByWithRelationInput>()({
@@ -71,6 +72,10 @@ export const transactionRouter = router({
       select: defaultSelect,
       where: { id: input },
     });
+  }),
+
+  getByCategoryId: procedure.input(z.string()).query(async ({ input, ctx }) => {
+    return getCategoryTransactions(input);
   }),
 
   getById: procedure.input(z.string()).query(async ({ input, ctx }) => {

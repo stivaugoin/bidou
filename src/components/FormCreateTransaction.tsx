@@ -11,15 +11,12 @@ import {
 import { DatePicker } from "@mantine/dates";
 import { useForm, zodResolver } from "@mantine/form";
 import { CategoryType } from "@prisma/client";
-import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useSWRConfig } from "swr";
 import { TypeOf, z } from "zod";
 import useCategories from "../hooks/useCategories";
 import notification from "../lib/notification";
-import { ApiGetIncome } from "../server/incomes";
-import { formatTransactionToSave } from "../utils/formatTransactionToSave";
+import { trpc } from "../lib/trpc";
 import AlertFetchError from "./AlertFetchError";
 
 const schema = z.object({
@@ -29,26 +26,25 @@ const schema = z.object({
   note: z.string().nullable(),
 });
 
-interface Props {
-  income: ApiGetIncome;
-}
+type Props = {
+  type: CategoryType;
+};
 
-export default function FormUpdateIncome({ income }: Props) {
+export default function FormCreateTransaction({ type }: Props) {
   const router = useRouter();
-  const { mutate } = useSWRConfig();
   const [saving, setSaving] = useState(false);
   const theme = useMantineTheme();
 
-  const [categories, categoriesLoading, categoriesError] = useCategories(
-    CategoryType.Income
-  );
+  const mutation = trpc.transactions.create.useMutation();
+
+  const [categories, categoriesLoading, categoriesError] = useCategories(type);
 
   const form = useForm({
     initialValues: {
-      amount: income.amount / 100,
-      categoryId: income.Category.id,
-      date: dayjs(income.date).toDate(),
-      note: income.note || "",
+      amount: undefined as unknown as number,
+      categoryId: "",
+      date: new Date(),
+      note: "",
     },
     validate: zodResolver(schema),
   });
@@ -57,22 +53,9 @@ export default function FormUpdateIncome({ income }: Props) {
     setSaving(true);
 
     try {
-      await mutate(`/api/incomes/${income.id}`, updateIncome(income.id, data), {
-        populateCache: (data) => ({
-          id: income.id,
-          amount: data.amount,
-          Category: {
-            id: data.categoryId,
-          },
-          date: data.date,
-          note: data.note,
-        }),
-        revalidate: false,
-      });
-      notification("success");
-      router.push("/incomes");
+      await mutation.mutateAsync(data);
+      router.back();
     } catch (error) {
-      console.error(error);
       notification("error");
     } finally {
       setSaving(false);
@@ -102,10 +85,13 @@ export default function FormUpdateIncome({ income }: Props) {
         />
 
         <Select
-          data={categories.map((category) => ({
-            value: category.id,
-            label: category.name,
-          }))}
+          data={categories
+            .filter((category) => category.Children.length === 0)
+            .map((category) => ({
+              group: category.Parent?.name,
+              label: category.name,
+              value: category.id,
+            }))}
           label="Category"
           {...form.getInputProps("categoryId")}
         />
@@ -114,24 +100,10 @@ export default function FormUpdateIncome({ income }: Props) {
 
         <Group>
           <Button loading={saving} type="submit">
-            Save
+            Create
           </Button>
         </Group>
       </Stack>
     </form>
   );
-}
-
-async function updateIncome(incomeId: string, data: TypeOf<typeof schema>) {
-  const response = await fetch(`/api/incomes/${incomeId}`, {
-    body: JSON.stringify(formatTransactionToSave(data)),
-    headers: { "Content-Type": "application/json" },
-    method: "PUT",
-  });
-
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
-
-  return response.json();
 }

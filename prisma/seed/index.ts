@@ -1,14 +1,12 @@
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../../src/lib/prisma";
 import seedCategories from "./collections/categories";
-import seedExpenses from "./collections/expenses";
-import seedIncomes from "./collections/incomes";
+import seedTransactions from "./collections/transactions";
 import resetDatabase from "./reset";
 
 async function main() {
   await resetDatabase(prisma);
   await seedCategories(prisma);
-  await seedExpenses(prisma);
-  await seedIncomes(prisma);
+  await seedTransactions(prisma);
 }
 
 main()

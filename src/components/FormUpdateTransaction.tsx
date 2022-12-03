@@ -10,16 +10,15 @@ import {
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useForm, zodResolver } from "@mantine/form";
-import { CategoryType } from "@prisma/client";
+import { inferRouterOutputs } from "@trpc/server";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useSWRConfig } from "swr";
 import { TypeOf, z } from "zod";
 import useCategories from "../hooks/useCategories";
 import notification from "../lib/notification";
-import { ApiGetExpense } from "../server/expenses";
-import { formatTransactionToSave } from "../utils/formatTransactionToSave";
+import { trpc } from "../lib/trpc";
+import { TransactionRouter } from "../server/trpc/transactions";
 import AlertFetchError from "./AlertFetchError";
 
 const schema = z.object({
@@ -30,51 +29,36 @@ const schema = z.object({
 });
 
 interface Props {
-  expense: ApiGetExpense;
+  // TODO: Improve this type. Do not use TransactionRouter.
+  transaction: NonNullable<inferRouterOutputs<TransactionRouter>["getById"]>;
 }
 
-export default function FormUpdateExpense({ expense }: Props) {
+export default function FormUpdateTransaction({ transaction }: Props) {
   const router = useRouter();
-  const { mutate } = useSWRConfig();
   const [saving, setSaving] = useState(false);
   const theme = useMantineTheme();
+  const mutation = trpc.transactions.update.useMutation();
 
   const [categories, categoriesLoading, categoriesError] = useCategories(
-    CategoryType.Expense
+    transaction.type
   );
 
   const form = useForm({
     initialValues: {
-      amount: expense.amount / 100,
-      categoryId: expense.Category.id,
-      date: dayjs(expense.date).toDate(),
-      note: expense.note || "",
+      amount: transaction.amount / 100,
+      categoryId: transaction.categoryId,
+      date: dayjs(transaction.date).toDate(),
+      note: transaction.note || "",
     },
     validate: zodResolver(schema),
   });
 
   const handleSubmit = async (data: TypeOf<typeof schema>) => {
-    setSaving(true);
-
     try {
-      await mutate(
-        `/api/expenses/${expense.id}`,
-        updateExpense(expense.id, data),
-        {
-          populateCache: (data) => ({
-            id: expense.id,
-            amount: data.amount,
-            Category: {
-              id: data.categoryId,
-            },
-            date: data.date,
-            note: data.note,
-          }),
-          revalidate: false,
-        }
-      );
+      setSaving(true);
+      await mutation.mutateAsync({ id: transaction.id, ...data });
       notification("success");
-      router.push("/expenses");
+      router.back();
     } catch (error) {
       console.error(error);
       notification("error");
@@ -106,13 +90,11 @@ export default function FormUpdateExpense({ expense }: Props) {
         />
 
         <Select
-          data={categories
-            .filter((category) => category.Children.length === 0)
-            .map((category) => ({
-              group: category.Parent?.name,
-              label: category.name,
-              value: category.id,
-            }))}
+          data={categories.map((category) => ({
+            group: category.Parent?.name,
+            label: category.name,
+            value: category.id,
+          }))}
           label="Category"
           {...form.getInputProps("categoryId")}
         />
@@ -127,18 +109,4 @@ export default function FormUpdateExpense({ expense }: Props) {
       </Stack>
     </form>
   );
-}
-
-async function updateExpense(expenseId: string, data: TypeOf<typeof schema>) {
-  const response = await fetch(`/api/expenses/${expenseId}`, {
-    body: JSON.stringify(formatTransactionToSave(data)),
-    headers: { "Content-Type": "application/json" },
-    method: "PUT",
-  });
-
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
-
-  return response.json();
 }

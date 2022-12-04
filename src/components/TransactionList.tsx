@@ -1,40 +1,31 @@
-import { Loader, Pagination } from "@mantine/core";
-import { CategoryType } from "@prisma/client";
+import { Accordion, Badge, Group, Stack, Title } from "@mantine/core";
+import { inferRouterOutputs } from "@trpc/server";
 import { useState } from "react";
-import { trpc } from "../lib/trpc";
-import AlertFetchError from "./AlertFetchError";
-import Table from "./Table";
+import { TransactionRouter } from "../server/trpc/transactions";
+import displayAmount from "../utils/displayAmount";
 import TransactionItem from "./TransactionItem";
 
 interface Props {
-  type: CategoryType;
+  data: inferRouterOutputs<TransactionRouter>["getByCategoryId"][number];
 }
 
-export default function TransactionList({ type }: Props) {
-  const [page, setPage] = useState(1);
-
-  const { data, error, isLoading } = trpc.transactions.getByType.useQuery({
-    page,
-    type,
-  });
-
-  if (error) return <AlertFetchError message={error.message} />;
-  if (isLoading) return <Loader />;
+export default function TransactionList({ data }: Props) {
+  const [activeId, setActiveId] = useState<string | null>(null);
 
   return (
-    <>
-      {data.transactions.map((value) => (
-        <Table key={value.title}>
-          <Table.TransactionHeader title={value.title} total={value.total} />
-          <Table.Body>
-            {value.transactions.map((transaction) => (
-              <TransactionItem key={transaction.id} transaction={transaction} />
-            ))}
-          </Table.Body>
-        </Table>
-      ))}
+    <Stack key={data.title} spacing={0} mt="xl">
+      <Group align="center" position="apart" mb="md" mx="md">
+        <Title order={3}>{data.title}</Title>
+        <Badge color="red" size="xl">
+          {displayAmount(data.total)}
+        </Badge>
+      </Group>
 
-      <Pagination onChange={setPage} page={page} total={data.totalPage} />
-    </>
+      <Accordion onChange={setActiveId} value={activeId} variant="contained">
+        {data.transactions.map((transaction) => (
+          <TransactionItem key={transaction.id} transaction={transaction} />
+        ))}
+      </Accordion>
+    </Stack>
   );
 }

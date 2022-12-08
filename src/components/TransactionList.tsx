@@ -1,5 +1,6 @@
-import { Loader } from "@mantine/core";
+import { Loader, Pagination } from "@mantine/core";
 import { CategoryType } from "@prisma/client";
+import { useState } from "react";
 import { trpc } from "../lib/trpc";
 import AlertFetchError from "./AlertFetchError";
 import Table from "./Table";
@@ -10,7 +11,10 @@ interface Props {
 }
 
 export default function TransactionList({ type }: Props) {
+  const [page, setPage] = useState(1);
+
   const { data, error, isLoading } = trpc.transactions.getByType.useQuery({
+    page,
     type,
   });
 
@@ -19,7 +23,7 @@ export default function TransactionList({ type }: Props) {
 
   return (
     <>
-      {data?.map((value) => (
+      {data.transactions.map((value) => (
         <Table key={value.title}>
           <Table.TransactionHeader title={value.title} total={value.total} />
           <Table.Body>
@@ -29,6 +33,8 @@ export default function TransactionList({ type }: Props) {
           </Table.Body>
         </Table>
       ))}
+
+      <Pagination onChange={setPage} page={page} total={data.totalPage} />
     </>
   );
 }

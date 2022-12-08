@@ -1,5 +1,6 @@
 import { CategoryType, Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
+import dayjs from "dayjs";
 import { z } from "zod";
 import { procedure, router } from ".";
 import { groupTransactionsByMonth } from "../../utils/groupTransactionsByMonth";
@@ -86,15 +87,46 @@ export const transactionRouter = router({
   }),
 
   getByType: procedure
-    .input(z.object({ type: z.nativeEnum(CategoryType) }))
-    .query(async ({ input, ctx }) => {
-      const transactions = await ctx.prisma.transaction.findMany({
-        select: defaultSelect,
-        orderBy: defaultOrderBy,
+    .input(
+      z.object({
+        page: z.number().min(1),
+        type: z.nativeEnum(CategoryType),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const MONTHS_PER_PAGE = 4;
+
+      const minDate = dayjs()
+        .subtract(input.page * MONTHS_PER_PAGE - 1, "month")
+        .startOf("month");
+
+      const maxDate = dayjs()
+        .subtract((input.page - 1) * MONTHS_PER_PAGE, "month")
+        .endOf("month");
+
+      const firstTransaction = await ctx.prisma.transaction.findFirstOrThrow({
+        orderBy: { date: "asc" },
+        select: { date: true },
         where: { type: input.type },
       });
 
-      return groupTransactionsByMonth(transactions);
+      const firstTransactionDate = firstTransaction.date;
+      const countMonths = dayjs().diff(firstTransactionDate, "month");
+      const totalPage = Math.floor(countMonths / MONTHS_PER_PAGE);
+
+      const transactions = await ctx.prisma.transaction.findMany({
+        orderBy: defaultOrderBy,
+        select: defaultSelect,
+        where: {
+          date: { gte: minDate.toDate(), lte: maxDate.toDate() },
+          type: input.type,
+        },
+      });
+
+      return {
+        totalPage,
+        transactions: groupTransactionsByMonth(transactions),
+      };
     }),
 
   update: procedure

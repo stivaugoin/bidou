@@ -1,4 +1,4 @@
-import { CategoryType, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { prisma } from "../lib/prisma";
 import { groupTransactionsByMonth } from "../utils/groupTransactionsByMonth";
 
@@ -30,7 +30,9 @@ export async function getCategoryTransactions(categoryId: string) {
   const select = Prisma.validator<Prisma.TransactionSelect>()({
     id: true,
     amount: true,
+    categoryId: true,
     date: true,
+    note: true,
     type: true,
     // TODO: Remove this relation and use a separate query to get the category
     Category: {
@@ -46,9 +48,6 @@ export async function getCategoryTransactions(categoryId: string) {
     select: { type: true },
     where: { id: categoryId },
   });
-
-  const collection =
-    category.type === CategoryType.Expense ? "expense" : "income";
 
   const transactions = await prisma.transaction.findMany({
     orderBy: { date: "desc" },

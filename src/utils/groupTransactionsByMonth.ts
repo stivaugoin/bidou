@@ -1,10 +1,9 @@
 import dayjs from "dayjs";
-import { formatTransactionDateToJson } from "./formatTransactionDateToJson";
 
 type GroupedTransactions<Transaction> = {
   title: string;
   total: number;
-  transactions: Override<Transaction, { date: string }>[];
+  transactions: Transaction[];
 }[];
 
 export function groupTransactionsByMonth<
@@ -18,13 +17,11 @@ export function groupTransactionsByMonth<
       acc.push({
         title: month,
         total: transaction.amount,
-        transactions: [formatTransactionDateToJson(transaction)],
+        transactions: [transaction],
       });
     } else {
       acc[monthIndex].total += transaction.amount;
-      acc[monthIndex].transactions.push(
-        formatTransactionDateToJson(transaction)
-      );
+      acc[monthIndex].transactions.push(transaction);
     }
 
     return acc;

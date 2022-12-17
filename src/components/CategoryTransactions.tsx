@@ -2,8 +2,8 @@ import { Loader, Stack } from "@mantine/core";
 import { useRouter } from "next/router";
 import { trpc } from "../lib/trpc";
 import AlertFetchError from "./AlertFetchError";
+import ExpenseRow from "./ExpenseRow";
 import Table from "./Table";
-import TransactionItem from "./TransactionItem";
 
 export default function CategoryTransactions() {
   const router = useRouter();
@@ -22,7 +22,7 @@ export default function CategoryTransactions() {
           <Table.TransactionHeader title={value.title} total={value.total} />
           <Table.Body>
             {value.transactions.map((transaction) => (
-              <TransactionItem key={transaction.id} transaction={transaction} />
+              <ExpenseRow key={transaction.id} expense={transaction} />
             ))}
           </Table.Body>
         </Table>

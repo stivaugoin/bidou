@@ -1,46 +1,36 @@
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { createStyles, Group } from "@mantine/core";
-import { CategoryType } from "@prisma/client";
+import { Accordion, SimpleGrid, Text } from "@mantine/core";
 import { inferRouterOutputs } from "@trpc/server";
-import Link from "next/link";
+import { memo } from "react";
 import { TransactionRouter } from "../server/trpc/transactions";
 import displayAmount from "../utils/displayAmount";
 import { displayDate } from "../utils/displayDate";
 import BadgeCategory from "./BadgeCategory";
+import TransactionForm from "./TransactionForm";
 
-interface RowProps {
-  transaction:
-    | inferRouterOutputs<TransactionRouter>["getByType"][number]["transactions"][number]
-    | inferRouterOutputs<TransactionRouter>["getByCategoryId"][number]["transactions"][number];
+interface Props {
+  onClose: () => void;
+  // TODO: Improve this type. Use Transaction type from @prisma/client.
+  transaction: inferRouterOutputs<TransactionRouter>["getByType"]["transactions"][number]["transactions"][number];
 }
 
-export default function TransactionItem({ transaction }: RowProps) {
-  const { classes } = styles();
-
-  const section =
-    transaction.type === CategoryType.Expense ? "expenses" : "incomes";
-
+export default memo(function TransactionItem({ onClose, transaction }: Props) {
   return (
-    <Link href={`/${section}/${transaction.id}`}>
-      <tr className={classes.row}>
-        <td className={classes.cellAmount}>{displayDate(transaction.date)}</td>
-        <td className={classes.cell}>
+    <Accordion.Item value={transaction.id}>
+      <Accordion.Control>
+        <SimpleGrid cols={3}>
+          <Text>{displayDate(transaction.date)}</Text>
           <BadgeCategory category={transaction.Category} />
-        </td>
-        <td className={classes.cell}>
-          <Group position="right">
-            {displayAmount(transaction.amount)}{" "}
-            <FontAwesomeIcon icon={faChevronRight} size="sm" />
-          </Group>
-        </td>
-      </tr>
-    </Link>
-  );
-}
+          <Text align="right">{displayAmount(transaction.amount)}</Text>
+        </SimpleGrid>
+      </Accordion.Control>
 
-const styles = createStyles(() => ({
-  cell: { width: "25%" },
-  cellAmount: { fontVariantNumeric: "tabular-nums", width: "25%" },
-  row: { cursor: "pointer" },
-}));
+      <Accordion.Panel>
+        <TransactionForm
+          onClose={onClose}
+          transaction={transaction}
+          type={transaction.type}
+        />
+      </Accordion.Panel>
+    </Accordion.Item>
+  );
+});

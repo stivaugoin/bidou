@@ -10,6 +10,7 @@ import Head from "next/head";
 import { SWRConfig } from "swr";
 import { defaultProps } from "../lib/mantine";
 import { trpc } from "../lib/trpc";
+import "../styles/globals.css";
 
 fontAwesomeConfig.autoAddCss = false;
 

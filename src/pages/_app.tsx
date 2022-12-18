@@ -8,6 +8,7 @@ import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { SWRConfig } from "swr";
+import { CategoriesProvider } from "../contexts/CategoriesContext";
 import { defaultProps } from "../lib/mantine";
 import { trpc } from "../lib/trpc";
 import "../styles/globals.css";
@@ -48,23 +49,27 @@ export default trpc.withTRPC(function App(
         }}
       >
         <ModalsProvider>
-          <SWRConfig
-            value={{
-              fetcher: async (url) => {
-                const res = await fetch(url);
-                if (!res.ok) {
-                  throw new Error("An error occurred while fetching the data.");
-                }
-                return res.json();
-              },
-            }}
-          >
-            <NotificationsProvider>
-              <SessionProvider session={pageProps.session}>
-                <Component {...pageProps} />
-              </SessionProvider>
-            </NotificationsProvider>
-          </SWRConfig>
+          <CategoriesProvider>
+            <SWRConfig
+              value={{
+                fetcher: async (url) => {
+                  const res = await fetch(url);
+                  if (!res.ok) {
+                    throw new Error(
+                      "An error occurred while fetching the data."
+                    );
+                  }
+                  return res.json();
+                },
+              }}
+            >
+              <NotificationsProvider>
+                <SessionProvider session={pageProps.session}>
+                  <Component {...pageProps} />
+                </SessionProvider>
+              </NotificationsProvider>
+            </SWRConfig>
+          </CategoriesProvider>
         </ModalsProvider>
       </MantineProvider>
     </>

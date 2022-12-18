@@ -1,30 +1,18 @@
 import { CategoryType } from "@prisma/client";
-import useSWR from "swr";
-import { ApiGetCategories } from "../server/categories";
+import { useContext } from "react";
+import { CategoriesContext } from "../contexts/CategoriesContext";
 
-type ReturnError = [undefined, false, Error];
-type ReturnLoading = [undefined, true, undefined];
-type ReturnData = [ApiGetCategories, false, undefined];
+export function useCategories(props?: { type: CategoryType }) {
+  const categories = useContext(CategoriesContext);
 
-export default function useCategories(
-  type?: CategoryType
-): ReturnError | ReturnLoading | ReturnData {
-  const { data, error } = useSWR<ApiGetCategories>(["/api/categories", type]);
+  if (!categories)
+    throw new Error(
+      "useCategories must be used within a CategoriesContextProvider"
+    );
 
-  if (error) return [undefined, false, error];
-  if (!data) return [undefined, true, undefined];
+  if (props?.type) {
+    return categories?.filter((category) => category.type === props.type);
+  }
 
-  const categories = data.filter((category) => {
-    if (type === CategoryType.Income) {
-      return category.type === CategoryType.Income;
-    }
-
-    if (type === CategoryType.Expense) {
-      return category.type === CategoryType.Expense;
-    }
-
-    return true;
-  });
-
-  return [categories, false, undefined];
+  return categories;
 }

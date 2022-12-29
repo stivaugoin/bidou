@@ -46,6 +46,9 @@ export default trpc.withTRPC(function App(
             Textarea: { defaultProps: defaultProps.Input },
             TextInput: { defaultProps: defaultProps.Input },
           },
+          other: {
+            border: "1px solid #373A40",
+          },
         }}
       >
         <ModalsProvider>

@@ -1,13 +1,19 @@
 import { faFolderTree } from "@fortawesome/free-solid-svg-icons";
 import { Button, Collapse, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { CategoryFormCreate } from "../../components/CategoryFormCreate";
-import { CategoryList } from "../../components/CategoryList";
+import { Categories } from "../../components/Categories";
+import { CategoryForm, OnSubmitParams } from "../../components/CategoryForm";
 import MainLayout from "../../components/MainLayout";
 import PageHeader from "../../components/PageHeader";
+import { trpc } from "../../lib/trpc";
 
-export default function Categories() {
+export default function CategoriesPage() {
   const [open, { toggle }] = useDisclosure(false);
+  const mutation = trpc.categories.create.useMutation();
+
+  const handleSubmitForm = async (data: OnSubmitParams) => {
+    await mutation.mutateAsync(data);
+  };
 
   return (
     <MainLayout>
@@ -18,12 +24,12 @@ export default function Categories() {
       </PageHeader>
 
       <Collapse in={open}>
-        <CategoryFormCreate onClose={toggle} />
+        <CategoryForm onCancel={toggle} onSubmit={handleSubmitForm} />
       </Collapse>
 
       <Stack spacing="xl">
         {/* TODO: Add filters */}
-        <CategoryList />
+        <Categories />
       </Stack>
     </MainLayout>
   );

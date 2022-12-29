@@ -1,6 +1,6 @@
 import {
   Button,
-  Group,
+  Flex,
   Select,
   SimpleGrid,
   Stack,
@@ -8,11 +8,13 @@ import {
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { CategoryType } from "@prisma/client";
+import { inferRouterOutputs } from "@trpc/server";
 import { useState } from "react";
 import { TypeOf, z } from "zod";
 import { useCategories } from "../hooks/useCategories";
 import notification from "../lib/notification";
 import { trpc } from "../lib/trpc";
+import { CategoriesRouter } from "../server/trpc/categories";
 
 const schema = z.object({
   name: z.string().min(1, "Required"),
@@ -29,20 +31,26 @@ const OPTIONS = [
 ];
 
 interface Props {
-  onClose: () => void;
+  category?: Optional<
+    inferRouterOutputs<CategoriesRouter>["getAll"][number],
+    "Children"
+  >;
+  onCancel: () => void;
+  onSubmit: (data: TypeOf<typeof schema>) => Promise<void>;
 }
 
-export function CategoryFormCreate({ onClose }: Props) {
+export type OnSubmitParams = Parameters<Props["onSubmit"]>[0];
+
+export function CategoryForm({ category, onCancel, onSubmit }: Props) {
   const [saving, setSaving] = useState(false);
   const categories = useCategories();
-  const mutation = trpc.categories.create.useMutation();
   const trpcCtx = trpc.useContext();
 
   const form = useForm({
     initialValues: {
-      name: "",
-      type: "" as CategoryType,
-      parentId: "",
+      name: category?.name || "",
+      type: category?.type || ("" as CategoryType),
+      parentId: category?.parentId || "",
     },
     validate: zodResolver(schema),
   });
@@ -56,18 +64,16 @@ export function CategoryFormCreate({ onClose }: Props) {
 
   const handleClose = () => {
     form.reset();
-    onClose();
+    onCancel();
   };
 
   const handleSubmit = async (data: TypeOf<typeof schema>) => {
     try {
       setSaving(true);
-
-      await mutation.mutateAsync(data);
+      await onSubmit(data);
       await trpcCtx.categories.getAll.invalidate();
-
-      form.reset();
       notification("success");
+      form.reset();
     } catch (error) {
       notification("error");
     } finally {
@@ -78,46 +84,53 @@ export function CategoryFormCreate({ onClose }: Props) {
   return (
     <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
       <Stack spacing="xl">
-        <SimpleGrid cols={3} spacing="xl">
+        <SimpleGrid breakpoints={[{ minWidth: "sm", cols: 3 }]} spacing="xl">
           <TextInput label="Name" {...form.getInputProps("name")} />
 
-          <Select data={OPTIONS} label="Type" {...form.getInputProps("type")} />
+          <Select
+            data={OPTIONS}
+            label="Type"
+            onChange={(value: CategoryType) => {
+              form.setFieldValue("type", value || "");
+              form.setFieldValue("parentId", "");
+            }}
+            onBlur={form.getInputProps("type")["onBlur"]}
+            onFocus={form.getInputProps("type")["onFocus"]}
+            value={form.getInputProps("type")["value"]}
+          />
 
-          {form.values.type && (
-            <Select
-              data={parentSelectData}
-              label="Parent"
-              {...form.getInputProps("parentId")}
-            />
-          )}
+          <Select
+            data={parentSelectData}
+            disabled={!form.values.type}
+            label="Parent"
+            {...form.getInputProps("parentId")}
+          />
         </SimpleGrid>
 
-        <Group>
-          <Button loading={saving} size="sm" type="submit">
-            Create
+        <Flex gap="xl">
+          <Button loading={saving} type="submit">
+            {category ? "Update" : "Create"}
           </Button>
+
           <Button
             disabled={saving}
             onClick={handleClose}
-            size="sm"
             type="button"
             variant="subtle"
           >
-            Close
+            {category ? "Cancel" : "Close"}
           </Button>
-        </Group>
+        </Flex>
       </Stack>
     </form>
   );
 }
 
-type Category = NonNullable<ReturnType<typeof useCategories>>[number];
-
 function filterCategoriesWithoutParent(type: CategoryType) {
-  return (category: Category) =>
+  return (category: NonNullable<Props["category"]>) =>
     category.type === type && category.parentId === null;
 }
 
-function mapCategory(category: Category) {
+function mapCategory(category: NonNullable<Props["category"]>) {
   return { value: category.id, label: category.name };
 }

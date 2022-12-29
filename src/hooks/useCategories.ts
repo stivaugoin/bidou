@@ -2,7 +2,12 @@ import { CategoryType } from "@prisma/client";
 import { useContext } from "react";
 import { CategoriesContext } from "../contexts/CategoriesContext";
 
-export function useCategories(props?: { type: CategoryType }) {
+interface Props {
+  rootOnly?: boolean;
+  type?: CategoryType;
+}
+
+export function useCategories(props?: Props) {
   const categories = useContext(CategoriesContext);
 
   if (!categories)
@@ -10,9 +15,17 @@ export function useCategories(props?: { type: CategoryType }) {
       "useCategories must be used within a CategoriesContextProvider"
     );
 
+  let newCategories = [...categories];
+
   if (props?.type) {
-    return categories?.filter((category) => category.type === props.type);
+    newCategories = newCategories.filter(
+      (category) => category.type === props.type
+    );
   }
 
-  return categories;
+  if (props?.rootOnly) {
+    newCategories = newCategories.filter((category) => !category.parentId);
+  }
+
+  return newCategories;
 }

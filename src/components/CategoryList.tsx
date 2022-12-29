@@ -1,33 +1,34 @@
-import { Stack, Title } from "@mantine/core";
-import { CategoryType } from "@prisma/client";
-import { useCategories } from "../hooks/useCategories";
-import { CategoriesItem } from "./CategoriesItem";
+import { Stack } from "@mantine/core";
+import { inferRouterOutputs } from "@trpc/server";
+import { Fragment } from "react";
+import { CategoriesRouter } from "../server/trpc/categories";
+import { CategoryListItem } from "./CategoryListItem";
 
-export function CategoryList() {
-  const categories = useCategories();
+interface Props {
+  categories: inferRouterOutputs<CategoriesRouter>["getAll"];
+}
 
-  const incomes = categories.filter(
-    (category) => category.type === CategoryType.Income && !category.parentId
-  );
-  const expenses = categories.filter(
-    (category) => category.type === CategoryType.Expense && !category.parentId
-  );
-
+export function CategoryList({ categories }: Props) {
   return (
-    <>
-      <Stack spacing={0} mt="xl">
-        <Title mb="md" order={3}>
-          Incomes
-        </Title>
-        <CategoriesItem categories={incomes} />
-      </Stack>
+    <Stack
+      spacing={0}
+      sx={(theme) => ({
+        borderRadius: theme.radius.md,
+        border: theme.other.border,
+        "& > *:not(:last-child)": {
+          borderBottom: theme.other.border,
+        },
+      })}
+    >
+      {categories.map((category, index) => (
+        <Fragment key={category.id}>
+          <CategoryListItem category={category} />
 
-      <Stack spacing={0} mt="xl">
-        <Title mb="md" order={3}>
-          Expenses
-        </Title>
-        <CategoriesItem categories={expenses} />
-      </Stack>
-    </>
+          {category.Children.map((subcategory, i) => (
+            <CategoryListItem category={subcategory} key={subcategory.id} />
+          ))}
+        </Fragment>
+      ))}
+    </Stack>
   );
 }

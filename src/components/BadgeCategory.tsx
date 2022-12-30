@@ -1,12 +1,10 @@
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Badge, Group } from "@mantine/core";
-import { inferRouterOutputs } from "@trpc/server";
-import { TransactionRouter } from "../server/trpc/transactions";
+import { Category } from "@prisma/client";
 
 interface Props {
-  // TODO: Improve this type. Do not use TransactionRouter.
-  category: inferRouterOutputs<TransactionRouter>["getByType"][number]["transactions"][number]["Category"];
+  category: Pick<Category, "name"> & { Parent: Pick<Category, "name"> | null };
 }
 
 export default function BadgeCategory({ category }: Props) {

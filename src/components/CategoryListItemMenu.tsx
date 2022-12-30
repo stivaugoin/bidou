@@ -3,17 +3,15 @@ import {
   faChartColumn,
   faEdit,
   faEllipsisVertical,
-  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Menu } from "@mantine/core";
 
 interface Props {
   onClickEdit: () => void;
-  onClickDelete: () => void;
 }
 
-export function CategoryListItemMenu({ onClickEdit, onClickDelete }: Props) {
+export function CategoryListItemMenu({ onClickEdit }: Props) {
   return (
     <Menu>
       <Menu.Target>
@@ -30,20 +28,14 @@ export function CategoryListItemMenu({ onClickEdit, onClickDelete }: Props) {
         <Menu.Item icon={<FontAwesomeIcon icon={faChartColumn} />}>
           Report
         </Menu.Item>
+
         <Menu.Divider />
-        <Menu.Label>Danger zone</Menu.Label>
+
         <Menu.Item
           icon={<FontAwesomeIcon icon={faEdit} />}
           onClick={onClickEdit}
         >
           Edit
-        </Menu.Item>
-        <Menu.Item
-          color="red"
-          icon={<FontAwesomeIcon icon={faTrash} />}
-          onClick={onClickDelete}
-        >
-          Delete
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

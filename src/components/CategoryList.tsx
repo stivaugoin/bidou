@@ -1,11 +1,12 @@
 import { Stack } from "@mantine/core";
-import { inferRouterOutputs } from "@trpc/server";
+import { Category } from "@prisma/client";
 import { Fragment } from "react";
-import { CategoriesRouter } from "../server/trpc/categories";
 import { CategoryListItem } from "./CategoryListItem";
 
 interface Props {
-  categories: inferRouterOutputs<CategoriesRouter>["getAll"];
+  categories: (Pick<Category, "id" | "name" | "parentId" | "type"> & {
+    Children: Pick<Category, "id" | "name" | "parentId" | "type">[];
+  })[];
 }
 
 export function CategoryList({ categories }: Props) {
@@ -20,7 +21,7 @@ export function CategoryList({ categories }: Props) {
         },
       })}
     >
-      {categories.map((category, index) => (
+      {categories.map((category) => (
         <Fragment key={category.id}>
           <CategoryListItem category={category} />
 

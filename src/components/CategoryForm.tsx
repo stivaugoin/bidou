@@ -7,14 +7,12 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { CategoryType } from "@prisma/client";
-import { inferRouterOutputs } from "@trpc/server";
+import { Category, CategoryType } from "@prisma/client";
 import { useState } from "react";
 import { TypeOf, z } from "zod";
 import { useCategories } from "../hooks/useCategories";
 import notification from "../lib/notification";
 import { trpc } from "../lib/trpc";
-import { CategoriesRouter } from "../server/trpc/categories";
 
 const schema = z.object({
   name: z.string().min(1, "Required"),
@@ -31,15 +29,10 @@ const OPTIONS = [
 ];
 
 interface Props {
-  category?: Optional<
-    inferRouterOutputs<CategoriesRouter>["getAll"][number],
-    "Children"
-  >;
+  category?: Pick<Category, "id" | "name" | "parentId" | "type">;
   onCancel: () => void;
   onSubmit: (data: TypeOf<typeof schema>) => Promise<void>;
 }
-
-export type OnSubmitParams = Parameters<Props["onSubmit"]>[0];
 
 export function CategoryForm({ category, onCancel, onSubmit }: Props) {
   const [saving, setSaving] = useState(false);

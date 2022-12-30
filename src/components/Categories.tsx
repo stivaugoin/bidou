@@ -15,7 +15,7 @@ export function Categories() {
   });
 
   return (
-    <>
+    <Stack spacing="xl">
       <Stack spacing={0} mt="xl">
         <Title mb="md" order={3}>
           Incomes
@@ -29,6 +29,6 @@ export function Categories() {
         </Title>
         <CategoryList categories={expenses} />
       </Stack>
-    </>
+    </Stack>
   );
 }

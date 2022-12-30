@@ -92,8 +92,8 @@ export const categoriesRouter = router({
       return ctx.prisma.category.update({
         data: {
           name: input.name,
-          ...(input.parentId && { parentId: input.parentId }),
-          ...(input.type && { type: input.type }),
+          parentId: input.parentId || null,
+          type: input.type,
         },
         select: defaultSelect,
         where: { id: input.id },

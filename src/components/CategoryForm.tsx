@@ -51,6 +51,7 @@ export function CategoryForm({ category, onCancel, onSubmit }: Props) {
   const parentSelectData = [
     { value: "", label: "No parent" },
     ...(categories
+      ?.filter(filterCurrentCategory(category?.id))
       ?.filter(filterCategoriesWithoutParent(form.values.type))
       ?.map(mapCategory) || []),
   ];
@@ -117,6 +118,13 @@ export function CategoryForm({ category, onCancel, onSubmit }: Props) {
       </Stack>
     </form>
   );
+}
+
+function filterCurrentCategory(categoryId?: string) {
+  return (category: NonNullable<Props["category"]>) => {
+    if (!categoryId) return true;
+    return category.id !== categoryId;
+  };
 }
 
 function filterCategoriesWithoutParent(type: CategoryType) {

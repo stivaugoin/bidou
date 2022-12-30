@@ -1,5 +1,5 @@
 import { faFolderTree } from "@fortawesome/free-solid-svg-icons";
-import { Button, Collapse } from "@mantine/core";
+import { Box, Button, Collapse } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Categories } from "../components/Categories";
 import { CategoryForm } from "../components/CategoryForm";
@@ -20,12 +20,14 @@ export default function CategoriesPage() {
       </PageHeader>
 
       <Collapse in={open}>
-        <CategoryForm
-          onCancel={toggle}
-          onSubmit={async (data) => {
-            await mutation.mutateAsync(data);
-          }}
-        />
+        <Box mb="xl">
+          <CategoryForm
+            onCancel={toggle}
+            onSubmit={async (data) => {
+              await mutation.mutateAsync(data);
+            }}
+          />
+        </Box>
       </Collapse>
 
       <Categories />

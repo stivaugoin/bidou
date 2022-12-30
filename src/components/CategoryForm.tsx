@@ -74,6 +74,8 @@ export function CategoryForm({ category, onCancel, onSubmit }: Props) {
     }
   };
 
+  const { onChange, ...getInputPropsType } = form.getInputProps("type");
+
   return (
     <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
       <Stack spacing="xl">
@@ -87,9 +89,7 @@ export function CategoryForm({ category, onCancel, onSubmit }: Props) {
               form.setFieldValue("type", value || "");
               form.setFieldValue("parentId", "");
             }}
-            onBlur={form.getInputProps("type")["onBlur"]}
-            onFocus={form.getInputProps("type")["onFocus"]}
-            value={form.getInputProps("type")["value"]}
+            {...getInputPropsType}
           />
 
           <Select

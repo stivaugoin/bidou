@@ -16,14 +16,14 @@ export function Categories() {
 
   return (
     <Stack spacing="xl">
-      <Stack spacing={0} mt="xl">
+      <Stack spacing={0}>
         <Title mb="md" order={3}>
           Incomes
         </Title>
         <CategoryList categories={incomes} />
       </Stack>
 
-      <Stack spacing={0} mt="xl">
+      <Stack spacing={0}>
         <Title mb="md" order={3}>
           Expenses
         </Title>

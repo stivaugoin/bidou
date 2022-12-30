@@ -19,6 +19,7 @@ export function CategoriesProvider({ children }: Props) {
   const { data, isLoading, error } = trpc.categories.getAll.useQuery();
 
   if (error) return <AlertFetchError />;
+
   if (isLoading)
     return (
       <Group align="center" position="center" sx={{ height: "100vh" }}>

@@ -1,7 +1,8 @@
-import { Group } from "@mantine/core";
+import { faTurnUp } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Box, Group, useMantineTheme } from "@mantine/core";
 import { Category } from "@prisma/client";
 import { CategoryListItemMenu } from "./CategoryListItemMenu";
-import { SubcategoryPrefix } from "./SubcategoryPrefix";
 
 interface Props {
   category: Pick<Category, "name">;
@@ -14,9 +15,20 @@ export function CategoryListItemView({
   isSubcategory,
   onClickEdit,
 }: Props) {
+  const theme = useMantineTheme();
+
   return (
     <Group>
-      {isSubcategory && <SubcategoryPrefix />}
+      {isSubcategory && (
+        <Box ml="xs">
+          <FontAwesomeIcon
+            color={theme.colors.gray[7]}
+            fixedWidth
+            icon={faTurnUp}
+            rotation={90}
+          />
+        </Box>
+      )}
       {category.name}
       <CategoryListItemMenu onClickEdit={onClickEdit} />
     </Group>

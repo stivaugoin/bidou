@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 import { z } from "zod";
 import { procedure, router } from ".";
 import { groupTransactionsByMonth } from "../../utils/groupTransactionsByMonth";
-import { getCategoryTransactions } from "../categories";
 
 const defaultOrderBy =
   Prisma.validator<Prisma.TransactionOrderByWithRelationInput>()({
@@ -70,17 +69,6 @@ export const transactionRouter = router({
 
   delete: procedure.input(z.string()).mutation(async ({ input, ctx }) => {
     return ctx.prisma.transaction.delete({
-      select: defaultSelect,
-      where: { id: input },
-    });
-  }),
-
-  getByCategoryId: procedure.input(z.string()).query(async ({ input, ctx }) => {
-    return getCategoryTransactions(input);
-  }),
-
-  getById: procedure.input(z.string()).query(async ({ input, ctx }) => {
-    return ctx.prisma.transaction.findUnique({
       select: defaultSelect,
       where: { id: input },
     });

@@ -22,6 +22,12 @@ const defaultSelect = Prisma.validator<Prisma.CategorySelect>()({
       type: true,
     },
   },
+  Parent: {
+    select: {
+      id: true,
+      name: true,
+    },
+  },
 });
 
 export const categoriesRouter = router({

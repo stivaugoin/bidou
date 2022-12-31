@@ -1,7 +1,6 @@
 import {
   Button,
   Group,
-  Loader,
   NumberInput,
   Select,
   Stack,
@@ -12,10 +11,9 @@ import { useForm, zodResolver } from "@mantine/form";
 import { CategoryType } from "@prisma/client";
 import { useState } from "react";
 import { TypeOf, z } from "zod";
-import useCategories from "../hooks/useCategories";
+import { useCategories } from "../hooks/useCategories";
 import notification from "../lib/notification";
 import { trpc } from "../lib/trpc";
-import AlertFetchError from "./AlertFetchError";
 
 const schema = z.object({
   amount: z.number(),
@@ -48,7 +46,7 @@ function formatTransaction(transaction: Transaction) {
 
 export default function TransactionForm({ onClose, transaction, type }: Props) {
   const [saving, setSaving] = useState(false);
-  const [categories, categoriesLoading, categoriesError] = useCategories(type);
+  const categories = useCategories({ type });
   const createTransaction = trpc.transactions.create.useMutation();
   const updateTransaction = trpc.transactions.update.useMutation();
   const context = trpc.useContext();
@@ -87,9 +85,6 @@ export default function TransactionForm({ onClose, transaction, type }: Props) {
       setSaving(false);
     }
   };
-
-  if (categoriesError) return <AlertFetchError />;
-  if (categoriesLoading) return <Loader />;
 
   return (
     <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>

@@ -5,7 +5,7 @@ import { Category } from "@prisma/client";
 import { CategoryListItemMenu } from "./CategoryListItemMenu";
 
 interface Props {
-  category: Pick<Category, "name">;
+  category: Pick<Category, "name" | "type">;
   isSubcategory?: boolean;
   onClickEdit: () => void;
 }
@@ -30,7 +30,7 @@ export function CategoryListItemView({
         </Box>
       )}
       {category.name}
-      <CategoryListItemMenu onClickEdit={onClickEdit} />
+      <CategoryListItemMenu onClickEdit={onClickEdit} type={category.type} />
     </Group>
   );
 }

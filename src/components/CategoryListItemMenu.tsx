@@ -4,6 +4,7 @@ import {
   faChartColumn,
   faEdit,
   faEllipsisVertical,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Menu } from "@mantine/core";
@@ -28,11 +29,11 @@ export function CategoryListItemMenu({ onClickEdit, type }: Props) {
 
       <Menu.Dropdown>
         <Menu.Label>View</Menu.Label>
-        <Menu.Item icon={<FontAwesomeIcon icon={transactionIcon} />}>
-          Transactions
+        <Menu.Item disabled icon={<FontAwesomeIcon icon={transactionIcon} />}>
+          Transactions (WIP)
         </Menu.Item>
-        <Menu.Item icon={<FontAwesomeIcon icon={faChartColumn} />}>
-          Report
+        <Menu.Item disabled icon={<FontAwesomeIcon icon={faChartColumn} />}>
+          Report (WIP)
         </Menu.Item>
 
         <Menu.Divider />
@@ -42,6 +43,13 @@ export function CategoryListItemMenu({ onClickEdit, type }: Props) {
           onClick={onClickEdit}
         >
           Edit
+        </Menu.Item>
+        <Menu.Item
+          color="red"
+          disabled
+          icon={<FontAwesomeIcon icon={faTrash} />}
+        >
+          Delete (WIP)
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

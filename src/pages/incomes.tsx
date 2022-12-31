@@ -1,5 +1,5 @@
 import { faArrowTrendUp } from "@fortawesome/free-solid-svg-icons";
-import { Button, Card, Collapse, Stack } from "@mantine/core";
+import { Button, Collapse, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { CategoryType } from "@prisma/client";
 import MainLayout from "../components/MainLayout";
@@ -7,7 +7,7 @@ import PageHeader from "../components/PageHeader";
 import TransactionForm from "../components/TransactionForm";
 import Transactions from "../components/Transactions";
 
-export default function IncomesRoot() {
+export default function IncomesPage() {
   const [open, { toggle }] = useDisclosure(false);
 
   return (
@@ -19,9 +19,7 @@ export default function IncomesRoot() {
       </PageHeader>
 
       <Collapse in={open}>
-        <Card>
-          <TransactionForm onClose={toggle} type={CategoryType.Income} />
-        </Card>
+        <TransactionForm onClose={toggle} type={CategoryType.Income} />
       </Collapse>
 
       <Stack spacing="xl">

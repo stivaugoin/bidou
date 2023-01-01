@@ -8,7 +8,7 @@ import {
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useForm, zodResolver } from "@mantine/form";
-import { CategoryType } from "@prisma/client";
+import { Transaction } from "@prisma/client";
 import { useState } from "react";
 import { TypeOf, z } from "zod";
 import { useCategories } from "../hooks/useCategories";
@@ -22,12 +22,12 @@ const schema = z.object({
   note: z.string().nullable(),
 });
 
-type Transaction = z.infer<typeof schema> & { id: string };
-
 type Props = {
   onClose: () => void;
-  transaction?: Transaction;
-  type: CategoryType;
+  transaction?: Pick<
+    Transaction,
+    "id" | "amount" | "categoryId" | "date" | "note"
+  >;
 };
 
 const emptyValues = {
@@ -37,16 +37,16 @@ const emptyValues = {
   note: "" as null | string,
 };
 
-function formatTransaction(transaction: Transaction) {
+function formatTransaction(transaction: NonNullable<Props["transaction"]>) {
   return {
     ...transaction,
     amount: transaction.amount / 100,
   };
 }
 
-export default function TransactionForm({ onClose, transaction, type }: Props) {
+export default function TransactionForm({ onClose, transaction }: Props) {
   const [saving, setSaving] = useState(false);
-  const categories = useCategories({ type });
+  const categories = useCategories();
   const createTransaction = trpc.transactions.create.useMutation();
   const updateTransaction = trpc.transactions.update.useMutation();
   const context = trpc.useContext();
@@ -77,7 +77,7 @@ export default function TransactionForm({ onClose, transaction, type }: Props) {
         form.reset();
       }
 
-      await context.transactions.getByType.refetch();
+      await context.transactions.getByFilters.refetch();
       notification("success");
     } catch (error) {
       notification("error");
@@ -90,16 +90,6 @@ export default function TransactionForm({ onClose, transaction, type }: Props) {
     <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
       <Stack spacing="xl">
         <Group grow spacing="xl">
-          <NumberInput
-            formatter={(value) => value?.replace(",", ".")}
-            hideControls
-            label="Amount"
-            precision={2}
-            size="sm"
-            step="0.01"
-            {...form.getInputProps("amount")}
-          />
-
           <DatePicker
             clearable={false}
             firstDayOfWeek="sunday"
@@ -119,6 +109,16 @@ export default function TransactionForm({ onClose, transaction, type }: Props) {
             label="Category"
             size="sm"
             {...form.getInputProps("categoryId")}
+          />
+
+          <NumberInput
+            formatter={(value) => value?.replace(",", ".")}
+            hideControls
+            label="Amount"
+            precision={2}
+            size="sm"
+            step="0.01"
+            {...form.getInputProps("amount")}
           />
         </Group>
 

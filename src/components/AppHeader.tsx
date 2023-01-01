@@ -1,8 +1,7 @@
 import {
-  faArrowTrendDown,
-  faArrowTrendUp,
   faFolderTree,
   faHome,
+  faList,
   faSignOut,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -26,8 +25,7 @@ import { HEADER_HEIGHT } from "../utils/constant";
 
 const LINKS = [
   { href: "/", icon: faHome, label: "Dashboard" },
-  { href: "/incomes", icon: faArrowTrendUp, label: "Incomes" },
-  { href: "/expenses", icon: faArrowTrendDown, label: "Expenses" },
+  { href: "/transactions", icon: faList, label: "Transactions" },
   { href: "/categories", icon: faFolderTree, label: "Categories" },
 ];
 

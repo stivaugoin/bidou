@@ -1,16 +1,21 @@
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Badge, Group } from "@mantine/core";
-import { Category } from "@prisma/client";
+import { Category, CategoryType } from "@prisma/client";
 
 interface Props {
-  category: Pick<Category, "name"> & { Parent: Pick<Category, "name"> | null };
+  category: Pick<Category, "name" | "type"> & {
+    Parent: Pick<Category, "name" | "type"> | null;
+  };
 }
 
 export default function BadgeCategory({ category }: Props) {
   return (
     <Group>
-      <Badge color="gray" variant="filled">
+      <Badge
+        color={category.type === CategoryType.Expense ? "red" : "green"}
+        variant="light"
+      >
         <Group spacing="xs">
           {"Parent" in category && category.Parent?.name && (
             <>

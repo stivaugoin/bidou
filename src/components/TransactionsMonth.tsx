@@ -7,7 +7,7 @@ import displayAmount from "../utils/displayAmount";
 import TransactionItem from "./TransactionItem";
 
 type Props = {
-  transactions: inferRouterOutputs<TransactionRouter>["getByType"]["transactions"][number];
+  transactions: inferRouterOutputs<TransactionRouter>["getByFilters"]["transactions"][number];
   type: CategoryType;
 };
 
@@ -15,13 +15,10 @@ export default memo(function TransactionsMonth({ transactions, type }: Props) {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   return (
-    <Stack key={transactions.title} spacing={0} mt="xl">
+    <Stack key={transactions.title} spacing={0} mb="xl">
       <Group align="center" position="apart" mb="md">
         <Title order={3}>{transactions.title}</Title>
-        <Badge
-          color={type === CategoryType.Expense ? "red" : "green"}
-          size="xl"
-        >
+        <Badge color={transactions.total < 0 ? "red" : "green"} size="xl">
           {displayAmount(transactions.total)}
         </Badge>
       </Group>

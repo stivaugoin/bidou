@@ -22,10 +22,12 @@ const defaultSelect = Prisma.validator<Prisma.TransactionSelect>()({
     select: {
       id: true,
       name: true,
+      type: true,
       Parent: {
         select: {
           id: true,
           name: true,
+          type: true,
         },
       },
     },
@@ -74,11 +76,11 @@ export const transactionRouter = router({
     });
   }),
 
-  getByType: procedure
+  getByFilters: procedure
     .input(
       z.object({
         page: z.number().min(1),
-        type: z.nativeEnum(CategoryType),
+        type: z.nativeEnum(CategoryType).optional(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -107,7 +109,7 @@ export const transactionRouter = router({
         select: defaultSelect,
         where: {
           date: { gte: minDate.toDate(), lte: maxDate.toDate() },
-          type: input.type,
+          ...(input.type && { type: input.type }),
         },
       });
 

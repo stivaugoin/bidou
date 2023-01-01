@@ -1,5 +1,6 @@
 import { Loader, Pagination } from "@mantine/core";
 import { CategoryType } from "@prisma/client";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { trpc } from "../lib/trpc";
 import AlertFetchError from "./AlertFetchError";
@@ -11,10 +12,11 @@ interface Props {
 
 export default function Transactions({ type }: Props) {
   const [page, setPage] = useState(1);
+  const router = useRouter();
 
-  const { data, error, isLoading } = trpc.transactions.getByType.useQuery({
+  const { data, error, isLoading } = trpc.transactions.getByFilters.useQuery({
     page,
-    type,
+    type: router.query.type as CategoryType,
   });
 
   if (error) return <AlertFetchError message={error.message} />;
@@ -22,7 +24,6 @@ export default function Transactions({ type }: Props) {
 
   return (
     <>
-      {/* TODO: Add filters */}
       {data.transactions.map((transactions) => (
         <TransactionsMonth
           key={transactions.title}

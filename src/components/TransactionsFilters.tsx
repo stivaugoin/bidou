@@ -35,6 +35,7 @@ export function TransactionsFilters() {
           { label: "Expenses", value: CategoryType.Expense },
         ]}
         onChange={handleChangeType}
+        radius="md"
         value={type}
       />
     </SimpleGrid>

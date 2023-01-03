@@ -1,5 +1,5 @@
 import { Container } from "@mantine/core";
-import AppHeader from "./AppHeader";
+import { AppHeader } from "./AppHeader";
 
 interface Props {
   children: React.ReactNode;

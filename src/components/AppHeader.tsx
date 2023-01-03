@@ -1,13 +1,5 @@
 import {
-  faFolderTree,
-  faHome,
-  faList,
-  faSignOut,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
   Burger,
-  Button,
   Container,
   createStyles,
   Group,
@@ -16,28 +8,49 @@ import {
   Transition,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { signOut } from "next-auth/react";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import logoSrc from "../../public/logo-white.png";
 import { HEADER_HEIGHT } from "../utils/constant";
+import { AppMenuLinks } from "./AppMenuLinks";
 
-const LINKS = [
-  { href: "/", icon: faHome, label: "Dashboard" },
-  { href: "/transactions", icon: faList, label: "Transactions" },
-  { href: "/categories", icon: faFolderTree, label: "Categories" },
-];
+export function AppHeader() {
+  const [opened, { toggle }] = useDisclosure(false);
+  const { classes } = useStyles();
 
-function isActive(href: string, pathname: string) {
-  if (href === "/") return pathname === href;
-  return pathname.startsWith(href);
+  return (
+    <Header height={HEADER_HEIGHT} mb="xl" className={classes.root}>
+      <Container className={classes.header}>
+        <Image alt="Bidou" src={logoSrc} height={20} width={120} />
+
+        <Group spacing="md" className={classes.links}>
+          <AppMenuLinks />
+        </Group>
+
+        <Burger
+          id="burgerBtn"
+          opened={opened}
+          onClick={toggle}
+          className={classes.burger}
+          size="sm"
+        />
+
+        <Transition transition="pop-top-right" duration={200} mounted={opened}>
+          {(styles) => (
+            <Paper className={classes.dropdown} withBorder style={styles}>
+              <AppMenuLinks mobile />
+            </Paper>
+          )}
+        </Transition>
+      </Container>
+    </Header>
+  );
 }
 
 const useStyles = createStyles((theme) => ({
-  root: {
-    position: "sticky",
-    zIndex: 100,
+  burger: {
+    [theme.fn.largerThan("sm")]: {
+      display: "none",
+    },
   },
 
   dropdown: {
@@ -69,106 +82,8 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
-  burger: {
-    [theme.fn.largerThan("sm")]: {
-      display: "none",
-    },
-  },
-
-  link: {
-    display: "block",
-    lineHeight: 1,
-    padding: "8px 12px",
-    borderRadius: theme.radius.sm,
-    textDecoration: "none",
-    color:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[0]
-        : theme.colors.gray[7],
-    fontSize: theme.fontSizes.md,
-    fontWeight: 500,
-
-    "&:hover": {
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[6]
-          : theme.colors.gray[0],
-    },
-
-    [theme.fn.smallerThan("sm")]: {
-      borderRadius: 0,
-      padding: theme.spacing.md,
-    },
-  },
-
-  linkActive: {
-    "&, &:hover": {
-      backgroundColor: theme.fn.variant({
-        variant: "light",
-        color: theme.primaryColor,
-      }).background,
-      color: theme.fn.variant({ variant: "light", color: theme.primaryColor })
-        .color,
-    },
+  root: {
+    position: "sticky",
+    zIndex: 900,
   },
 }));
-
-export default function AppHeader() {
-  const [opened, { toggle }] = useDisclosure(false);
-  const { classes, cx } = useStyles();
-  const router = useRouter();
-
-  const items = [
-    ...LINKS.map((link) => (
-      <Link href={link.href} key={link.href} passHref>
-        <a
-          className={cx(classes.link, {
-            [classes.linkActive]: isActive(link.href, router.pathname),
-          })}
-        >
-          {link.label}
-        </a>
-      </Link>
-    )),
-    ...(process.env.NODE_ENV === "development"
-      ? [
-          <Button
-            component="a"
-            className={cx(classes.link)}
-            key="signOut"
-            onClick={() => signOut()}
-            variant="subtle"
-          >
-            <FontAwesomeIcon icon={faSignOut} size="sm" />
-          </Button>,
-        ]
-      : []),
-  ];
-
-  return (
-    <Header height={HEADER_HEIGHT} mb="xl" className={classes.root}>
-      <Container className={classes.header}>
-        <Image alt="Bidou" src={logoSrc} height={20} width={120} />
-        <Group spacing="md" className={classes.links}>
-          {items}
-        </Group>
-
-        <Burger
-          id="burgerBtn"
-          opened={opened}
-          onClick={toggle}
-          className={classes.burger}
-          size="sm"
-        />
-
-        <Transition transition="pop-top-right" duration={200} mounted={opened}>
-          {(styles) => (
-            <Paper className={classes.dropdown} withBorder style={styles}>
-              {items}
-            </Paper>
-          )}
-        </Transition>
-      </Container>
-    </Header>
-  );
-}

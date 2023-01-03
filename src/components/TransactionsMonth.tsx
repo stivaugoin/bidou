@@ -23,7 +23,12 @@ export default memo(function TransactionsMonth({ transactions, type }: Props) {
         </Badge>
       </Group>
 
-      <Accordion onChange={setActiveId} value={activeId} variant="contained">
+      <Accordion
+        onChange={setActiveId}
+        value={activeId}
+        variant="contained"
+        radius="md"
+      >
         {transactions.transactions.map((transaction) => (
           <TransactionItem
             key={transaction.id}

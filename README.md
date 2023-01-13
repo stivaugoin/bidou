@@ -19,10 +19,6 @@
   
   <br />
   <br />
-
-  <p align="center">
-    Manage your family budget
-  </p>
 </div>
 
 <!-- ABOUT THE PROJECT -->

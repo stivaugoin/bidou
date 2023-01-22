@@ -37,10 +37,12 @@ model Transaction {
   Category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
 }
 
-model DashboardCompareIncomes {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  active      Boolean
-  categoryIds String[] // => CategoryId[]
+model DashboardIncomesLastThreeIncomes {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  active            Boolean
+  categoryIdOne     String?
+  categoryIdTwo     String?
+  displayDifference Boolean?
 }
 
 // ##############################################################################

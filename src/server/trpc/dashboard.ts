@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { z } from "zod";
 import { procedure, router } from ".";
 import { MONTH_YEAR } from "../../utils/constant";
 import { getIncomeCategories } from "../../utils/getIncomeCategories";
@@ -6,6 +7,67 @@ import { getIncomeTotalByCategory } from "../../utils/getIncomeTotalByCategory";
 import { getLastThreeMonths } from "../../utils/getLastThreeMonths";
 
 export const dashboardRouter = router({
+  incomesLastThreeMonths: router({
+    getSettings: procedure.query(async ({ ctx }) => {
+      const settings =
+        await ctx.prisma.dashboardIncomesLastThreeIncomes.findFirst();
+
+      if (!settings) {
+        return {
+          active: false,
+          categoryIdOne: null,
+          categoryIdTwo: null,
+          displayDifference: null,
+        };
+      }
+
+      return settings;
+    }),
+
+    setSettings: procedure
+      .input(
+        z.object({
+          active: z.boolean(),
+          categoryIdOne: z.string().nullable(),
+          categoryIdTwo: z.string().nullable(),
+          displayDifference: z.boolean().nullable(),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        const settings =
+          await ctx.prisma.dashboardIncomesLastThreeIncomes.findFirst();
+
+        const data = (() => {
+          if (input.active && (!input.categoryIdOne || !input.categoryIdTwo)) {
+            return {
+              ...input,
+              displayDifference: null,
+            };
+          }
+
+          if (!input.active)
+            return {
+              active: false,
+              categoryIdOne: null,
+              categoryIdTwo: null,
+              displayDifference: null,
+            };
+
+          return input;
+        })();
+
+        if (settings) {
+          return ctx.prisma.dashboardIncomesLastThreeIncomes.update({
+            where: { id: settings.id },
+            data,
+          });
+        }
+
+        return ctx.prisma.dashboardIncomesLastThreeIncomes.create({
+          data,
+        });
+      }),
+  }),
   compareIncomes: procedure.query(async ({ ctx }) => {
     const categories = await getIncomeCategories(ctx.prisma);
     const totalByCategory = await getIncomeTotalByCategory(ctx.prisma, {

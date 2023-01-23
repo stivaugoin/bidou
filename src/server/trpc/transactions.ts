@@ -79,6 +79,7 @@ export const transactionRouter = router({
   getByFilters: procedure
     .input(
       z.object({
+        categoryId: z.string().optional(),
         page: z.number().min(1),
         type: z.nativeEnum(CategoryType).optional(),
       })
@@ -109,6 +110,7 @@ export const transactionRouter = router({
         select: defaultSelect,
         where: {
           date: { gte: minDate.toDate(), lte: maxDate.toDate() },
+          ...(input.categoryId && { categoryId: input.categoryId }),
           ...(input.type && { type: input.type }),
         },
       });

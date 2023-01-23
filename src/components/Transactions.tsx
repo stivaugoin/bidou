@@ -15,6 +15,7 @@ export default function Transactions({ type }: Props) {
   const router = useRouter();
 
   const { data, error, isLoading } = trpc.transactions.getByFilters.useQuery({
+    categoryId: router.query.categoryId as string,
     page,
     type: router.query.type as CategoryType,
   });

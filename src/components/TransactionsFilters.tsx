@@ -1,28 +1,55 @@
 import { SegmentedControl, SimpleGrid } from "@mantine/core";
 import { CategoryType } from "@prisma/client";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { ParsedUrlQuery } from "querystring";
+import { useEffect, useState } from "react";
+import { SelectCategory } from "./SelectCategory";
+
+type Filters = { categoryId?: string; type?: CategoryType | "" };
 
 export function TransactionsFilters() {
-  const router = useRouter();
-  const categoryType = router.query.type as CategoryType;
+  const { pathname, push, query } = useRouter();
+  const { categoryId, type } = getFilters(query);
 
-  const [type, setType] = useState<CategoryType | "">(categoryType || "");
+  const [filters, setFilters] = useState<Filters>({ categoryId, type });
+
+  useEffect(() => {
+    if (filters.categoryId !== categoryId) {
+      setFilters({ ...filters, categoryId });
+    }
+    if (filters.type !== type) {
+      setFilters({ ...filters, type });
+    }
+  }, [categoryId, filters, pathname, query, type]);
+
+  function handleChangeCategory(value: string | null) {
+    setFilters({ ...filters, categoryId: value || "" });
+
+    if (value === null) {
+      const { categoryId, ...rest } = query;
+      push({ pathname, query: rest });
+    } else {
+      push({ pathname, query: { ...query, categoryId: value } });
+    }
+  }
 
   function handleChangeType(value: CategoryType | "") {
-    setType(value);
-    const pathname = router.pathname;
+    setFilters({ ...filters, categoryId: "", type: value });
 
+    const { categoryId, ...rest } = query;
     if (value === "") {
-      const { type, ...query } = router.query;
-      router.push({ pathname, query });
+      delete rest.type;
+      push({ pathname, query: rest });
     } else {
-      router.push({ pathname, query: { ...router.query, type: value } });
+      push({ pathname, query: { ...rest, type: value } });
     }
   }
 
   return (
-    <SimpleGrid cols={2}>
+    <SimpleGrid
+      breakpoints={[{ cols: 1, maxWidth: "md" }, { cols: 2 }]}
+      sx={{ alignItems: "center" }}
+    >
       <SegmentedControl
         data={[
           { label: "All", value: "" },
@@ -31,8 +58,27 @@ export function TransactionsFilters() {
         ]}
         onChange={handleChangeType}
         radius="md"
-        value={type}
+        value={filters.type}
+      />
+
+      <SelectCategory
+        clearable={false}
+        labelNoValue="All categories"
+        onChange={handleChangeCategory}
+        radius="md"
+        size="sm"
+        type={filters.type as CategoryType | undefined}
+        value={filters.categoryId}
       />
     </SimpleGrid>
   );
+}
+
+function getFilters(query: ParsedUrlQuery): Filters {
+  const { categoryId, type } = query;
+
+  return {
+    categoryId: (categoryId as string) || "",
+    type: (type as CategoryType) || "",
+  };
 }

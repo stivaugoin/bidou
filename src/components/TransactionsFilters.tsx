@@ -5,25 +5,20 @@ import { useState } from "react";
 
 export function TransactionsFilters() {
   const router = useRouter();
-  const [type, setType] = useState<CategoryType | "">(
-    (router.query.type as CategoryType) || ""
-  );
+  const categoryType = router.query.type as CategoryType;
+
+  const [type, setType] = useState<CategoryType | "">(categoryType || "");
 
   function handleChangeType(value: CategoryType | "") {
     setType(value);
-
-    const routerQuery = { ...router.query };
+    const pathname = router.pathname;
 
     if (value === "") {
-      delete routerQuery.type;
+      const { type, ...query } = router.query;
+      router.push({ pathname, query });
     } else {
-      routerQuery.type = value;
+      router.push({ pathname, query: { ...router.query, type: value } });
     }
-
-    router.push({
-      pathname: router.pathname,
-      query: routerQuery,
-    });
   }
 
   return (

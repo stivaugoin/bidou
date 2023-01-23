@@ -1,6 +1,4 @@
 import {
-  faArrowTrendDown,
-  faArrowTrendUp,
   faChartColumn,
   faEdit,
   faEllipsisVertical,
@@ -8,17 +6,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Menu } from "@mantine/core";
-import { CategoryType } from "@prisma/client";
+import { MODULES } from "../utils/constant";
 
 interface Props {
   onClickEdit: () => void;
-  type: CategoryType;
 }
 
-export function CategoryListItemMenu({ onClickEdit, type }: Props) {
-  const transactionIcon =
-    type === CategoryType.Expense ? faArrowTrendDown : faArrowTrendUp;
-
+export function CategoryListItemMenu({ onClickEdit }: Props) {
   return (
     <Menu>
       <Menu.Target>
@@ -29,7 +23,10 @@ export function CategoryListItemMenu({ onClickEdit, type }: Props) {
 
       <Menu.Dropdown>
         <Menu.Label>View</Menu.Label>
-        <Menu.Item disabled icon={<FontAwesomeIcon icon={transactionIcon} />}>
+        <Menu.Item
+          disabled
+          icon={<FontAwesomeIcon icon={MODULES.transactions.icon} />}
+        >
           Transactions (WIP)
         </Menu.Item>
         <Menu.Item disabled icon={<FontAwesomeIcon icon={faChartColumn} />}>

@@ -105,12 +105,22 @@ export const transactionRouter = router({
       const countMonths = dayjs().diff(firstTransactionDate, "month");
       const totalPage = Math.floor(countMonths / MONTHS_PER_PAGE);
 
+      const categoryIds = await (async () => {
+        if (!input.categoryId) return null;
+        const category = await ctx.prisma.category.findUniqueOrThrow({
+          select: { id: true, Children: { select: { id: true } } },
+          where: { id: input.categoryId },
+        });
+        if (category.Children.length === 0) return [category.id];
+        return category.Children.map((child) => child.id);
+      })();
+
       const transactions = await ctx.prisma.transaction.findMany({
         orderBy: defaultOrderBy,
         select: defaultSelect,
         where: {
           date: { gte: minDate.toDate(), lte: maxDate.toDate() },
-          ...(input.categoryId && { categoryId: input.categoryId }),
+          ...(categoryIds && { categoryId: { in: categoryIds } }),
           ...(input.type && { type: input.type }),
         },
       });

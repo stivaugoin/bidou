@@ -34,7 +34,7 @@ const emptyValues = {
   amount: undefined as unknown as number,
   categoryId: "",
   date: new Date(),
-  note: "" as null | string,
+  note: "",
 };
 
 function formatTransaction(transaction: NonNullable<Props["transaction"]>) {

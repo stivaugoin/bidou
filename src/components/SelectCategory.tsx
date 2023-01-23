@@ -7,11 +7,12 @@ type Props = React.ComponentPropsWithoutRef<typeof Select> &
   };
 
 export function SelectCategory({
+  filterCategory,
   labelNoValue,
   type,
   ...props
 }: Omit<Props, "data">) {
-  const categories = useCategories({ type, childrenOnly: true });
+  const categories = useCategories({ filterCategory, type });
 
   const data = [
     ...(labelNoValue

@@ -5,12 +5,12 @@ import { CategoryList } from "./CategoryList";
 
 export function Categories() {
   const incomes = useCategories({
-    rootOnly: true,
+    filterCategory: "root",
     type: CategoryType.Income,
   });
 
   const expenses = useCategories({
-    rootOnly: true,
+    filterCategory: "root",
     type: CategoryType.Expense,
   });
 

@@ -63,6 +63,7 @@ export function TransactionsFilters() {
 
       <SelectCategory
         clearable={false}
+        filterCategory="all"
         labelNoValue="All categories"
         onChange={handleChangeCategory}
         radius="md"

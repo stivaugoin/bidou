@@ -10,9 +10,13 @@ import { MODULES } from "../utils/constant";
 
 interface Props {
   onClickEdit: () => void;
+  onClickViewTransactions: () => void;
 }
 
-export function CategoryListItemMenu({ onClickEdit }: Props) {
+export function CategoryListItemMenu({
+  onClickEdit,
+  onClickViewTransactions,
+}: Props) {
   return (
     <Menu>
       <Menu.Target>
@@ -24,10 +28,10 @@ export function CategoryListItemMenu({ onClickEdit }: Props) {
       <Menu.Dropdown>
         <Menu.Label>View</Menu.Label>
         <Menu.Item
-          disabled
           icon={<FontAwesomeIcon icon={MODULES.transactions.icon} />}
+          onClick={onClickViewTransactions}
         >
-          Transactions (WIP)
+          Transactions
         </Menu.Item>
         <Menu.Item disabled icon={<FontAwesomeIcon icon={faChartColumn} />}>
           Report (WIP)

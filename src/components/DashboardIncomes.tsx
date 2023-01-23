@@ -4,10 +4,12 @@ import AlertFetchError from "./AlertFetchError";
 import StatsIncomeLastThreeMonths from "./StatsIncomeLastThreeMonths";
 
 export default function DashboardIncomes() {
-  const { data, error, isLoading } = trpc.dashboard.compareIncomes.useQuery();
+  const { data, error, isLoading } =
+    trpc.dashboard.incomesLastThreeMonths.getData.useQuery();
 
   if (error) return <AlertFetchError />;
   if (isLoading) return <Loader />;
+  if (!data) return null;
 
   return (
     <SimpleGrid cols={data.length}>

@@ -1,13 +1,10 @@
 import { Select } from "@mantine/core";
-import { CategoryType } from "@prisma/client";
-import { useCategories } from "../hooks/useCategories";
+import { useCategories, UseCategoriesProps } from "../hooks/useCategories";
 
-interface Props extends React.ComponentPropsWithoutRef<typeof Select> {
-  type: CategoryType;
-}
+type Props = React.ComponentPropsWithoutRef<typeof Select> & UseCategoriesProps;
 
 export function SelectCategory({ type, ...props }: Omit<Props, "data">) {
-  const categories = useCategories({ type });
+  const categories = useCategories({ type, childrenOnly: true });
 
   return (
     <Select

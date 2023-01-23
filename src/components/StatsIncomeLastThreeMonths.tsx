@@ -2,7 +2,7 @@ import { Badge, Box, Grid, Paper, SimpleGrid, Text } from "@mantine/core";
 import displayAmount from "../utils/displayAmount";
 
 interface Props {
-  difference: number;
+  difference?: number;
   months: {
     title: string;
     amount: number;
@@ -24,7 +24,7 @@ export default function StatsIncomeLastThreeMonths({
           </Text>
         </Grid.Col>
         <Grid.Col span="content">
-          {difference < 0 && (
+          {difference && difference < 0 && (
             <Badge color="red" variant="light">
               {displayAmount(difference)}
             </Badge>

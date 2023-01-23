@@ -39,8 +39,8 @@ export function SettingsIncomesLastThreeMonths({ settings }: Props) {
   async function handleSubmit(data: TypeOf<typeof schema>) {
     try {
       await mutation.mutateAsync(data);
-      await trpcCtx.dashboard.incomesLastThreeMonths.getSettings.invalidate();
       notification("success");
+      form.resetDirty();
     } catch (error) {
       notification("error");
     }

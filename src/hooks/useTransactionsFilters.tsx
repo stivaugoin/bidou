@@ -29,7 +29,7 @@ export function useTransactionsFilters(): Return {
   function handleChangeCategory(value: string | null) {
     setFilters({ ...filters, categoryId: value || "" });
 
-    if (value === null) {
+    if (value === null || value === "") {
       const { categoryId, ...rest } = query;
       push({ pathname, query: rest });
     } else {

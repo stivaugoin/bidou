@@ -20,7 +20,7 @@ export function CategoryListItemView({
   return (
     <Group>
       {isSubcategory && (
-        <Box ml="xs">
+        <Box>
           <FontAwesomeIcon
             color={theme.colors.gray[7]}
             fixedWidth
@@ -30,7 +30,7 @@ export function CategoryListItemView({
         </Box>
       )}
       {category.name}
-      <CategoryListItemMenu onClickEdit={onClickEdit} type={category.type} />
+      <CategoryListItemMenu onClickEdit={onClickEdit} />
     </Group>
   );
 }

@@ -2,10 +2,10 @@ import { CategoryType } from "@prisma/client";
 import { useContext } from "react";
 import { CategoriesContext } from "../contexts/CategoriesContext";
 
-export type UseCategoriesProps = { type?: CategoryType } & (
-  | { childrenOnly?: never; rootOnly?: boolean }
-  | { childrenOnly?: boolean; rootOnly?: never }
-);
+export type UseCategoriesProps = {
+  filterCategory?: "all" | "children" | "root";
+  type?: CategoryType;
+};
 
 export function useCategories(props?: UseCategoriesProps) {
   const categories = useContext(CategoriesContext);
@@ -23,14 +23,18 @@ export function useCategories(props?: UseCategoriesProps) {
     );
   }
 
-  if (props && "childrenOnly" in props && props.childrenOnly) {
-    newCategories = newCategories.filter(
-      (category) => Boolean(category.parentId) || category.Children.length === 0
-    );
-  }
-
-  if (props && "rootOnly" in props && props.rootOnly) {
-    newCategories = newCategories.filter((category) => !category.parentId);
+  switch (props?.filterCategory) {
+    case "all":
+      break;
+    case "children":
+      newCategories = newCategories.filter(
+        (category) =>
+          Boolean(category.parentId) || category.Children.length === 0
+      );
+      break;
+    case "root":
+      newCategories = newCategories.filter((category) => !category.parentId);
+      break;
   }
 
   return newCategories;

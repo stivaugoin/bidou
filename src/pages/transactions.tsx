@@ -1,7 +1,6 @@
 import { faList } from "@fortawesome/free-solid-svg-icons";
 import { Box, Button, Collapse, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { CategoryType } from "@prisma/client";
 import MainLayout from "../components/MainLayout";
 import PageHeader from "../components/PageHeader";
 import TransactionForm from "../components/TransactionForm";
@@ -27,7 +26,7 @@ export default function TransactionsPage() {
 
       <Stack spacing="xl">
         <TransactionsFilters />
-        <Transactions type={CategoryType.Income} />
+        <Transactions />
       </Stack>
     </MainLayout>
   );

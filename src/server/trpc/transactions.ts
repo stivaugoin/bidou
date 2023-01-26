@@ -127,7 +127,7 @@ export const transactionRouter = router({
 
       return {
         totalPage,
-        transactions: groupTransactionsByMonth(transactions),
+        transactionsByMonth: groupTransactionsByMonth(transactions),
       };
     }),
 

@@ -1,7 +1,9 @@
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Menu } from "@mantine/core";
+import { Menu, Text } from "@mantine/core";
+import { openConfirmModal } from "@mantine/modals";
 import { inferRouterOutputs } from "@trpc/server";
+import { trpc } from "../lib/trpc";
 import { TransactionRouter } from "../server/trpc/transactions";
 
 interface Props {
@@ -10,6 +12,27 @@ interface Props {
 }
 
 export function TransactionMenu({ onClickEdit, transaction }: Props) {
+  const mutation = trpc.transactions.delete.useMutation();
+  const trpcCtx = trpc.useContext();
+
+  function handleDelete() {
+    openConfirmModal({
+      children: (
+        <Text mb={32} size="sm">
+          Are you sure you want to delete this transaction? This action cannot
+          be undone.
+        </Text>
+      ),
+      confirmProps: { color: "red" },
+      labels: { confirm: "Delete transaction", cancel: "Cancel" },
+      onConfirm: async () => {
+        await mutation.mutateAsync({ id: transaction.id });
+        await trpcCtx.transactions.getByFilters.invalidate();
+      },
+      title: "Delete transaction",
+    });
+  }
+
   return (
     <>
       <Menu.Item
@@ -18,8 +41,12 @@ export function TransactionMenu({ onClickEdit, transaction }: Props) {
       >
         Edit
       </Menu.Item>
-      <Menu.Item color="red" disabled icon={<FontAwesomeIcon icon={faTrash} />}>
-        Delete (WIP)
+      <Menu.Item
+        color="red"
+        icon={<FontAwesomeIcon icon={faTrash} />}
+        onClick={handleDelete}
+      >
+        Delete
       </Menu.Item>
     </>
   );

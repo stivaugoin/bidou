@@ -69,12 +69,14 @@ export const transactionRouter = router({
       });
     }),
 
-  delete: procedure.input(z.string()).mutation(async ({ input, ctx }) => {
-    return ctx.prisma.transaction.delete({
-      select: defaultSelect,
-      where: { id: input },
-    });
-  }),
+  delete: procedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      return ctx.prisma.transaction.delete({
+        select: defaultSelect,
+        where: { id: input.id },
+      });
+    }),
 
   getByFilters: procedure
     .input(

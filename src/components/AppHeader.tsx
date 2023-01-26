@@ -84,6 +84,6 @@ const useStyles = createStyles((theme) => ({
 
   root: {
     position: "sticky",
-    zIndex: 900,
+    zIndex: 10,
   },
 }));

@@ -4,13 +4,9 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { trpc } from "../lib/trpc";
 import AlertFetchError from "./AlertFetchError";
-import TransactionsMonth from "./TransactionsMonth";
+import TransactionsByMonth from "./TransactionsByMonth";
 
-interface Props {
-  type: CategoryType;
-}
-
-export default function Transactions({ type }: Props) {
+export default function Transactions() {
   const [page, setPage] = useState(1);
   const router = useRouter();
 
@@ -25,11 +21,10 @@ export default function Transactions({ type }: Props) {
 
   return (
     <>
-      {data.transactions.map((transactions) => (
-        <TransactionsMonth
+      {data.transactionsByMonth.map((transactions) => (
+        <TransactionsByMonth
           key={transactions.title}
           transactions={transactions}
-          type={type}
         />
       ))}
 

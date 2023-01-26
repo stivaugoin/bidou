@@ -1,7 +1,8 @@
-import { Stack } from "@mantine/core";
 import { Category } from "@prisma/client";
-import { Fragment } from "react";
-import { CategoryListItem } from "./CategoryListItem";
+import { useState } from "react";
+import { CategoryItem } from "./CategoryItem";
+import { CategoryMenu } from "./CategoryMenu";
+import { List } from "./List";
 
 interface Props {
   categories: (Pick<Category, "id" | "name" | "parentId" | "type"> & {
@@ -10,26 +11,39 @@ interface Props {
 }
 
 export function CategoryList({ categories }: Props) {
-  return (
-    <Stack
-      spacing={0}
-      sx={(theme) => ({
-        borderRadius: theme.radius.md,
-        border: theme.other.border,
-        "& > *:not(:last-child)": {
-          borderBottom: theme.other.border,
-        },
-      })}
-    >
-      {categories.map((category) => (
-        <Fragment key={category.id}>
-          <CategoryListItem category={category} />
+  const [categoryEditIds, setCategoryEditIds] = useState<string[]>([]);
 
-          {category.Children.map((subcategory, i) => (
-            <CategoryListItem category={subcategory} key={subcategory.id} />
-          ))}
-        </Fragment>
-      ))}
-    </Stack>
+  function handleOpenEdit(transactionId: string) {
+    setCategoryEditIds((ids) => [...ids, transactionId]);
+  }
+
+  function handleCloseEdit(transactionId: string) {
+    setCategoryEditIds((ids) => ids.filter((id) => id !== transactionId));
+  }
+
+  const data = categories.reduce((acc, category) => {
+    return [...acc, category, ...category.Children];
+  }, [] as Pick<Category, "id" | "name" | "parentId" | "type">[]);
+
+  return (
+    <List
+      data={data}
+      renderItem={(category) => (
+        <CategoryItem
+          data={category}
+          edit={categoryEditIds.includes(category.id)}
+          onCloseEdit={() => handleCloseEdit(category.id)}
+        />
+      )}
+      renderMenu={(category) => {
+        if (categoryEditIds.includes(category.id)) return null;
+        return (
+          <CategoryMenu
+            categoryId={category.id}
+            onClickEdit={() => handleOpenEdit(category.id)}
+          />
+        );
+      }}
+    />
   );
 }

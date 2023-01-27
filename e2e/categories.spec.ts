@@ -1,29 +1,20 @@
 import { expect, test } from "@playwright/test";
 
-test("should navigate to Categories page", async ({ page }) => {
+test("Categories page", async ({ page }) => {
   await page.goto("/");
-  await page
-    .locator(".mantine-Group-root > a", { hasText: "Categories" })
-    .click();
+
+  // Should navigate to Categories page
+  const selector = ".mantine-Group-root > a";
+  await page.locator(selector, { hasText: "Categories" }).click();
   await expect(page).toHaveURL("/categories");
-});
 
-test("should have a page title", async ({ page }) => {
-  await page.goto("/categories");
+  // Should contain all expected elements
   await expect(page).toHaveTitle(/Categories/);
-});
-
-test("should have a page header", async ({ page }) => {
-  await page.goto("/categories");
   await expect(page.locator("h1")).toHaveText("Categories");
-});
-
-test("should have a create button", async ({ page }) => {
-  await page.goto("/categories");
   await expect(page.locator("#createBtn", { hasText: "Create" })).toBeVisible();
-});
+  await expect(page.getByRole("list")).toHaveCount(2);
 
-test("should have two tables", async ({ page }) => {
-  await page.goto("/categories");
-  await expect(page.locator("table")).toHaveCount(2);
+  // TODO: Test creation of a new category
+  // TODO: Test deletion of a category
+  // TODO: Test editing of a category
 });

@@ -13,6 +13,7 @@ interface ListProps<T> {
 export function List<T>({ data, renderItem, renderMenu }: ListProps<T>) {
   return (
     <Stack
+      role="list"
       spacing={0}
       sx={(theme) => ({
         borderRadius: theme.radius.md,

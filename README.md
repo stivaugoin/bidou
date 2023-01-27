@@ -80,9 +80,9 @@ pnpm dev
 
 ### Deploy on Vercel
 
-_You need to setup your environment before_
+> **Warning**: You need to setup your environment before!
 
-Do not deploy `main` branch. Use latest version with tag instead.
+Do not deploy `main` branch directly. Use the latest version with a tag instead, see [Releases](https://github.com/stivaugoin/bidou/releases).
 
 ```
 vercel deploy --prod

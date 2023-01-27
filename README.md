@@ -27,7 +27,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Bidou is a simple webapp to manage your family expenses and how much money each members deposit into the joint account.
+Bidou is a simple web app to manage family expenses and how much money each member deposits into the joint account.
 
 <img width="1440" alt="CleanShot 2022-11-18 at 11 33 23@2x" src="https://user-images.githubusercontent.com/1130466/202754997-55d12692-f5e3-462e-9565-1aaf2b7e7cfb.png">
 

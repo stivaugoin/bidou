@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Menu, Text } from "@mantine/core";
 import { openConfirmModal } from "@mantine/modals";
 import { inferRouterOutputs } from "@trpc/server";
+import notification from "../lib/notification";
 import { trpc } from "../lib/trpc";
 import { TransactionRouter } from "../server/trpc/transactions";
 
@@ -26,8 +27,15 @@ export function TransactionMenu({ onClickEdit, transaction }: Props) {
       confirmProps: { color: "red" },
       labels: { confirm: "Delete transaction", cancel: "Cancel" },
       onConfirm: async () => {
-        await mutation.mutateAsync({ id: transaction.id });
-        await trpcCtx.transactions.getByFilters.invalidate();
+        try {
+          await mutation.mutateAsync({ id: transaction.id });
+          await trpcCtx.transactions.getByFilters.invalidate();
+          notification("success");
+        } catch (error) {
+          if (error instanceof Error) {
+            notification("error", error.message);
+          }
+        }
       },
       title: "Delete transaction",
     });

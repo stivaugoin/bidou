@@ -4,8 +4,11 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Menu } from "@mantine/core";
+import { Menu, Text } from "@mantine/core";
+import { openConfirmModal } from "@mantine/modals";
 import { useRouter } from "next/router";
+import notification from "../lib/notification";
+import { trpc } from "../lib/trpc";
 import { MODULES } from "../utils/constant";
 
 interface Props {
@@ -15,6 +18,33 @@ interface Props {
 
 export function CategoryMenu({ categoryId, onClickEdit }: Props) {
   const router = useRouter();
+  const mutation = trpc.categories.delete.useMutation();
+  const trpcCtx = trpc.useContext();
+
+  function handleDelete() {
+    openConfirmModal({
+      children: (
+        <Text mb={32} size="sm">
+          Are you sure you want to delete this category? This action cannot be
+          undone.
+        </Text>
+      ),
+      confirmProps: { color: "red" },
+      labels: { confirm: "Delete category", cancel: "Cancel" },
+      onConfirm: async () => {
+        try {
+          await mutation.mutateAsync({ id: categoryId });
+          await trpcCtx.categories.getAll.invalidate();
+          notification("success");
+        } catch (error) {
+          if (error instanceof Error) {
+            notification("error", error.message);
+          }
+        }
+      },
+      title: "Delete category",
+    });
+  }
 
   function handleViewTransactions() {
     router.push(`/transactions?categoryId=${categoryId}`);
@@ -36,8 +66,11 @@ export function CategoryMenu({ categoryId, onClickEdit }: Props) {
       <Menu.Item icon={<FontAwesomeIcon icon={faEdit} />} onClick={onClickEdit}>
         Edit
       </Menu.Item>
-      <Menu.Item color="red" disabled icon={<FontAwesomeIcon icon={faTrash} />}>
-        Delete (WIP)
+      <Menu.Item
+        icon={<FontAwesomeIcon icon={faTrash} />}
+        onClick={handleDelete}
+      >
+        Delete
       </Menu.Item>
     </>
   );

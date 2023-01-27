@@ -64,6 +64,38 @@ export const categoriesRouter = router({
       });
     }),
 
+  delete: procedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      const category = await ctx.prisma.category.findFirstOrThrow({
+        select: {
+          id: true,
+          Children: { select: { id: true } },
+          Transactions: { select: { id: true } },
+        },
+        where: { id: input.id },
+      });
+
+      if (category.Transactions.length > 0) {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "Cannot delete category with transactions",
+        });
+      }
+
+      if (category.Children.length > 0) {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "Cannot delete category with subcategories",
+        });
+      }
+
+      return ctx.prisma.category.delete({
+        select: defaultSelect,
+        where: { id: category.id },
+      });
+    }),
+
   getAll: procedure.query(async ({ ctx }) => {
     return ctx.prisma.category.findMany({
       select: defaultSelect,

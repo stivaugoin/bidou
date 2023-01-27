@@ -102,7 +102,7 @@ vercel deploy --prod
 <!-- LICENSE -->
 ## License
 
-MIT
+[MIT licensed](LICENSE)
 
 <!-- Stack -->
 [Typescript]: https://img.shields.io/badge/Typescript-20232A?style=for-the-badge&logo=typescript

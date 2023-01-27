@@ -23,6 +23,7 @@ export function AppMenuLinks({ mobile = false }: Props) {
       {Object.entries(MODULES).map(([module, link]) => (
         <Link href={link.href} key={link.href} passHref>
           <a
+            aria-label={link.label}
             className={cx(classes.link, {
               [classes.linkActive]: isActive(link.href, router.pathname),
             })}

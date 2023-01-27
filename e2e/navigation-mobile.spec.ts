@@ -1,35 +1,33 @@
 import { expect, test } from "@playwright/test";
 
-test("should have a burger button", async ({ page }) => {
+test("navigation mobile", async ({ page }) => {
   await page.goto("/");
-  await expect(page.locator("#burgerBtn")).toBeVisible();
-});
+  const burgerBtn = page.locator("#burgerBtn");
 
-test("should open menu on burger button click", async ({ page }) => {
-  await page.goto("/");
-  await page.locator("#burgerBtn").click();
+  // Should have a burger button
+  await expect(burgerBtn).toBeVisible();
+
+  // Should open menu on burger button click
+  await burgerBtn.click();
   await expect(page.locator(".mantine-Paper-root > a").first()).toBeVisible();
-});
 
-test("should navigate to Incomes page", async ({ page }) => {
-  await page.goto("/");
-  await page.locator("#burgerBtn").click();
-  await page.locator(".mantine-Paper-root > a", { hasText: "Incomes" }).click();
-  await expect(page).toHaveURL("/incomes");
-});
-test("should navigate to Expenses page", async ({ page }) => {
-  await page.goto("/");
-  await page.locator("#burgerBtn").click();
+  // Should navigate to Transactions page
   await page
-    .locator(".mantine-Paper-root > a", { hasText: "Expenses" })
+    .locator(".mantine-Paper-root > a", { hasText: "Transactions" })
     .click();
-  await expect(page).toHaveURL("/expenses");
-});
-test("should navigate to Categories page", async ({ page }) => {
-  await page.goto("/");
+  await expect(page).toHaveURL("/transactions");
+
+  // Should navigate to Categories page
   await page.locator("#burgerBtn").click();
   await page
     .locator(".mantine-Paper-root > a", { hasText: "Categories" })
     .click();
   await expect(page).toHaveURL("/categories");
+
+  // Should navigate to Settings page
+  await page.locator("#burgerBtn").click();
+  await page
+    .locator(".mantine-Paper-root > a", { hasText: "Settings" })
+    .click();
+  await expect(page).toHaveURL("/settings");
 });

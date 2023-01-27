@@ -10,6 +10,7 @@ export function TransactionsFilters() {
   return (
     <SimpleGrid
       breakpoints={[{ cols: 1, maxWidth: "md" }, { cols: 2 }]}
+      role="toolbar"
       sx={{ alignItems: "center" }}
     >
       <SegmentedControl

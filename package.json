@@ -42,7 +42,7 @@
     "zod": "^3.19.1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.26.1",
+    "@playwright/test": "^1.30.0",
     "@types/jsonwebtoken": "^8.5.9",
     "@types/node": "18.7.18",
     "@types/react": "18.0.20",

@@ -14,7 +14,10 @@
 <br />
 <div align="center">
   <a href="https://github.com/stivaugoin/bidou">
-    <img src="public/logo-white.png" alt="Logo" width="600" height="100">
+    <picture>
+      <source media="(prefers-color-scheme: light)" srcset="public/logo-black.png">
+      <img src="public/logo-white.png" alt="Logo" width="600" height="100">
+    </picture>
   </a>
   
   <br />

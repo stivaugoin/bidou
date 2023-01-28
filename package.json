@@ -1,6 +1,6 @@
 {
   "name": "bidou",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,7 +10,7 @@
     "test:e2e": "playwright test",
     "postinstall": "prisma generate",
     "deploy:prod": "npx vercel deploy --prod",
-    "migrate": "tsx scripts/migrations"
+    "migrate": "tsx scripts/migration"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",

@@ -10,7 +10,8 @@
     "test:e2e": "playwright test",
     "postinstall": "prisma generate",
     "deploy:prod": "npx vercel deploy --prod",
-    "migrate": "tsx scripts/migration"
+    "migrate": "tsx scripts/migration",
+    "resetDatabase": "tsx scripts/resetDatabase"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",

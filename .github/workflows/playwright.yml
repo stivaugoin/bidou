@@ -20,6 +20,8 @@ jobs:
         run: pnpm install
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+      - name: Reset Database
+        run: pnpm resetDatabase
       - name: Run Playwright tests
         run: pnpm test:e2e
         env:

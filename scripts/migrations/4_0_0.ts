@@ -1,5 +1,6 @@
 import { CategoryType } from "@prisma/client";
 import { MongoClient } from "mongodb";
+import { getDatabaseName } from "../utils/getDatabaseName";
 
 export default async function main() {
   const { DATABASE_URL, RESET_TRANSACTIONS = false } = process.env;
@@ -11,7 +12,7 @@ export default async function main() {
   const client = new MongoClient(DATABASE_URL);
   await client.connect();
 
-  const dbName = DATABASE_URL.split("/").at(-1);
+  const dbName = getDatabaseName(DATABASE_URL);
   const db = client.db(dbName);
 
   const collections = {

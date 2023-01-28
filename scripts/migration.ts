@@ -1,7 +1,7 @@
 import logUpdate from "log-update";
 import { prisma } from "../src/lib/prisma";
-import { getMigrationFiles } from "./migrations/utils/getMigrationFiles";
-import { startMigrationLogs } from "./migrations/utils/startMigrationLogs";
+import { getMigrationFiles } from "./utils/getMigrationFiles";
+import { startMigrationLogs } from "./utils/startMigrationLogs";
 
 async function main() {
   console.info("==========================================================");

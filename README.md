@@ -14,7 +14,10 @@
 <br />
 <div align="center">
   <a href="https://github.com/stivaugoin/bidou">
-    <img src="public/logo-white.png" alt="Logo" width="600" height="100">
+    <picture>
+      <source media="(prefers-color-scheme: light)" srcset="public/logo-black.png">
+      <img src="public/logo-white.png" alt="Logo" width="600" height="100">
+    </picture>
   </a>
   
   <br />
@@ -24,7 +27,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Bidou is a simple webapp to manage your family expenses and how much money each members deposit into the joint account.
+Bidou is a simple web app to manage family expenses and how much money each member deposits into the joint account.
 
 <img width="1440" alt="CleanShot 2022-11-18 at 11 33 23@2x" src="https://user-images.githubusercontent.com/1130466/202754997-55d12692-f5e3-462e-9565-1aaf2b7e7cfb.png">
 
@@ -77,9 +80,9 @@ pnpm dev
 
 ### Deploy on Vercel
 
-_You need to setup your environment before_
+> **Warning**: You need to setup your environment before!
 
-Do not deploy `main` branch. Use latest version with tag instead.
+Do not deploy `main` branch directly. Use the latest version with a tag instead, see [Releases](https://github.com/stivaugoin/bidou/releases).
 
 ```
 vercel deploy --prod
@@ -99,7 +102,7 @@ vercel deploy --prod
 <!-- LICENSE -->
 ## License
 
-MIT
+[MIT licensed](LICENSE)
 
 <!-- Stack -->
 [Typescript]: https://img.shields.io/badge/Typescript-20232A?style=for-the-badge&logo=typescript

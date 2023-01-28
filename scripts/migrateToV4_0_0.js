@@ -1,6 +1,7 @@
-const { MongoClient } = require("mongodb");
-const dotenv = require("dotenv");
-const { Type } = require("@prisma/client");
+import { CategoryType } from "@prisma/client";
+import { MongoClient } from "mongodb";
+import dotenv from "dotenv";
+import logUpdate from "log-update";
 
 dotenv.config();
 
@@ -23,8 +24,10 @@ const client = new MongoClient(DATABASE_URL, {
 });
 
 async function main() {
+  logUpdate(" ⏳ Connecting to server");
   await client.connect();
-  console.info(" > Connected successfully to server");
+  logUpdate(" ✅ Connecting to server");
+  logUpdate.done();
 
   const db = client.db(dbName);
 
@@ -35,49 +38,60 @@ async function main() {
   };
 
   if (RESET_TRANSACTIONS) {
-    console.info(" > Resetting transactions collection...");
+    logUpdate(" ⏳ Resetting transactions collection");
     try {
       await collections.transactions.deleteMany({});
-      console.info(" > Resetting transactions collection... Done");
+      logUpdate(" ✅ Resetting transactions collection... Done");
     } catch (error) {
-      console.error(" > Resetting transactions collection... Already empty");
+      logUpdate(" ✅ Resetting transactions collection... Already empty");
     }
+    logUpdate.done();
   }
 
-  console.info(" > Getting all expenses");
+  logUpdate(" ⏳ Getting expenses...");
   const expenses = await collections.expenses.find({}).toArray();
-  console.info(` > Getting all expenses... ${expenses.length} found`);
+  logUpdate(` ✅ Getting expenses... ${expenses.length} found`);
+  logUpdate.done();
 
-  console.info(" > Getting all incomes");
+  logUpdate(" ⏳ Getting incomes...");
   const incomes = await collections.incomes.find({}).toArray();
-  console.info(` > Getting all incomes... ${incomes.length} found`);
+  logUpdate(` ✅ Getting incomes... ${incomes.length} found`);
+  logUpdate.done();
 
-  console.info(" > Creating new transactions");
+  if (!expenses.length && !incomes.length) {
+    console.info(" ⛔️ Nothing to migrate");
+    return;
+  }
+
+  logUpdate(" ⏳ Creating new transactions...");
   try {
     const data = [
-      ...expenses.map((expense) => ({ ...expense, type: Type.Expense })),
-      ...incomes.map((income) => ({ ...income, type: Type.Income })),
+      ...expenses.map((expense) => ({
+        ...expense,
+        type: CategoryType.Expense,
+      })),
+      ...incomes.map((income) => ({ ...income, type: CategoryType.Income })),
     ];
     const transactions = await collections.transactions.insertMany(data);
-    console.info(
-      ` > Creating new transactions... ${transactions.insertedCount} created`
+    logUpdate(
+      ` ✅ Creating new transactions... ${transactions.insertedCount} created`
     );
   } catch (error) {
-    console.error(" X ERROR: Transactions already migrated");
+    logUpdate(" ‼️ Creating new transactions... already migrated");
   }
+  logUpdate.done();
+  console.info(" ✅ Done");
+  console.info(
+    " ** All incomes and expenses have been converted to transactions. **"
+  );
+  console.info(
+    " ** Incomes and expenses are still in the database, but they are not used anymore. **"
+  );
+  console.info(" ** You can delete them if you want. **");
 }
 
 main()
-  .then(() => {
-    console.info(" > Done");
-    console.info(
-      " ** All incomes and expenses have been converted to transactions. **"
-    );
-    console.info(
-      " ** Incomes and expenses are still in the database, but they are not used anymore. **"
-    );
-    console.info(" ** You can delete them if you want. **");
-  })
+  .then(() => {})
   .catch(console.error)
   .finally(() => {
     client.close();

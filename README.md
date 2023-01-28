@@ -19,17 +19,6 @@
   
   <br />
   <br />
-
-  <p align="center">
-    Manage your family budget
-    <br />
-    <br />
-    <a href="https://github.com/stivaugoin/bidou">View Demo (not yet available)</a>
-    ·
-    <a href="https://github.com/stivaugoin/bidou/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/stivaugoin/bidou/issues">Request Feature</a>
-  </p>
 </div>
 
 <!-- ABOUT THE PROJECT -->
@@ -58,22 +47,15 @@ Bidou is a simple webapp to manage your family expenses and how much money each 
 ### Prerequisites
 
 * pnpm
-  ```sh
-  npm install -g pnpm
-  ```
-* MongoDB - You can use Atlas MongoDB
+* A MongoDB database - You can use Atlas MongoDB
 
 ### Installation
 
-1. Clone the repo
-   ```sh
-   git clone https://github.com/stivaugoin/bidou.git
-   ```
-2. Install NPM packages
+1. Install NPM packages
    ```sh
    pnpm install
    ```
-3. Create a `.env` based on `.env.example` and add your config
+2. Create a `.env` based on `.env.example` and add your config
    ```js
    // Your database connection (need to include database name)
    const DATABASE_URL = "";
@@ -114,35 +96,10 @@ vercel deploy --prod
 - [ ] Responsive (mobile is not yet well supported)
 - [ ] Remove Mantine and use a custom UI
 
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License.
-
-
-
-<!-- CONTACT -->
-## Contact
-
-Steve Bourgoin - stiv.aw@gmail.com
-
-Project Link: [https://github.com/stivaugoin/bidou](https://github.com/stivaugoin/bidou)
+MIT
 
 <!-- Stack -->
 [Typescript]: https://img.shields.io/badge/Typescript-20232A?style=for-the-badge&logo=typescript

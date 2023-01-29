@@ -22,6 +22,8 @@ jobs:
         run: npx playwright install --with-deps
       - name: Reset Database
         run: pnpm resetDatabase
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
       - name: Run Playwright tests
         run: pnpm test:e2e
         env:

@@ -26,6 +26,8 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
       - name: Seed database
         run: pnpm prisma db seed
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
       - name: Run Playwright tests
         run: pnpm test:e2e
         env:

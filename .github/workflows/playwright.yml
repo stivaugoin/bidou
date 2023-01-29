@@ -24,6 +24,8 @@ jobs:
         run: pnpm resetDatabase
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      - name: Seed database
+        run: pnpm prisma db seed
       - name: Run Playwright tests
         run: pnpm test:e2e
         env:

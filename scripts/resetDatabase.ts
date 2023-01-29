@@ -1,4 +1,3 @@
-import { exec } from "child_process";
 import { config } from "dotenv";
 import logUpdate from "log-update";
 import { MongoClient } from "mongodb";
@@ -12,8 +11,10 @@ async function resetDatabase() {
 
     if (!DATABASE_URL) throw new Error("DATABASE_URL is not defined");
 
+    logUpdate("⏳ Connecting to database...");
     const client = new MongoClient(DATABASE_URL);
     await client.connect();
+    logUpdate("🔌 Connected to database");
 
     const dbName = getDatabaseName(DATABASE_URL);
     const db = client.db(dbName);
@@ -26,12 +27,8 @@ async function resetDatabase() {
       logUpdate.done();
     }
 
+    console.info("✅ Database reset");
     await client.close();
-
-    logUpdate("⏳ Seeding database...");
-    exec("pnpm prisma db seed");
-    logUpdate("✅ Database seeded");
-    logUpdate.done();
   } catch (error) {
     console.error(error);
     process.exit(1);

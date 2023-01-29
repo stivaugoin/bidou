@@ -97,11 +97,13 @@ export const transactionRouter = router({
         .subtract((input.page - 1) * MONTHS_PER_PAGE, "month")
         .endOf("month");
 
-      const firstTransaction = await ctx.prisma.transaction.findFirstOrThrow({
+      const firstTransaction = await ctx.prisma.transaction.findFirst({
         orderBy: { date: "asc" },
         select: { date: true },
         where: { type: input.type },
       });
+
+      if (!firstTransaction) return { totalPage: 0, transactionsByMonth: [] };
 
       const firstTransactionDate = firstTransaction.date;
       const countMonths = dayjs().diff(firstTransactionDate, "month");

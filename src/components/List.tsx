@@ -1,6 +1,6 @@
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, Button, Flex, Menu, Stack } from "@mantine/core";
+import { Box, Button, Flex, Menu, Stack, Text } from "@mantine/core";
 
 type Item<T> = { id: string } & T;
 
@@ -23,34 +23,45 @@ export function List<T>({ data, renderItem, renderMenu }: ListProps<T>) {
         },
       })}
     >
-      {data.map((item, index) => {
-        const menu = renderMenu?.(item, index);
+      <>
+        {!data ||
+          (data.length === 0 && (
+            <Box p="md" sx={{ textAlign: "center" }}>
+              <Text color="dimmed" italic>
+                No data
+              </Text>
+            </Box>
+          ))}
 
-        return (
-          <Flex
-            align="center"
-            key={item.id}
-            gap="xl"
-            p={Boolean(renderMenu) ? "sm" : "md"}
-          >
-            <Box sx={{ flex: 1 }}>{renderItem(item, index)}</Box>
+        {data.map((item, index) => {
+          const menu = renderMenu?.(item, index);
 
-            {Boolean(menu) && (
-              <Box ml="auto" w={42}>
-                <Menu>
-                  <Menu.Target>
-                    <Button color="gray" ml="auto" size="sm" variant="subtle">
-                      <FontAwesomeIcon icon={faEllipsisVertical} />
-                    </Button>
-                  </Menu.Target>
+          return (
+            <Flex
+              align="center"
+              key={item.id}
+              gap="xl"
+              p={Boolean(renderMenu) ? "sm" : "md"}
+            >
+              <Box sx={{ flex: 1 }}>{renderItem(item, index)}</Box>
 
-                  <Menu.Dropdown>{menu}</Menu.Dropdown>
-                </Menu>
-              </Box>
-            )}
-          </Flex>
-        );
-      })}
+              {Boolean(menu) && (
+                <Box ml="auto" w={42}>
+                  <Menu>
+                    <Menu.Target>
+                      <Button color="gray" ml="auto" size="sm" variant="subtle">
+                        <FontAwesomeIcon icon={faEllipsisVertical} />
+                      </Button>
+                    </Menu.Target>
+
+                    <Menu.Dropdown>{menu}</Menu.Dropdown>
+                  </Menu>
+                </Box>
+              )}
+            </Flex>
+          );
+        })}
+      </>
     </Stack>
   );
 }

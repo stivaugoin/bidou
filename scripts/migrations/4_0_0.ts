@@ -16,6 +16,7 @@ export default async function main() {
   const db = client.db(dbName);
 
   const collections = {
+    category: db.collection("Category"),
     expense: db.collection("Expense"),
     income: db.collection("Income"),
     transaction: db.collection("Transaction"),
@@ -33,9 +34,22 @@ export default async function main() {
   if (expenses.length === 0 && incomes.length === 0) return;
 
   try {
+    await collections.category.updateMany(
+      {},
+      { $set: { createdAt: new Date() } }
+    );
+
     await collections.transaction.insertMany([
-      ...expenses.map((t) => ({ ...t, type: CategoryType.Expense })),
-      ...incomes.map((t) => ({ ...t, type: CategoryType.Income })),
+      ...expenses.map((t) => ({
+        ...t,
+        createdAt: t.date,
+        type: CategoryType.Expense,
+      })),
+      ...incomes.map((t) => ({
+        ...t,
+        createdAt: t.date,
+        type: CategoryType.Income,
+      })),
     ]);
   } catch (e) {}
 

@@ -24,9 +24,9 @@ export default function StatsIncomeLastThreeMonths({
           </Text>
         </Grid.Col>
         <Grid.Col span="content">
-          {difference && difference < 0 && (
+          {Boolean(difference && difference < 0) && (
             <Badge color="red" variant="light">
-              {displayAmount(difference)}
+              {displayAmount(difference || 0)}
             </Badge>
           )}
         </Grid.Col>

@@ -11,7 +11,7 @@ type Output = {
 }[];
 
 export function getMigrationFiles({ lastMigration = "0.0.0" }: Props): Output {
-  const migrationsDir = path.join(__dirname, "..");
+  const migrationsDir = path.join(__dirname, "..", "migrations");
   const files = readdirSync(migrationsDir);
 
   return files.reduce((acc: Output, file) => {

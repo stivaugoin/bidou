@@ -32,7 +32,7 @@ export default function StatsIncomeLastThreeMonths({
         </Grid.Col>
       </Grid>
 
-      <SimpleGrid cols={3} breakpoints={[{ maxWidth: "xs", cols: 1 }]} mt="xl">
+      <SimpleGrid cols={3} mt="xl">
         {months.map((month) => (
           <Box key={month.title}>
             <Text transform="uppercase" size="xs" color="dimmed" weight={700}>

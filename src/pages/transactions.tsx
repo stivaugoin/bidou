@@ -13,7 +13,7 @@ export default function TransactionsPage() {
   return (
     <MainLayout>
       <PageHeader icon={faList} title="Transactions">
-        <Button disabled={open} id="createBtn" onClick={toggle}>
+        <Button disabled={open} id="createBtn" onClick={toggle} size="sm">
           Create
         </Button>
       </PageHeader>

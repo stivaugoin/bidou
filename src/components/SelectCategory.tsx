@@ -37,5 +37,7 @@ export function SelectCategory({
       })),
   ];
 
-  return <Select clearable data={data} searchable {...props} />;
+  return (
+    <Select clearable data={data} searchable variant="filled" {...props} />
+  );
 }

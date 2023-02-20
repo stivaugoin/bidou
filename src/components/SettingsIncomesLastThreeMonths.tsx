@@ -1,4 +1,4 @@
-import { Button, Group, Stack, Switch } from "@mantine/core";
+import { Button, Flex, Group, Stack, Switch } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { CategoryType } from "@prisma/client";
 import { inferRouterOutputs } from "@trpc/server";
@@ -58,7 +58,11 @@ export function SettingsIncomesLastThreeMonths({ settings }: Props) {
 
         {form.values.active && (
           <Stack>
-            <Group grow>
+            <Flex
+              direction={{ base: "column", sm: "row" }}
+              gap="md"
+              sx={{ "& > *": { flexGrow: 1 } }}
+            >
               <SelectCategory
                 label="Category One"
                 size="sm"
@@ -71,7 +75,7 @@ export function SettingsIncomesLastThreeMonths({ settings }: Props) {
                 type={CategoryType.Income}
                 {...form.getInputProps("categoryIdTwo")}
               />
-            </Group>
+            </Flex>
 
             <Switch
               disabled={

@@ -40,7 +40,7 @@ export function List<T>({ data, renderItem, renderMenu }: ListProps<T>) {
             <Flex
               align="center"
               key={item.id}
-              gap="xl"
+              gap="md"
               p={Boolean(renderMenu) ? "sm" : "md"}
             >
               <Box sx={{ flex: 1 }}>{renderItem(item, index)}</Box>

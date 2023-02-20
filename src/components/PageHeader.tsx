@@ -39,8 +39,8 @@ export default function PageHeader({
               </ActionIcon>
             </Link>
           )}
-          {"icon" in props && <FontAwesomeIcon icon={props.icon} size="lg" />}
-          <Title>{title}</Title>
+          {"icon" in props && <FontAwesomeIcon icon={props.icon} />}
+          <Title size="h2">{title}</Title>
         </Group>
         {children}
       </Group>

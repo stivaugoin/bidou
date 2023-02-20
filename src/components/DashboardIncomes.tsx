@@ -22,7 +22,7 @@ export default function DashboardIncomes() {
     );
 
   return (
-    <SimpleGrid cols={data.length}>
+    <SimpleGrid breakpoints={[{ cols: 1, maxWidth: "md" }]} cols={data.length}>
       {data.map(({ difference, id, months, title }) => (
         <StatsIncomeLastThreeMonths
           key={id}

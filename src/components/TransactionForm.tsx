@@ -1,5 +1,6 @@
 import {
   Button,
+  Flex,
   Group,
   NumberInput,
   Select,
@@ -89,7 +90,11 @@ export default function TransactionForm({ onClose, transaction }: Props) {
   return (
     <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
       <Stack spacing="xl">
-        <Group grow spacing="xl">
+        <Flex
+          direction={{ base: "column", sm: "row" }}
+          gap="xl"
+          sx={{ "& > div": { flexGrow: 1 } }}
+        >
           <DatePicker
             clearable={false}
             firstDayOfWeek="sunday"
@@ -120,7 +125,7 @@ export default function TransactionForm({ onClose, transaction }: Props) {
             step="0.01"
             {...form.getInputProps("amount")}
           />
-        </Group>
+        </Flex>
 
         <Textarea label="Note" {...form.getInputProps("note")} />
 

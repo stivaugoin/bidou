@@ -5,7 +5,7 @@ import { inferRouterOutputs } from "@trpc/server";
 import { TypeOf, z } from "zod";
 import notification from "../lib/notification";
 import { trpc } from "../lib/trpc";
-import { AppRouter } from "../server/trpc/_app";
+import { AppRouter } from "../server/trpc/routers";
 import { SelectCategory } from "./SelectCategory";
 
 const schema = z.object({

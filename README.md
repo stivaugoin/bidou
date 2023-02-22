@@ -1,4 +1,5 @@
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
+
 <a name="readme-top"></a>
 
 <!-- PROJECT SHIELDS -->
@@ -25,32 +26,30 @@
 </div>
 
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 Bidou is a simple web app to manage family expenses and how much money each member deposits into the joint account.
 
 <img width="1440" alt="CleanShot 2022-11-18 at 11 33 23@2x" src="https://user-images.githubusercontent.com/1130466/202754997-55d12692-f5e3-462e-9565-1aaf2b7e7cfb.png">
 
-
-
 ### Built With
 
-[![Typescript][Typescript]][Typescript-url]
-[![Next][Next.js]][Next-url]
-[![React][React]][React-url]
-[![MongoDB][MongoDB]][MongoDB-url]
-[![Prisma][Prisma]][Prisma-url]
-[![Mantine][Mantine]][Mantine-url]
-
-
+[![Typescript][typescript]][typescript-url]
+[![Next][next.js]][next-url]
+[![React][react]][react-url]
+[![MongoDB][mongodb]][mongodb-url]
+[![Prisma][prisma]][prisma-url]
+[![Mantine][mantine]][mantine-url]
 
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 ### Prerequisites
 
-* pnpm
-* A MongoDB database - You can use Atlas MongoDB
+- pnpm
+- A MongoDB database - You can use Atlas MongoDB
 
 ### Installation
 
@@ -59,17 +58,17 @@ Bidou is a simple web app to manage family expenses and how much money each memb
    pnpm install
    ```
 2. Create a `.env` based on `.env.example` and add your config
+
    ```js
    // Your database connection (need to include database name)
    const DATABASE_URL = "";
-   
+
    // Password used to enter in the app. There is no user account, only a password.
    const PASSWORD = "";
    ```
 
-
-
 <!-- USAGE EXAMPLES -->
+
 ## Usage
 
 ### Start application
@@ -88,32 +87,33 @@ Do not deploy `main` branch directly. Use the latest version with a tag instead,
 vercel deploy --prod
 ```
 
-
-
 <!-- ROADMAP -->
+
 ## Roadmap
 
 - [x] Rewrite application with NextJS and Mantine
+- [x] Responsive
 - [ ] Add filters on list
 - [ ] Add reports
-- [ ] Responsive (mobile is not yet well supported)
 - [ ] Remove Mantine and use a custom UI
 
 <!-- LICENSE -->
+
 ## License
 
 [MIT licensed](LICENSE)
 
 <!-- Stack -->
-[Typescript]: https://img.shields.io/badge/Typescript-20232A?style=for-the-badge&logo=typescript
-[Typescript-url]: https://www.typescriptlang.org/
-[Next.js]: https://img.shields.io/badge/next.js-20232A?style=for-the-badge&logo=nextdotjs
-[Next-url]: https://nextjs.org/
-[React]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react
-[React-url]: https://reactjs.org/
-[MongoDB]: https://img.shields.io/badge/MongoDB-20232A?style=for-the-badge&logo=mongodb
-[MongoDB-url]: https://mongodb.com/
-[Prisma]: https://img.shields.io/badge/Prisma-20232A?style=for-the-badge&logo=prisma
-[Prisma-url]: https://prisma.io/
-[Mantine]: https://img.shields.io/badge/Mantine-20232A?style=for-the-badge&logo=mantine
-[Mantine-url]: https://mantine.dev/
+
+[typescript]: https://img.shields.io/badge/Typescript-20232A?style=for-the-badge&logo=typescript
+[typescript-url]: https://www.typescriptlang.org/
+[next.js]: https://img.shields.io/badge/next.js-20232A?style=for-the-badge&logo=nextdotjs
+[next-url]: https://nextjs.org/
+[react]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react
+[react-url]: https://reactjs.org/
+[mongodb]: https://img.shields.io/badge/MongoDB-20232A?style=for-the-badge&logo=mongodb
+[mongodb-url]: https://mongodb.com/
+[prisma]: https://img.shields.io/badge/Prisma-20232A?style=for-the-badge&logo=prisma
+[prisma-url]: https://prisma.io/
+[mantine]: https://img.shields.io/badge/Mantine-20232A?style=for-the-badge&logo=mantine
+[mantine-url]: https://mantine.dev/

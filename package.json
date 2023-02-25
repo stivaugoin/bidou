@@ -9,6 +9,7 @@
     "lint": "next lint",
     "test:e2e": "playwright test",
     "postinstall": "prisma generate",
+    "prettier:check": "prettier --check .",
     "deploy:prod": "npx vercel deploy --prod",
     "migrate": "tsx scripts/migration",
     "resetDatabase": "tsx scripts/resetDatabase"

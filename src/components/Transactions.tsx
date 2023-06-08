@@ -21,23 +21,22 @@ export default function Transactions() {
 
   return (
     <>
-      {!data ||
-        (data.transactionsByMonth.length === 0 && (
-          <Stack
-            role="list"
-            spacing={0}
-            sx={(theme) => ({
-              borderRadius: theme.radius.md,
-              border: theme.other.border,
-            })}
-          >
-            <Box p="md" sx={{ textAlign: "center" }}>
-              <Text color="dimmed" italic>
-                No data
-              </Text>
-            </Box>
-          </Stack>
-        ))}
+      {(!data || data.transactionsByMonth.length === 0) && (
+        <Stack
+          role="list"
+          spacing={0}
+          sx={(theme) => ({
+            borderRadius: theme.radius.md,
+            border: theme.other.border,
+          })}
+        >
+          <Box p="md" sx={{ textAlign: "center" }}>
+            <Text color="dimmed" italic>
+              No data
+            </Text>
+          </Box>
+        </Stack>
+      )}
 
       {data.transactionsByMonth.map((transactions) => (
         <TransactionsByMonth

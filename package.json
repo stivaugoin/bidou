@@ -64,6 +64,7 @@
     "seed": "tsx prisma/seed"
   },
   "engines": {
-    "node": "18"
+    "node": "v19.4.0",
+    "pnpm": "8.6.1"
   }
 }

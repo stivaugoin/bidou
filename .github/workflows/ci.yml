@@ -120,6 +120,9 @@ jobs:
         run: |
           echo "MY_SECRET_1 is ${{ secrets.E2E_BASE_URL }}"
 
+      - name: Debugging with ssh
+        uses: lhotari/action-upterm@v1
+
       - name: Upload report
         uses: actions/upload-artifact@v3
         if: always()

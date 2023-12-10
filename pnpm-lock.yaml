@@ -65,6 +65,9 @@ dependencies:
   '@trpc/server':
     specifier: ^10.4.2
     version: 10.4.2
+  '@vercel/speed-insights':
+    specifier: ^1.0.1
+    version: 1.0.1
   dayjs:
     specifier: ^1.11.5
     version: 1.11.5
@@ -2356,6 +2359,11 @@ packages:
       '@typescript-eslint/types': 5.37.0
       eslint-visitor-keys: 3.3.0
     dev: true
+
+  /@vercel/speed-insights@1.0.1:
+    resolution: {integrity: sha512-cm8KTTsDgS1AbWsgIEZuMoyPUjclzeqJihyLp0tnA21B/x9iTE8hu2S5zM+/DBzihuHxWL1dx9pCWk22ctMFWQ==}
+    requiresBuild: true
+    dev: false
 
   /acorn-jsx@5.3.2(acorn@8.8.0):
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}

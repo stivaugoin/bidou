@@ -35,6 +35,7 @@
     "@trpc/next": "^10.4.2",
     "@trpc/react-query": "^10.4.2",
     "@trpc/server": "^10.4.2",
+    "@vercel/speed-insights": "^1.0.1",
     "dayjs": "^1.11.5",
     "log-update": "^5.0.1",
     "next": "12.3.0",

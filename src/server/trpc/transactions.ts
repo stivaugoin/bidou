@@ -1,9 +1,7 @@
 import { CategoryType, Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
-import dayjs from "dayjs";
 import { z } from "zod";
 import { procedure, router } from ".";
-import { groupTransactionsByMonth } from "../../utils/groupTransactionsByMonth";
 
 const defaultOrderBy =
   Prisma.validator<Prisma.TransactionOrderByWithRelationInput>()({
@@ -87,51 +85,40 @@ export const transactionRouter = router({
       })
     )
     .query(async ({ ctx, input }) => {
-      const MONTHS_PER_PAGE = 4;
-
-      const minDate = dayjs()
-        .subtract(input.page * MONTHS_PER_PAGE - 1, "month")
-        .startOf("month");
-
-      const maxDate = dayjs()
-        .subtract((input.page - 1) * MONTHS_PER_PAGE, "month")
-        .endOf("month");
-
-      const firstTransaction = await ctx.prisma.transaction.findFirst({
-        orderBy: { date: "asc" },
-        select: { date: true },
-        where: { type: input.type },
-      });
-
-      if (!firstTransaction) return { totalPage: 0, transactionsByMonth: [] };
-
-      const firstTransactionDate = firstTransaction.date;
-      const countMonths = dayjs().diff(firstTransactionDate, "month");
-      const totalPage = Math.floor(countMonths / MONTHS_PER_PAGE);
+      const TRANSACTION_PER_PAGE = 30;
 
       const categoryIds = await (async () => {
         if (!input.categoryId) return null;
+
         const category = await ctx.prisma.category.findUniqueOrThrow({
           select: { id: true, Children: { select: { id: true } } },
           where: { id: input.categoryId },
         });
+
         if (category.Children.length === 0) return [category.id];
+
         return category.Children.map((child) => child.id);
       })();
+
+      const where = {
+        ...(categoryIds && { categoryId: { in: categoryIds } }),
+        ...(input.type && { type: input.type }),
+      };
+
+      const totalTransactions = await ctx.prisma.transaction.count({ where });
+      const totalPage = Math.ceil(totalTransactions / TRANSACTION_PER_PAGE);
 
       const transactions = await ctx.prisma.transaction.findMany({
         orderBy: defaultOrderBy,
         select: defaultSelect,
-        where: {
-          date: { gte: minDate.toDate(), lte: maxDate.toDate() },
-          ...(categoryIds && { categoryId: { in: categoryIds } }),
-          ...(input.type && { type: input.type }),
-        },
+        skip: (input.page - 1) * TRANSACTION_PER_PAGE,
+        take: TRANSACTION_PER_PAGE,
+        where,
       });
 
       return {
         totalPage,
-        transactionsByMonth: groupTransactionsByMonth(transactions),
+        transactions,
       };
     }),
 

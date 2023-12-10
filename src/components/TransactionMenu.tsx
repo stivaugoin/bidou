@@ -9,7 +9,7 @@ import { TransactionRouter } from "../server/trpc/transactions";
 
 interface Props {
   onClickEdit: (transactionId: string) => void;
-  transaction: inferRouterOutputs<TransactionRouter>["getByFilters"]["transactionsByMonth"][number]["transactions"][number];
+  transaction: inferRouterOutputs<TransactionRouter>["getByFilters"]["transactions"][number];
 }
 
 export function TransactionMenu({ onClickEdit, transaction }: Props) {

@@ -7,7 +7,7 @@ import BadgeCategory from "./BadgeCategory";
 import TransactionForm from "./TransactionForm";
 
 interface Props {
-  data: inferRouterOutputs<TransactionRouter>["getByFilters"]["transactionsByMonth"][number]["transactions"][number];
+  data: inferRouterOutputs<TransactionRouter>["getByFilters"]["transactions"][number];
   edit: boolean;
   onCloseEdit: () => void;
 }

@@ -4,10 +4,14 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { trpc } from "../lib/trpc";
 import AlertFetchError from "./AlertFetchError";
-import TransactionsByMonth from "./TransactionsByMonth";
+import { List } from "./List";
+import { TransactionItem } from "./TransactionItem";
+import { TransactionMenu } from "./TransactionMenu";
 
 export default function Transactions() {
   const [page, setPage] = useState(1);
+  const [transactionEditIds, setTransactionEditIds] = useState<string[]>([]);
+
   const router = useRouter();
 
   const { data, error, isLoading } = trpc.transactions.getByFilters.useQuery({
@@ -21,7 +25,7 @@ export default function Transactions() {
 
   return (
     <>
-      {(!data || data.transactionsByMonth.length === 0) && (
+      {(!data || data.transactions.length === 0) && (
         <Stack
           role="list"
           spacing={0}
@@ -38,12 +42,31 @@ export default function Transactions() {
         </Stack>
       )}
 
-      {data.transactionsByMonth.map((transactions) => (
-        <TransactionsByMonth
-          key={transactions.title}
-          transactions={transactions}
-        />
-      ))}
+      <List
+        data={data.transactions}
+        renderItem={(transaction) => (
+          <TransactionItem
+            data={transaction}
+            edit={transactionEditIds.includes(transaction.id)}
+            onCloseEdit={() =>
+              setTransactionEditIds((ids) =>
+                ids.filter((id) => id !== transaction.id)
+              )
+            }
+          />
+        )}
+        renderMenu={(transaction) => {
+          if (transactionEditIds.includes(transaction.id)) return null;
+          return (
+            <TransactionMenu
+              onClickEdit={(transactionId) =>
+                setTransactionEditIds((ids) => [...ids, transactionId])
+              }
+              transaction={transaction}
+            />
+          );
+        }}
+      />
 
       <Pagination onChange={setPage} page={page} total={data.totalPage} />
     </>

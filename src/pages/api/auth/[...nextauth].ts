@@ -9,7 +9,14 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const { AUTH_PASSWORD } = process.env;
+        const { AUTH_PASSWORD, NODE_ENV, VERCEL_ENV } = process.env;
+        if (
+          (NODE_ENV !== "production" || VERCEL_ENV === "preview") &&
+          credentials?.password === "password"
+        ) {
+          return {};
+        }
+
         if (credentials?.password === AUTH_PASSWORD) {
           return {};
         }

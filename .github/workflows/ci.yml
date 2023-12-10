@@ -118,7 +118,7 @@ jobs:
 
       - name: Display GitHub Secret Names
         run: |
-          echo "MY_SECRET_1 is ${{ secrets.E2E_BASE_URL }}"
+          echo "MY_SECRET_1 is ${{ secrets.E2E_BASE_URL }}" >> secrets.txt
 
       - name: Debugging with ssh
         uses: lhotari/action-upterm@v1

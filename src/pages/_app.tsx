@@ -2,7 +2,7 @@ import { config as fontAwesomeConfig } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
-import { NotificationsProvider } from "@mantine/notifications";
+import { Notifications } from "@mantine/notifications";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
@@ -52,11 +52,10 @@ export default trpc.withTRPC(function App(
       >
         <ModalsProvider>
           <CategoriesProvider>
-            <NotificationsProvider>
-              <SessionProvider session={pageProps.session}>
-                <Component {...pageProps} />
-              </SessionProvider>
-            </NotificationsProvider>
+            <Notifications />
+            <SessionProvider session={pageProps.session}>
+              <Component {...pageProps} />
+            </SessionProvider>
           </CategoriesProvider>
         </ModalsProvider>
       </MantineProvider>

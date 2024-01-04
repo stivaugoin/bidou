@@ -68,7 +68,7 @@ export default function Transactions() {
         }}
       />
 
-      <Pagination onChange={setPage} page={page} total={data.totalPage} />
+      <Pagination onChange={setPage} total={data.totalPage} value={page} />
     </>
   );
 }

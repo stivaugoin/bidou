@@ -7,7 +7,7 @@ import {
   Stack,
   Textarea,
 } from "@mantine/core";
-import { DatePicker } from "@mantine/dates";
+import { DatePickerInput } from "@mantine/dates";
 import { useForm, zodResolver } from "@mantine/form";
 import { Transaction } from "@prisma/client";
 import { useState } from "react";
@@ -95,9 +95,9 @@ export default function TransactionForm({ onClose, transaction }: Props) {
           gap="xl"
           sx={{ "& > div": { flexGrow: 1 } }}
         >
-          <DatePicker
+          <DatePickerInput
             clearable={false}
-            firstDayOfWeek="sunday"
+            firstDayOfWeek={0}
             label="Date"
             size="sm"
             {...form.getInputProps("date")}
@@ -122,7 +122,7 @@ export default function TransactionForm({ onClose, transaction }: Props) {
             label="Amount"
             precision={2}
             size="sm"
-            step="0.01"
+            step={0.01}
             {...form.getInputProps("amount")}
           />
         </Flex>

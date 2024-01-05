@@ -1,0 +1,8 @@
+.list {
+  border-radius: var(--mantine-radius-md);
+  border: 1px solid var(--mantine-color-default-border);
+}
+
+.list > *:not(:last-child) {
+  border-bottom: 1px solid var(--mantine-color-default-border);
+}

@@ -2,7 +2,7 @@ import { config as fontAwesomeConfig } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
-import { NotificationsProvider } from "@mantine/notifications";
+import { Notifications } from "@mantine/notifications";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
@@ -10,6 +10,10 @@ import Head from "next/head";
 import { CategoriesProvider } from "../contexts/CategoriesContext";
 import { defaultProps } from "../lib/mantine";
 import { trpc } from "../lib/trpc";
+
+import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
+import "@mantine/notifications/styles.css";
 import "../styles/globals.css";
 
 fontAwesomeConfig.autoAddCss = false;
@@ -32,10 +36,8 @@ export default trpc.withTRPC(function App(
       </Head>
 
       <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
+        defaultColorScheme="dark"
         theme={{
-          colorScheme: "dark",
           components: {
             Button: { defaultProps: defaultProps.Button },
             DatePicker: { defaultProps: defaultProps.Input },
@@ -52,11 +54,10 @@ export default trpc.withTRPC(function App(
       >
         <ModalsProvider>
           <CategoriesProvider>
-            <NotificationsProvider>
-              <SessionProvider session={pageProps.session}>
-                <Component {...pageProps} />
-              </SessionProvider>
-            </NotificationsProvider>
+            <Notifications />
+            <SessionProvider session={pageProps.session}>
+              <Component {...pageProps} />
+            </SessionProvider>
           </CategoriesProvider>
         </ModalsProvider>
       </MantineProvider>

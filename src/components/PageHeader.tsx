@@ -30,7 +30,7 @@ export default function PageHeader({
       <Head>
         <title>{`${title} - Bidou`}</title>
       </Head>
-      <Group mb="xl" position="apart">
+      <Group mb="xl" justify="space-between">
         <Group align="center">
           {"backHref" in props && (
             <Link href={props.backHref} passHref>

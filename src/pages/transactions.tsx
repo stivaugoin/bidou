@@ -24,7 +24,7 @@ export default function TransactionsPage() {
         </Box>
       </Collapse>
 
-      <Stack spacing="xl">
+      <Stack gap="xl">
         <TransactionsFilters />
         <Transactions />
       </Stack>

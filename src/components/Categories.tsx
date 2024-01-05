@@ -15,7 +15,7 @@ export function Categories() {
   });
 
   return (
-    <Stack spacing="xl">
+    <Stack gap="xl">
       <Stack>
         <Title order={3}>Incomes</Title>
         <CategoryList categories={incomes} />

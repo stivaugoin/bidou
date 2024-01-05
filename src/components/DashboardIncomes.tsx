@@ -11,18 +11,18 @@ export default function DashboardIncomes() {
   if (isLoading) return <Loader />;
   if (!data)
     return (
-      <Box p="md" sx={{ textAlign: "center" }}>
-        <Text color="dimmed" italic>
+      <Box p="md" ta="center">
+        <Text c="dimmed" fs="italic">
           No data to display
         </Text>
-        <Text color="dimmed" italic>
+        <Text c="dimmed" fs="italic">
           Go to settings page to configure your dashboard
         </Text>
       </Box>
     );
 
   return (
-    <SimpleGrid breakpoints={[{ cols: 1, maxWidth: "md" }]} cols={data.length}>
+    <SimpleGrid cols={{ base: 1, md: 2 }}>
       {data.map(({ difference, id, months, title }) => (
         <StatsIncomeLastThreeMonths
           key={id}

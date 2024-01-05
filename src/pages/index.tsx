@@ -9,7 +9,7 @@ export default function Dashboard() {
     <MainLayout>
       <PageHeader icon={faHome} title="Dashboard" />
 
-      <Stack spacing="xl">
+      <Stack gap="xl">
         <DashboardIncomes />
       </Stack>
     </MainLayout>

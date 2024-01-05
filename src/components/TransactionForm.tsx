@@ -7,7 +7,7 @@ import {
   Stack,
   Textarea,
 } from "@mantine/core";
-import { DatePicker } from "@mantine/dates";
+import { DatePickerInput } from "@mantine/dates";
 import { useForm, zodResolver } from "@mantine/form";
 import { Transaction } from "@prisma/client";
 import { useState } from "react";
@@ -87,42 +87,64 @@ export default function TransactionForm({ onClose, transaction }: Props) {
     }
   };
 
+  const categoryData = categories
+    .filter((category) => category.Children.length === 0)
+    .reduce<
+      { group: string; items: Array<{ label: string; value: string }> }[]
+    >((acc, category) => {
+      const parentName = category.Parent?.name ?? "";
+      const group = acc.find((item) => item.group === parentName);
+
+      if (!group) {
+        return [
+          ...acc,
+          {
+            group: parentName,
+            items: [{ label: category.name, value: category.id }],
+          },
+        ];
+      }
+
+      const otherGroups = acc.filter((item) => item.group !== parentName);
+      return [
+        ...otherGroups,
+        {
+          ...group,
+          items: [...group.items, { label: category.name, value: category.id }],
+        },
+      ];
+    }, []);
+
   return (
     <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
-      <Stack spacing="xl">
+      <Stack gap="xl">
         <Flex
           direction={{ base: "column", sm: "row" }}
           gap="xl"
-          sx={{ "& > div": { flexGrow: 1 } }}
+          style={{ "& > div": { flexGrow: 1 } }}
         >
-          <DatePicker
+          <DatePickerInput
             clearable={false}
-            firstDayOfWeek="sunday"
+            firstDayOfWeek={0}
             label="Date"
             size="sm"
             {...form.getInputProps("date")}
           />
 
           <Select
-            data={categories
-              .filter((category) => category.Children.length === 0)
-              .map((category) => ({
-                group: category.Parent?.name,
-                label: category.name,
-                value: category.id,
-              }))}
+            data={categoryData}
             label="Category"
             size="sm"
             {...form.getInputProps("categoryId")}
           />
 
           <NumberInput
-            formatter={(value) => value?.replace(",", ".")}
             hideControls
             label="Amount"
-            precision={2}
+            decimalScale={2}
+            fixedDecimalScale
             size="sm"
-            step="0.01"
+            step={0.01}
             {...form.getInputProps("amount")}
           />
         </Flex>

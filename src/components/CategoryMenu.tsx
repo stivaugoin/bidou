@@ -54,20 +54,26 @@ export function CategoryMenu({ categoryId, onClickEdit }: Props) {
     <>
       <Menu.Label>View</Menu.Label>
       <Menu.Item
-        icon={<FontAwesomeIcon icon={MODULES.transactions.icon} />}
+        leftSection={<FontAwesomeIcon icon={MODULES.transactions.icon} />}
         onClick={handleViewTransactions}
       >
         Transactions
       </Menu.Item>
-      <Menu.Item disabled icon={<FontAwesomeIcon icon={faChartColumn} />}>
+      <Menu.Item
+        disabled
+        leftSection={<FontAwesomeIcon icon={faChartColumn} />}
+      >
         Report (WIP)
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item icon={<FontAwesomeIcon icon={faEdit} />} onClick={onClickEdit}>
+      <Menu.Item
+        leftSection={<FontAwesomeIcon icon={faEdit} />}
+        onClick={onClickEdit}
+      >
         Edit
       </Menu.Item>
       <Menu.Item
-        icon={<FontAwesomeIcon icon={faTrash} />}
+        leftSection={<FontAwesomeIcon icon={faTrash} />}
         onClick={handleDelete}
       >
         Delete

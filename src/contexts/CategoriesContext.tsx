@@ -22,7 +22,7 @@ export function CategoriesProvider({ children }: Props) {
 
   if (isLoading)
     return (
-      <Group align="center" position="center" sx={{ height: "100vh" }}>
+      <Group align="center" justify="center" h="100vh">
         <Loader />
       </Group>
     );

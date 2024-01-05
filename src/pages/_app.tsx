@@ -10,6 +10,10 @@ import Head from "next/head";
 import { CategoriesProvider } from "../contexts/CategoriesContext";
 import { defaultProps } from "../lib/mantine";
 import { trpc } from "../lib/trpc";
+
+import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
+import "@mantine/notifications/styles.css";
 import "../styles/globals.css";
 
 fontAwesomeConfig.autoAddCss = false;
@@ -32,10 +36,8 @@ export default trpc.withTRPC(function App(
       </Head>
 
       <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
+        defaultColorScheme="dark"
         theme={{
-          colorScheme: "dark",
           components: {
             Button: { defaultProps: defaultProps.Button },
             DatePicker: { defaultProps: defaultProps.Input },

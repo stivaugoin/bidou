@@ -8,7 +8,7 @@ export type Filters = { categoryId?: string; type?: CategoryType | "" };
 type Return = {
   filters: Filters;
   handleChangeCategory: (value: string | null) => void;
-  handleChangeType: (value: CategoryType | "") => void;
+  handleChangeType: (value: string | "") => void;
 };
 
 export function useTransactionsFilters(): Return {
@@ -37,8 +37,8 @@ export function useTransactionsFilters(): Return {
     }
   }
 
-  function handleChangeType(value: CategoryType | "") {
-    setFilters({ ...filters, categoryId: "", type: value });
+  function handleChangeType(value: string | "") {
+    setFilters({ ...filters, categoryId: "", type: value as CategoryType });
 
     const { categoryId, ...rest } = query;
     if (value === "") {

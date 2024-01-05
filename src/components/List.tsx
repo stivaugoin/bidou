@@ -1,6 +1,7 @@
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Button, Flex, Menu, Stack, Text } from "@mantine/core";
+import classes from "./List.module.css";
 
 type Item<T> = { id: string } & T;
 
@@ -12,26 +13,15 @@ interface ListProps<T> {
 
 export function List<T>({ data, renderItem, renderMenu }: ListProps<T>) {
   return (
-    <Stack
-      role="list"
-      spacing={0}
-      sx={(theme) => ({
-        borderRadius: theme.radius.md,
-        border: theme.other.border,
-        "& > *:not(:last-child)": {
-          borderBottom: theme.other.border,
-        },
-      })}
-    >
+    <Stack className={classes.list} gap={0} role="list">
       <>
-        {!data ||
-          (data.length === 0 && (
-            <Box p="md" sx={{ textAlign: "center" }}>
-              <Text color="dimmed" italic>
-                No data
-              </Text>
-            </Box>
-          ))}
+        {(!data || data.length === 0) && (
+          <Box p="md" ta="center">
+            <Text c="dimmed" fs="italic">
+              No data
+            </Text>
+          </Box>
+        )}
 
         {data.map((item, index) => {
           const menu = renderMenu?.(item, index);
@@ -43,7 +33,7 @@ export function List<T>({ data, renderItem, renderMenu }: ListProps<T>) {
               gap="md"
               p={Boolean(renderMenu) ? "sm" : "md"}
             >
-              <Box sx={{ flex: 1 }}>{renderItem(item, index)}</Box>
+              <Box flex={1}>{renderItem(item, index)}</Box>
 
               {Boolean(menu) && (
                 <Box ml="auto" w={42}>

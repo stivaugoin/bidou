@@ -61,7 +61,7 @@ export function SettingsIncomesLastThreeMonths({ settings }: Props) {
             <Flex
               direction={{ base: "column", sm: "row" }}
               gap="md"
-              sx={{ "& > *": { flexGrow: 1 } }}
+              style={{ "& > *": { flexGrow: 1 } }}
             >
               <SelectCategory
                 label="Category One"

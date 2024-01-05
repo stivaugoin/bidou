@@ -1,0 +1,27 @@
+.link {
+  display: flex;
+  padding: 0 8px;
+  border-radius: 4px;
+  text-decoration: none;
+  color: var(--mantine-color-text);
+  font-size: 16px;
+  font-weight: 500;
+  min-height: 32px;
+}
+
+.link:hover {
+  background-color: #333;
+}
+
+@media (max-width: 600px) {
+  .link {
+    border-radius: 0;
+    padding: 16px;
+  }
+}
+
+.link--active,
+.link--active:hover {
+  background-color: var(--mantine-primary-color-filled);
+  color: var(--mantine-color-white);
+}

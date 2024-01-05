@@ -44,14 +44,14 @@ export function TransactionMenu({ onClickEdit, transaction }: Props) {
   return (
     <>
       <Menu.Item
-        icon={<FontAwesomeIcon icon={faEdit} />}
+        leftSection={<FontAwesomeIcon icon={faEdit} />}
         onClick={() => onClickEdit(transaction.id)}
       >
         Edit
       </Menu.Item>
       <Menu.Item
         color="red"
-        icon={<FontAwesomeIcon icon={faTrash} />}
+        leftSection={<FontAwesomeIcon icon={faTrash} />}
         onClick={handleDelete}
       >
         Delete

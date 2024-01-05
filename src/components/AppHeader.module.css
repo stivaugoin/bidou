@@ -1,0 +1,48 @@
+.burger {
+  display: block;
+}
+
+.dropdown {
+  position: absolute;
+  height: calc(100vh - 60px);
+  top: 60px;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  border-top-width: 0;
+  overflow: hidden;
+  display: block;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+.links {
+  display: none;
+}
+
+.root {
+  position: sticky;
+  z-index: 10;
+  height: 60px;
+}
+
+@media (min-width: 48em) {
+  .burger {
+    display: none;
+  }
+
+  .dropdown {
+    display: none;
+  }
+
+  .links {
+    display: flex;
+  }
+}

@@ -79,8 +79,8 @@ export function CategoryForm({ category, onCancel, onSubmit }: Props) {
 
   return (
     <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
-      <Stack spacing={category ? "lg" : "xl"}>
-        <SimpleGrid breakpoints={[{ minWidth: "sm", cols: 3 }]} spacing="xl">
+      <Stack gap={category ? "lg" : "xl"}>
+        <SimpleGrid cols={{ sm: 3 }} spacing="xl">
           <TextInput
             label="Name"
             size={category ? "sm" : "md"}
@@ -90,8 +90,8 @@ export function CategoryForm({ category, onCancel, onSubmit }: Props) {
           <Select
             data={OPTIONS}
             label="Type"
-            onChange={(value: CategoryType) => {
-              form.setFieldValue("type", value || "");
+            onChange={(value) => {
+              form.setFieldValue("type", (value || "") as CategoryType);
               form.setFieldValue("parentId", "");
             }}
             size={category ? "sm" : "md"}

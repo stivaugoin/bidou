@@ -1,28 +1,26 @@
 import {
+  Box,
   Burger,
   Container,
-  createStyles,
   Group,
-  Header,
   Paper,
   Transition,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Image from "next/image";
 import logoSrc from "../../public/logo-white.png";
-import { HEADER_HEIGHT } from "../utils/constant";
+import classes from "./AppHeader.module.css";
 import { AppMenuLinks } from "./AppMenuLinks";
 
 export function AppHeader() {
   const [opened, { toggle }] = useDisclosure(false);
-  const { classes } = useStyles();
 
   return (
-    <Header height={HEADER_HEIGHT} mb="xl" className={classes.root}>
+    <Box mb="xl" className={classes.root}>
       <Container className={classes.header}>
         <Image alt="Bidou" src={logoSrc} height={20} width={120} />
 
-        <Group spacing="md" className={classes.links}>
+        <Group gap="md" className={classes.links}>
           <AppMenuLinks />
         </Group>
 
@@ -42,48 +40,6 @@ export function AppHeader() {
           )}
         </Transition>
       </Container>
-    </Header>
+    </Box>
   );
 }
-
-const useStyles = createStyles((theme) => ({
-  burger: {
-    [theme.fn.largerThan("sm")]: {
-      display: "none",
-    },
-  },
-
-  dropdown: {
-    position: "absolute",
-    top: HEADER_HEIGHT,
-    left: 0,
-    right: 0,
-    zIndex: 0,
-    borderTopRightRadius: 0,
-    borderTopLeftRadius: 0,
-    borderTopWidth: 0,
-    overflow: "hidden",
-
-    [theme.fn.largerThan("sm")]: {
-      display: "none",
-    },
-  },
-
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    height: "100%",
-  },
-
-  links: {
-    [theme.fn.smallerThan("sm")]: {
-      display: "none",
-    },
-  },
-
-  root: {
-    position: "sticky",
-    zIndex: 10,
-  },
-}));

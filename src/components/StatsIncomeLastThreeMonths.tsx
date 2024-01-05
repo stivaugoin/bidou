@@ -19,7 +19,7 @@ export default function StatsIncomeLastThreeMonths({
     <Paper withBorder p="md" radius="md">
       <Grid align="center">
         <Grid.Col span="auto">
-          <Text size="xl" weight={700}>
+          <Text size="xl" fw={700}>
             {title}
           </Text>
         </Grid.Col>
@@ -35,10 +35,10 @@ export default function StatsIncomeLastThreeMonths({
       <SimpleGrid cols={3} mt="xl">
         {months.map((month) => (
           <Box key={month.title}>
-            <Text transform="uppercase" size="xs" color="dimmed" weight={700}>
+            <Text tt="uppercase" size="xs" color="dimmed" fw={700}>
               {month.title}
             </Text>
-            <Text weight={700}>{displayAmount(month.amount)}</Text>
+            <Text fw={700}>{displayAmount(month.amount)}</Text>
           </Box>
         ))}
       </SimpleGrid>

@@ -16,7 +16,7 @@ export default function BadgeCategory({ category }: Props) {
         color={category.type === CategoryType.Expense ? "red" : "green"}
         variant="light"
       >
-        <Group spacing="xs">
+        <Group gap="xs">
           {"Parent" in category && category.Parent?.name && (
             <>
               {category.Parent.name}

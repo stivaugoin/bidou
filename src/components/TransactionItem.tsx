@@ -18,18 +18,16 @@ export function TransactionItem({ data, edit, onCloseEdit }: Props) {
   }
 
   return (
-    <Grid gutter="sm" grow>
-      <Grid.Col order={1} span={6} sm={3}>
+    <Grid gutter="sm" grow align="center">
+      <Grid.Col order={1} span={{ base: 6, sm: 3 }}>
         <Text>{displayDate(data.date)}</Text>
       </Grid.Col>
 
-      <Grid.Col order={2} orderSm={3} span={6} sm={3}>
-        <Text align="right">
-          {displayAmount(data.amount, data.Category.type)}
-        </Text>
+      <Grid.Col order={{ base: 2, sm: 3 }} span={{ base: 6, sm: 3 }}>
+        <Text ta="right">{displayAmount(data.amount, data.Category.type)}</Text>
       </Grid.Col>
 
-      <Grid.Col order={3} orderSm={2} span={12} sm={6}>
+      <Grid.Col order={{ base: 3, sm: 2 }} span={{ base: 12, sm: 6 }}>
         <BadgeCategory category={data.Category} />
       </Grid.Col>
     </Grid>

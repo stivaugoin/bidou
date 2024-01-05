@@ -1,4 +1,4 @@
-import { Box, Loader, Pagination, Stack, Text } from "@mantine/core";
+import { Loader, Pagination } from "@mantine/core";
 import { CategoryType } from "@prisma/client";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -25,23 +25,6 @@ export default function Transactions() {
 
   return (
     <>
-      {(!data || data.transactions.length === 0) && (
-        <Stack
-          role="list"
-          spacing={0}
-          sx={(theme) => ({
-            borderRadius: theme.radius.md,
-            border: theme.other.border,
-          })}
-        >
-          <Box p="md" sx={{ textAlign: "center" }}>
-            <Text color="dimmed" italic>
-              No data
-            </Text>
-          </Box>
-        </Stack>
-      )}
-
       <List
         data={data.transactions}
         renderItem={(transaction) => (

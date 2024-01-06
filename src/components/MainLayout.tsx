@@ -21,14 +21,14 @@ export default function MainLayout({ children }: Props) {
         breakpoint: "sm",
         collapsed: { desktop: true, mobile: !opened },
       }}
-      padding="lg"
+      pt="lg"
     >
       <AppShell.Header>
         <Container h="100%">
           <Group h="100%" align="center">
             <Group justify="space-between" flex={1}>
               <Image alt="Bidou" src={logoSrc} height={20} width={120} />
-              <Group gap="md" ml="xl" visibleFrom="sm">
+              <Group gap="md" visibleFrom="sm">
                 <AppMenuLinks />
               </Group>
             </Group>
@@ -48,7 +48,7 @@ export default function MainLayout({ children }: Props) {
       </AppShell.Navbar>
 
       <AppShell.Main>
-        <Container p={0}>{children}</Container>
+        <Container>{children}</Container>
       </AppShell.Main>
     </AppShell>
   );

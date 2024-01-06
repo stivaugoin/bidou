@@ -1,8 +1,10 @@
 import { PrismaClient } from "@prisma/client";
+import logUpdate from "log-update";
 import data from "../data";
 
 export default async function seedCategories(prisma: PrismaClient) {
-  console.info(" => Seeding categories...");
+  logUpdate("🌱 Seeding categories...");
+
   for await (const category of data.categories) {
     const { id, name, type } = category;
     await prisma.category.create({
@@ -22,5 +24,7 @@ export default async function seedCategories(prisma: PrismaClient) {
       },
     });
   }
-  console.info(" => Seeding categories... [DONE]");
+
+  logUpdate("✅ Categories seeded");
+  logUpdate.done();
 }

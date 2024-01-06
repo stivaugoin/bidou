@@ -1,4 +1,3 @@
-import { faList } from "@fortawesome/free-solid-svg-icons";
 import { Box, Button, Collapse, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import MainLayout from "../components/MainLayout";
@@ -12,9 +11,9 @@ export default function TransactionsPage() {
 
   return (
     <MainLayout>
-      <PageHeader icon={faList} title="Transactions">
+      <PageHeader title="Transactions">
         <Button disabled={open} id="createBtn" onClick={toggle} size="sm">
-          Create
+          Add
         </Button>
       </PageHeader>
 

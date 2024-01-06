@@ -1,4 +1,3 @@
-import { faFolderTree } from "@fortawesome/free-solid-svg-icons";
 import { Box, Button, Collapse } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Categories } from "../components/Categories";
@@ -13,7 +12,7 @@ export default function CategoriesPage() {
 
   return (
     <MainLayout>
-      <PageHeader icon={faFolderTree} title="Categories">
+      <PageHeader title="Categories">
         <Button disabled={open} id="createBtn" onClick={toggle}>
           Create
         </Button>

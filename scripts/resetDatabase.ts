@@ -5,34 +5,44 @@ import { getDatabaseName } from "./utils/getDatabaseName";
 
 config();
 
-async function resetDatabase() {
+(async function dropDatabase() {
+  let client;
+
   try {
     const { DATABASE_URL } = process.env;
 
     if (!DATABASE_URL) throw new Error("DATABASE_URL is not defined");
 
-    logUpdate("⏳ Connecting to database...");
-    const client = new MongoClient(DATABASE_URL);
+    logUpdate("🔌 Connecting to database...");
+    client = new MongoClient(DATABASE_URL);
     await client.connect();
-    logUpdate("🔌 Connected to database");
+    logUpdate("⚡️ Connected to database");
+    logUpdate.done();
 
     const dbName = getDatabaseName(DATABASE_URL);
     const db = client.db(dbName);
 
     const collections = await db.collections();
+
+    if (!collections.length) {
+      logUpdate("❌ Database is empty");
+      logUpdate.done();
+      return;
+    }
+
     for (const collection of collections) {
-      logUpdate(`⏳ Deleting collection ${collection.collectionName}...`);
+      logUpdate(`⏳ Dropping collection ${collection.collectionName}...`);
       await collection.drop();
-      logUpdate(`✅ Deleted collection ${collection.collectionName}`);
+      logUpdate(`✅ Collection ${collection.collectionName} dropped`);
       logUpdate.done();
     }
 
-    console.info("✅ Database reset");
-    await client.close();
+    logUpdate("✅ Database dropped");
+    logUpdate.done();
   } catch (error) {
     console.error(error);
     process.exit(1);
+  } finally {
+    await client?.close();
   }
-}
-
-resetDatabase();
+})();

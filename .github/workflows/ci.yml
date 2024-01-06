@@ -19,7 +19,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "20"
           cache: "pnpm"
 
       - name: Cache dependencies
@@ -54,7 +54,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "20"
           cache: "pnpm"
 
       - name: Cache dependencies
@@ -86,7 +86,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "20"
           cache: "pnpm"
 
       - name: Cache dependencies
@@ -99,13 +99,13 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Reset Database
-        run: pnpm resetDatabase
+      - name: Drop Database
+        run: pnpm db:drop
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Seed database
-        run: pnpm prisma db seed
+        run: pnpm db:reset
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 

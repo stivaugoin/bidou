@@ -12,7 +12,8 @@
     "prettier:check": "prettier --check .",
     "deploy:prod": "npx vercel deploy --prod",
     "migrate": "tsx scripts/migration",
-    "resetDatabase": "tsx scripts/resetDatabase"
+    "db:drop": "tsx scripts/resetDatabase",
+    "db:reset": "prisma db seed"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
@@ -39,6 +40,7 @@
     "next-auth": "^4.12.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "saslprep": "^1.0.3",
     "superjson": "^1.11.0",
     "zod": "^3.22.3"
   },

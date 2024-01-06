@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import logUpdate from "log-update";
 import data from "../data";
 import {
   dateIsPast,
@@ -10,7 +11,7 @@ import {
 } from "../utils";
 
 export default async function seedTransactions(prisma: PrismaClient) {
-  console.info(" => Seeding transactions...");
+  logUpdate("🌱 Seeding transactions...");
 
   const years = getYears(3);
   const categories = getCategoriesWithTransactions(data.categories);
@@ -31,5 +32,6 @@ export default async function seedTransactions(prisma: PrismaClient) {
     await prisma.transaction.createMany({ data });
   }
 
-  console.info(" => Seeding transactions... [DONE]");
+  logUpdate("✅ Transactions seeded");
+  logUpdate.done();
 }

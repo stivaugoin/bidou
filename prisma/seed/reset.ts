@@ -1,7 +1,8 @@
 import type { PrismaClient } from "@prisma/client";
+import logUpdate from "log-update";
 
 export default async function resetDatabase(db: PrismaClient) {
-  console.info(" => Resetting database...");
+  logUpdate("⏳ Resetting database...");
 
   const deleteTransactions = db.transaction.deleteMany();
   const deleteChildrenCategories = db.category.deleteMany({
@@ -15,5 +16,6 @@ export default async function resetDatabase(db: PrismaClient) {
     deleteParentCategories,
   ]);
 
-  console.info(" => Resetting database... [DONE]");
+  logUpdate("✅ Database reset");
+  logUpdate.done();
 }

@@ -33,6 +33,7 @@ export default function MainLayout({ children }: Props) {
               </Group>
             </Group>
             <Burger
+              id="burgerBtn"
               hiddenFrom="sm"
               onClick={toggle}
               opened={opened}

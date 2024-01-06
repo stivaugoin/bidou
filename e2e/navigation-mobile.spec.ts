@@ -9,25 +9,27 @@ test("navigation mobile", async ({ page }) => {
 
   // Should open menu on burger button click
   await burgerBtn.click();
-  await expect(page.locator(".mantine-Paper-root > a").first()).toBeVisible();
+  await expect(
+    page.locator(".mantine-AppShell-navbar > a").first()
+  ).toBeVisible();
 
   // Should navigate to Transactions page
   await page
-    .locator(".mantine-Paper-root > a", { hasText: "Transactions" })
+    .locator(".mantine-AppShell-navbar > a", { hasText: "Transactions" })
     .click();
   await expect(page).toHaveURL("/transactions");
 
   // Should navigate to Categories page
   await page.locator("#burgerBtn").click();
   await page
-    .locator(".mantine-Paper-root > a", { hasText: "Categories" })
+    .locator(".mantine-AppShell-navbar > a", { hasText: "Categories" })
     .click();
   await expect(page).toHaveURL("/categories");
 
   // Should navigate to Settings page
   await page.locator("#burgerBtn").click();
   await page
-    .locator(".mantine-Paper-root > a", { hasText: "Settings" })
+    .locator(".mantine-AppShell-navbar > a", { hasText: "Settings" })
     .click();
   await expect(page).toHaveURL("/settings");
 });

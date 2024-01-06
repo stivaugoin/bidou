@@ -12,7 +12,7 @@ export default function SettingsPage() {
 
   return (
     <MainLayout>
-      <PageHeader icon={MODULES.settings.icon} title={MODULES.settings.label} />
+      <PageHeader title={MODULES.settings.label} />
 
       <Stack>
         <Title order={2}>Dashboard</Title>

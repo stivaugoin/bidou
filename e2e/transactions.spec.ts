@@ -11,7 +11,7 @@ test("Transactions page", async ({ page }) => {
   // Should contain all expected elements
   await expect(page).toHaveTitle(/Transactions/);
   await expect(page.locator("h1")).toHaveText("Transactions");
-  await expect(page.locator("#createBtn", { hasText: "Create" })).toBeVisible();
+  await expect(page.locator("#createBtn", { hasText: "Add" })).toBeVisible();
   await expect(page.getByRole("toolbar")).toHaveCount(1);
 
   // TODO: Test creation of a new transaction

@@ -87,16 +87,6 @@ Do not deploy `main` branch directly. Use the latest version with a tag instead,
 vercel deploy --prod
 ```
 
-<!-- ROADMAP -->
-
-## Roadmap
-
-- [x] Rewrite application with NextJS and Mantine
-- [x] Responsive
-- [ ] Add filters on list
-- [ ] Add reports
-- [ ] Remove Mantine and use a custom UI
-
 <!-- LICENSE -->
 
 ## License

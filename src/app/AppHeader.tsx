@@ -1,13 +1,15 @@
 "use client";
 
-import {
-  User,
-  createClientComponentClient,
-} from "@supabase/auth-helpers-nextjs";
+import { createBrowserClient } from "@supabase/ssr";
+import { AuthUser } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 
-export default function AppHeader({ user }: { user: User | null }) {
-  const supabase = createClientComponentClient();
+export default function AppHeader({ user }: { user: AuthUser | null }) {
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  );
+
   const router = useRouter();
 
   const handleSignOut = async () => {

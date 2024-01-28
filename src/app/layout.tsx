@@ -2,7 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
-import AppHeader from "./AppHeader";
+import AppHeader from "../components/AppHeader";
 
 const inter = Inter({ subsets: ["latin"] });
 

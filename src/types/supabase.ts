@@ -9,30 +9,50 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      profiles: {
+      categories: {
         Row: {
-          avatar_url: string | null
-          full_name: string | null
+          created_at: string
           id: string
-          updated_at: string | null
-          username: string | null
-          website: string | null
+          name: string
+          parent_id: string | null
+          type: Database["public"]["Enums"]["category_type"]
         }
         Insert: {
-          avatar_url?: string | null
-          full_name?: string | null
-          id: string
-          updated_at?: string | null
-          username?: string | null
-          website?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          parent_id?: string | null
+          type: Database["public"]["Enums"]["category_type"]
         }
         Update: {
-          avatar_url?: string | null
-          full_name?: string | null
+          created_at?: string
           id?: string
-          updated_at?: string | null
-          username?: string | null
-          website?: string | null
+          name?: string
+          parent_id?: string | null
+          type?: Database["public"]["Enums"]["category_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "categories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      profiles: {
+        Row: {
+          id: string
+          name: string | null
+        }
+        Insert: {
+          id: string
+          name?: string | null
+        }
+        Update: {
+          id?: string
+          name?: string | null
         }
         Relationships: [
           {
@@ -40,6 +60,51 @@ export interface Database {
             columns: ["id"]
             isOneToOne: true
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      transactions: {
+        Row: {
+          amount: number | null
+          category_id: string | null
+          created_at: string
+          created_by: string | null
+          date: string
+          id: number
+          note: string | null
+        }
+        Insert: {
+          amount?: number | null
+          category_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          date: string
+          id?: number
+          note?: string | null
+        }
+        Update: {
+          amount?: number | null
+          category_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          date?: string
+          id?: number
+          note?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           }
         ]
@@ -52,7 +117,7 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      category_type: "expense" | "income"
     }
     CompositeTypes: {
       [_ in never]: never

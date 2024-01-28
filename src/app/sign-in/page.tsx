@@ -28,7 +28,6 @@ export default function SignIn() {
       return;
     }
 
-    router.replace("/");
     router.refresh();
   };
 

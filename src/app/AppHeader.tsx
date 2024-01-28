@@ -22,7 +22,6 @@ export default function AppHeader({ user }: { user: AuthUser | null }) {
       return;
     }
 
-    router.replace("/auth/sign-in");
     router.refresh();
   };
 

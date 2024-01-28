@@ -60,17 +60,25 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (user && request.nextUrl.pathname === "/auth/sign-in") {
+  if (user && request.nextUrl.pathname === "/sign-in") {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  if (!user && request.nextUrl.pathname !== "/auth/sign-in") {
-    return NextResponse.redirect(new URL("/auth/sign-in", request.url));
+  if (!user && request.nextUrl.pathname !== "/sign-in") {
+    return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
   return response;
 }
 
 export const config = {
-  matcher: ["/", "/auth/sign-in"],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    "/((?!_next/static|_next/image|favicon.ico).*)",
+  ],
 };

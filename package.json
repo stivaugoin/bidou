@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-types": "node --env-file=.env.local ./scripts/generate-types.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.0.10",

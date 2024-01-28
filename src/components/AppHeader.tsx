@@ -2,6 +2,7 @@
 
 import { createBrowserClient } from "@supabase/ssr";
 import { AuthUser } from "@supabase/supabase-js";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function AppHeader({ user }: { user: AuthUser | null }) {
@@ -34,6 +35,11 @@ export default function AppHeader({ user }: { user: AuthUser | null }) {
       }}
     >
       <div>Bidou</div>
+
+      <div style={{ display: "flex", gap: "1rem" }}>
+        <Link href="/">Home</Link>
+        <Link href="/categories">Categories</Link>
+      </div>
 
       {user && (
         <div style={{ display: "flex", gap: "1rem" }}>

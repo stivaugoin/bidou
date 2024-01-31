@@ -1,0 +1,46 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Profile {
+  id   String  @id @default(uuid())
+  name String?
+
+  @@map("profile")
+}
+
+model Category {
+  id       String       @id @default(uuid())
+  name     String
+  parentId String?      @unique
+  type     CategoryType
+
+  parent       Category?     @relation("CategoryParent", fields: [parentId], references: [id])
+  children     Category[]    @relation("CategoryParent")
+  transactions Transaction[]
+
+  @@map("category")
+}
+
+model Transaction {
+  id     String   @id @default(uuid())
+  amount Float
+  date   DateTime
+  note   String?
+
+  category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId String?
+
+  @@map("transaction")
+}
+
+enum CategoryType {
+  Expense
+  Income
+}

@@ -30,9 +30,6 @@ CREATE TABLE "transaction" (
     CONSTRAINT "transaction_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex
-CREATE UNIQUE INDEX "category_parentId_key" ON "category"("parentId");
-
 -- AddForeignKey
 ALTER TABLE "category" ADD CONSTRAINT "category_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "category"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 

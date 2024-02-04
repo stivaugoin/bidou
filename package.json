@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate-types": "node --env-file=.env.local ./scripts/generate-types.ts"
+    "db:reset": "prisma db seed"
   },
   "dependencies": {
     "@prisma/client": "5.8.1",
@@ -24,9 +24,14 @@
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
     "eslint-config-prettier": "^9.1.0",
+    "log-update": "^6.0.0",
     "prettier": "3.2.4",
     "prisma": "^5.8.1",
     "supabase": "^1.136.3",
+    "tsx": "^4.7.0",
     "typescript": "^5"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed"
   }
 }

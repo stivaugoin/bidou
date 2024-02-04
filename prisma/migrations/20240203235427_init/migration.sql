@@ -35,3 +35,21 @@ ALTER TABLE "category" ADD CONSTRAINT "category_parentId_fkey" FOREIGN KEY ("par
 
 -- AddForeignKey
 ALTER TABLE "transaction" ADD CONSTRAINT "transaction_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "category"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+CREATE FUNCTION
+  public.create_profile_for_new_user()
+  RETURNS TRIGGER AS
+  $$
+  BEGIN
+    INSERT INTO public.profile (id)
+    VALUES (NEW.id);
+    RETURN NEW;
+  END;
+  $$ LANGUAGE plpgsql SECURITY DEFINER;
+
+  CREATE TRIGGER
+  create_profile_on_signup
+  AFTER INSERT ON auth.users
+  FOR EACH ROW
+  EXECUTE PROCEDURE
+    public.create_profile_for_new_user();

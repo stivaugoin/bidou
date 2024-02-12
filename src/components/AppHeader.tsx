@@ -38,6 +38,7 @@ export default function AppHeader({ user }: { user: AuthUser | null }) {
 
       <div style={{ display: "flex", gap: "1rem" }}>
         <Link href="/">Home</Link>
+        <Link href="/transactions">Transactions</Link>
         <Link href="/categories">Categories</Link>
       </div>
 

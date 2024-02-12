@@ -55,7 +55,7 @@ export default function SignIn() {
           />
         </div>
         <div>
-          <button>Sign in</button>
+          <button type="submit">Sign in</button>
         </div>
       </form>
     </div>

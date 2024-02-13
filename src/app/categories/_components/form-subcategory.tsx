@@ -1,24 +1,24 @@
 "use client";
 import { SubmitButton } from "@/components/SubmitButton";
 import { useRef } from "react";
-import { createSubCategory } from "./createSubCategory";
+import { createSubcategory } from "../_utils/create-subcategory";
 
 type Props = {
   parentId: string;
   type: string;
 };
 
-export function FormSubCategory({ parentId, type }: Props) {
+export function FormSubcategory({ parentId, type }: Props) {
   const nameRef = useRef<HTMLInputElement>(null);
 
-  const handleCreateSubCategory = async (formData: FormData) => {
-    await createSubCategory(formData);
+  const handleCreateSubcategory = async (formData: FormData) => {
+    await createSubcategory(formData);
     if (nameRef.current) nameRef.current.value = "";
   };
 
   return (
     <form
-      action={handleCreateSubCategory}
+      action={handleCreateSubcategory}
       style={{ display: "flex", gap: "1rem" }}
     >
       <input type="hidden" name="parentId" value={parentId} />

@@ -1,11 +1,11 @@
-import { FormCategory } from "@/app/categories/form-category";
+import { FormCategory } from "@/app/categories/_components/form-category";
 import { SubmitButton } from "@/components/SubmitButton";
-import { prisma } from "@/libs/prisma";
 import Link from "next/link";
-import { deleteCategory } from "../deleteCategory";
-import { FormSubCategory } from "./FormSubCategory";
-import { deleteSubCategory } from "./deleteSubCategory";
-import { updateCategory } from "./updateCategory";
+import { FormSubcategory } from "../_components/form-subcategory";
+import { deleteCategory } from "../_utils/delete-category";
+import { deleteSubcategory } from "../_utils/delete-subcategory";
+import { getCategory } from "../_utils/get-category";
+import { updateCategory } from "../_utils/update-category";
 
 type Props = {
   params: {
@@ -49,7 +49,7 @@ export default async function CategoryIdPage({ params }: Props) {
         <section>
           <h2>Sub-categories ({category.children.length})</h2>
 
-          <FormSubCategory parentId={category.id} type={category.type} />
+          <FormSubcategory parentId={category.id} type={category.type} />
 
           <table style={{ marginTop: "2rem", width: "500px" }}>
             <thead>
@@ -65,7 +65,7 @@ export default async function CategoryIdPage({ params }: Props) {
                     <Link href={`/categories/${child.id}`}>{child.name}</Link>
                   </td>
                   <td>
-                    <form action={deleteSubCategory}>
+                    <form action={deleteSubcategory}>
                       <input
                         type="hidden"
                         name="categoryId"
@@ -83,14 +83,4 @@ export default async function CategoryIdPage({ params }: Props) {
       )}
     </div>
   );
-}
-
-async function getCategory(categoryId: string) {
-  return prisma.category.findUniqueOrThrow({
-    where: { id: categoryId },
-    include: {
-      parent: true,
-      children: true,
-    },
-  });
 }

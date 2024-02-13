@@ -1,6 +1,6 @@
 "use server";
 import { Category, CategoryType } from "@prisma/client";
-import { SubmitButton } from "../../components/SubmitButton";
+import { SubmitButton } from "../../../components/SubmitButton";
 
 type Props = {
   action: (event: FormData) => void;

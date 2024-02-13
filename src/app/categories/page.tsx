@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { deleteCategory } from "./deleteCategory";
-import { getCategories } from "./getCategories";
+import { deleteCategory } from "./_utils/delete-category";
+import { getCategories } from "./_utils/get-categories";
 
 export default async function CategoriesPage() {
   const categories = await getCategories();
@@ -15,7 +15,7 @@ export default async function CategoriesPage() {
           <tr>
             <th>Name</th>
             <th>Type</th>
-            <th>Sub-categories</th>
+            <th>Subcategories</th>
             <th />
           </tr>
         </thead>
@@ -26,7 +26,7 @@ export default async function CategoriesPage() {
                 <Link href={`/categories/${category.id}`}>{category.name}</Link>
               </td>
               <td>{category.type}</td>
-              <td>{category._count.children} sub-categories</td>
+              <td>{category._count.children} subcategories</td>
               <td>
                 <form action={deleteCategory}>
                   <input type="hidden" name="id" value={category.id} />

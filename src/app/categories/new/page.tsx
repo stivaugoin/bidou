@@ -1,5 +1,5 @@
-import { FormCategory } from "@/app/categories/form-category";
-import { createCategory } from "./createCategory";
+import { FormCategory } from "@/app/categories/_components/form-category";
+import { createCategory } from "../_utils/create-category";
 
 export default async function CategoriesNew() {
   return (

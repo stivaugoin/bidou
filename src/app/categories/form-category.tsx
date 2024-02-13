@@ -1,13 +1,13 @@
 "use server";
 import { Category, CategoryType } from "@prisma/client";
-import { SubmitButton } from "./SubmitButton";
+import { SubmitButton } from "../../components/SubmitButton";
 
 type Props = {
   action: (event: FormData) => void;
   category?: Category;
 };
 
-export async function CategoryForm({ action, category }: Props) {
+export async function FormCategory({ action, category }: Props) {
   return (
     <form action={action}>
       {category && <input defaultValue={category.id} name="id" type="hidden" />}

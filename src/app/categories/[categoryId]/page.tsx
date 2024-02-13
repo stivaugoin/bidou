@@ -1,4 +1,4 @@
-import { CategoryForm } from "@/components/CategoryForm";
+import { FormCategory } from "@/app/categories/form-category";
 import { SubmitButton } from "@/components/SubmitButton";
 import { prisma } from "@/libs/prisma";
 import Link from "next/link";
@@ -26,7 +26,7 @@ export default async function CategoryIdPage({ params }: Props) {
           justifyContent: "space-between",
         }}
       >
-        <CategoryForm action={updateCategory} category={category} />
+        <FormCategory action={updateCategory} category={category} />
 
         <form action={deleteCategory}>
           <input type="hidden" name="id" value={category.id} />
